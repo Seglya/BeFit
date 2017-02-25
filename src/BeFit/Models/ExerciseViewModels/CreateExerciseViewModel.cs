@@ -17,12 +17,16 @@ namespace BeFit.Models.ExerciseViewModels
         [Required]
         [StringLength(10000,MinimumLength =10)]
         public string Description { get; set; }
-        [Required]
+       
         [Display(Name ="Group of muscles")]
-        public ICollection<Muscle> Muscles { get; set; } 
+        public ICollection<GroupsOfMuscles> MusclesId { get; set; } 
         [DataType(DataType.Upload)]
-       [FileExtensions(ErrorMessage ="Image should have extension .jpg",Extensions = "jpeg")]
+       //[FileExtensions(ErrorMessage ="Image should have extension .jpg", Extensions = "jpg")]
         public IFormFile image { get; set; }
-        public IMusclesRepository _rep { get ; }
+        public byte[] ImageData { get; set; }
+
+        public IEnumerable<Muscle> AllMuscles { get; set; }
+
+      
     }
 }

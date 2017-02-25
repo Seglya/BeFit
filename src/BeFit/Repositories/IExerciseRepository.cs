@@ -2,8 +2,9 @@
 using BeFit.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
-
+using BeFit.Models.ExerciseViewModels;
 
 
 namespace BeFit.Repositories
@@ -14,26 +15,25 @@ namespace BeFit.Repositories
         Task<Exercise> GetExerciseAsync(int? id);
         Exercise GetExercise(string name);
         bool DeleteExercise(int id);
-        bool SaveExercise(Exercise ex);
-        Task<Muscle> GetMuscleAsync(int? id);
+      Task<int> SaveExerciseAsync(CreateExerciseViewModel viewModel, int id);
+      
         //IEnumerable<GroupsOfMuscles> GetMusclesAsync(int id);
     }
     public class ExerciseRepository:IExerciseRepository
     {
-       private BeFitDbContext context;
+       private readonly BeFitDbContext context;
+        
         public ExerciseRepository(BeFitDbContext cont)
         {
             context = cont;
+            
         }
+
+    
       
-        public IEnumerable<Exercise> Exercises
-        {
-            get { return context.Exercise; }
-        }
-        public async Task<Muscle> GetMuscleAsync(int? id)
-        {
-            return await context.Muscle.FindAsync(id);
-        }
+        public IEnumerable<Exercise> Exercises => context.Exercise;
+
+        
         public async Task<Exercise> GetExerciseAsync(int? id)
         {
             return await context.Exercise.Include(s=>s.Muscles).AsNoTracking().SingleOrDefaultAsync(m=>m.ExerciseID==id);
@@ -62,21 +62,38 @@ namespace BeFit.Repositories
             }
             return false;
         }
-      public  bool SaveExercise(Exercise ex)
+      public async Task< int> SaveExerciseAsync(CreateExerciseViewModel viewModel, int id=0)
         {
-            if (ex.ExerciseID == 0)
+            Exercise exercise = new Exercise
             {
-                    context.Exercise.Add(ex);
-                    context.SaveChanges();
-                    return true;
+                Name = viewModel.Name,
+                Description = viewModel.Description,
+            };
+            if (viewModel.image != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await viewModel.image.CopyToAsync(memoryStream);
+                    exercise.ImageData = memoryStream.ToArray();
+
+                    exercise.ImageMimeType = viewModel.image.ContentType;
                 }
-            else if(GetExerciseAsync(ex.ExerciseID)!=null)
-            {
-                context.Update(ex);
-                context.SaveChanges();
-                return true;
             }
-            return false;
+            if (id == 0)
+            {
+                    context.Exercise.Add(exercise);
+                context.SaveChanges();
+
+                    return GetExercise(exercise.Name).ExerciseID;
+                }
+            else if(await GetExerciseAsync(id)!=null)
+            {
+                exercise.ExerciseID = id;
+                context.Update(exercise);
+                context.SaveChanges();
+                return id;
+            }
+            return 0;
         }
        
       

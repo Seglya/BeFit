@@ -33,12 +33,24 @@
                 </p>
                 <p>
                     <div class="form-group">
-                        <label asp-for="Muscles" class="col-md-2 control-label"></label>
+                        <label asp-for="MusclesId" class="col-md-2 control-label"></label>
 
                         <div class="col-md-6">
-                            @foreach(Muscle muscl in Model._rep.Muscles) { 
-                            <input asp-for="Muscles" type="checkbox" value="muscl.muscleID"  /><label title="musc.Name"></label>}
-                            <span asp-validation-for="Muscles" class="text-danger" />
+                            @if (Model.AllMuscles.Count()!=0)
+                            {
+                                int i = 0;
+                                foreach (var muscl in Model.AllMuscles)
+                                {
+
+
+                                    <input id="@i" type="checkbox" name="@i"  value="true" />
+                                    <label asp-for="@i">@muscl.Name</label>
+                                    i++;
+
+                                }
+                            <span asp-validation-for="MusclesId" class="text-danger"/>
+                                }
+                            
                         </div>
                     </div>
                 </p>

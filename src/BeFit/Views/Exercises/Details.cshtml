@@ -28,7 +28,7 @@
         <dd>
             @if (Model.Muscles != null)
             {
-            @foreach (var item in Model.Muscles)
+            foreach (var item in Model.Muscles)
             {<div>
                 @Html.DisplayFor(modelItem => item.Muscle.Name)
             </div>

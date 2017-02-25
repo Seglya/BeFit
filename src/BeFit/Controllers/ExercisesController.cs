@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,17 +22,22 @@ namespace BeFit.Controllers
 {
     public class ExercisesController : Controller
     {
-       // private readonly BeFitDbContext _context;
-        private IExerciseRepository _repository;
+        // private readonly BeFitDbContext _context;
+        private readonly IExerciseRepository _repository;
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IMusclesRepository _muscleRepository;
+        private readonly IGroupOfMusclesRepository _groupOfMusclesRepository;
 
 
-        public ExercisesController( IExerciseRepository repository, IHostingEnvironment hostingEvironment)
+        public ExercisesController(IExerciseRepository repository, IHostingEnvironment hostingEvironment,
+            IMusclesRepository muscleRepository, IGroupOfMusclesRepository groupOfMusclesRepository)
         {
-           // _context = context;
+            // _context = context;
             _repository = repository;
             _hostingEnvironment = hostingEvironment;
-            
+            _muscleRepository = muscleRepository;
+            _groupOfMusclesRepository = groupOfMusclesRepository;
+
         }
 
         // GET: Exercises
@@ -40,7 +46,7 @@ namespace BeFit.Controllers
             return View(_repository.Exercises);
         }
 
-         //GET: Exercises/Details/5
+        //GET: Exercises/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -55,13 +61,14 @@ namespace BeFit.Controllers
             }
             foreach (var item in exercise.Muscles)
             {
-                item.Muscle=await _repository.GetMuscleAsync(item.MuscleID);
+                item.Muscle = await _muscleRepository.GetMuscleAsync(item.MuscleID);
             }
             return View(exercise);
         }
+
         public async Task<FileContentResult> GetImageAsync(int id)
         {
-                var exer = await _repository.GetExerciseAsync(id);
+            var exer = await _repository.GetExerciseAsync(id);
             if (exer != null)
             {
                 return File(exer.ImageData, exer.ImageMimeType);
@@ -69,10 +76,16 @@ namespace BeFit.Controllers
             return null;
         }
 
-       //  GET: Exercises/Create
+        //  GET: Exercises/Create
         public IActionResult Create()
         {
-            return View();
+            CreateExerciseViewModel viewModel = new CreateExerciseViewModel
+            {
+                AllMuscles = _muscleRepository.Muscles,
+
+            };
+
+            return View(viewModel);
         }
 
         // POST: Exercises/Create
@@ -85,32 +98,37 @@ namespace BeFit.Controllers
 
 
             if (_repository.GetExercise(viewModel.Name) != null)
-            { ModelState.AddModelError("", "Exercise with this name already exist!!!"); }
+            {
+                ModelState.AddModelError("", "Exercise with this name already exist!!!");
+            }
 
             if (ModelState.IsValid)
             {
-            using (var memoryStream = new MemoryStream())
-            {
-                var exercise = new Exercise
+                List<int> listId=new List<int>();
+                foreach (var formKey in this.Request.Form.Keys)
                 {
-                    Name = viewModel.Name,
-                    Description = viewModel.Description,
-
-                };
-                    if (viewModel.image != null)
+                    int i;
+                    if (int.TryParse(formKey, out i))
                     {
-                        await viewModel.image.CopyToAsync(memoryStream);
-                        exercise.ImageData = memoryStream.ToArray();
-
-                        exercise.ImageMimeType = viewModel.image.ContentType;
+                        listId.Add(i);
                     }
-            
-             bool saving = _repository.SaveExercise(exercise);
-               if(saving ==true)
-                return RedirectToAction("Details", new { id = _repository.GetExercise(exercise.Name).ExerciseID });
-               
-            }}
-            return View(viewModel);
+
+                }
+
+                int saving = await _repository.SaveExerciseAsync(viewModel, 0);
+                if (saving != 0 & listId.Count()!=0)
+                {  foreach (var i in listId)
+                    {
+                        viewModel.MusclesId.Add(await _groupOfMusclesRepository.NewGroupOfMusclesAsync(saving, i+1));
+                    }}
+                int saving1 = await _repository.SaveExerciseAsync(viewModel, saving);
+                if (saving1 != 0)
+                    return RedirectToAction("Details", new {id = saving});
+            }
+
+        viewModel.AllMuscles=_muscleRepository.Muscles;
+    
+    return View(viewModel);
         }
 
         // GET: Exercises/Edit/5
@@ -124,9 +142,21 @@ namespace BeFit.Controllers
             if (exercise == null)
             {
                 return NotFound();
+            }   foreach (var item in exercise.Muscles)
+            {
+                item.Muscle = await _muscleRepository.GetMuscleAsync(item.MuscleID);
             }
-           
-            return View(exercise);
+            CreateExerciseViewModel viewModel=new CreateExerciseViewModel
+            {
+                AllMuscles = _muscleRepository.Muscles,
+                Name = exercise.Name,
+                Description = exercise.Description,
+                MusclesId= exercise.Muscles
+            };
+         
+            if (exercise.ImageData!=null)
+                viewModel.ImageData =exercise.ImageData.ToArray();
+            return View(viewModel);
         }
 
         // POST: Exercises/Edit/5
@@ -136,37 +166,37 @@ namespace BeFit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, CreateExerciseViewModel viewModel)
         {
-            if (id ==0)
+            if (id == 0)
             {
                 return NotFound();
             }
-            Exercise exercise;
-            
-            using (var memoryStream = new MemoryStream())
+            List<int> listId = new List<int>();
+            foreach (var formKey in this.Request.Form.Keys)
             {
-                exercise = new Exercise
+                int i;
+                if (int.TryParse(formKey, out i))
                 {
-                    Name = viewModel.Name,
-                    Description = viewModel.Description,
-                    ExerciseID = id,
-                };
-                if (viewModel.image != null) { 
-                await viewModel.image.CopyToAsync(memoryStream);
-                exercise.ImageData = memoryStream.ToArray();
-                exercise.ImageMimeType = viewModel.image.ContentType;}if (ModelState.IsValid)
-            {
-            
-           
-
-                if (_repository.SaveExercise(exercise))
-                {
-
-                    return RedirectToAction("Details", new { id = id });
+                    listId.Add(i);
                 }
-             
-                return RedirectToAction("Index");}
+
             }
-            return View(exercise);
+           
+                _groupOfMusclesRepository.DeleteGroupOfMuscle(_groupOfMusclesRepository.GroupsOfMuscles.ToList());
+
+            if (listId.Count() != 0)
+            {
+                foreach (var i in listId)
+                {
+                    var gr = await _groupOfMusclesRepository.NewGroupOfMusclesAsync(id, i + 1);
+
+                }
+                viewModel.MusclesId = _groupOfMusclesRepository.GroupsOfMusclesByExercise(id).ToList();
+
+            }
+            int saving1 = await _repository.SaveExerciseAsync(viewModel, id);
+            if (saving1 != 0)
+                return RedirectToAction("Details", new {id = id});
+             return View(viewModel);
         }
 
         // GET: Exercises/Delete/5

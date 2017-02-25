@@ -1,4 +1,5 @@
-@model BeFit.Models.Exercise
+@model BeFit.Models.ExerciseViewModels.CreateExerciseViewModel
+
 
 @{
     ViewData["Title"] = "Edit";
@@ -31,6 +32,48 @@
                         </div>
                     </div>
                 </p>
+                <p>
+                <p>
+                    <div class="form-group">
+                        <label asp-for="MusclesId" class="col-md-2 control-label"></label>
+
+                        <div class="col-md-6">
+                            @if (Model.MusclesId != null)
+            {
+                                foreach (var item in Model.MusclesId)
+                                {<div>
+                                @Html.DisplayFor(modelItem => item.Muscle.Name)
+                            </div>
+
+                                }}
+                        </div>
+                    </div>
+                </p>
+                <p>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Change to:</label>
+
+                        <div class="col-md-6">
+
+                            @if (Model.AllMuscles.Count() != 0)
+                            {
+                                int i = 0;
+                                foreach (var muscl in Model.AllMuscles)
+                                {
+
+
+                                    <input id="@i" type="checkbox" name="@i" value="true" />
+                                    <label asp-for="@i">@muscl.Name</label>
+                                    i++;
+
+                                }
+                                <span asp-validation-for="MusclesId" class="text-danger" />
+                            }
+
+                        </div>
+                    </div>
+                </p>
+
                 <div class="form-group ">
                     @if (Model.ImageData != null)
             {<div>

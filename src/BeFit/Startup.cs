@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using BeFit.Data;
 using BeFit.Models;
 using BeFit.Services;
+using BeFit.Repositories;
 
 namespace BeFit
 {
@@ -44,6 +45,8 @@ namespace BeFit
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
+            services.AddDbContext<BeFitDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -57,10 +60,12 @@ namespace BeFit
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddScoped<IExerciseRepository, ExerciseRepository>();
+            services.AddTransient<IMusclesRepository, MuscleRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, BeFitDbContext context)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -92,6 +97,7 @@ namespace BeFit
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            DbInitializer.Initialize(context);
         }
     }
 }

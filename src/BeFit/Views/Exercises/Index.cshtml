@@ -1,0 +1,47 @@
+@model IEnumerable<BeFit.Models.Exercise>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    thead,tbody{background-color: lightgray;}</style>
+
+<div class="container">
+    <div class="row">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Exercises</h2>
+                <p>
+                    <a asp-action="Create">Create New</a>
+                </p>
+                <table class="table" >
+                    <thead>
+                        <tr>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.ExerciseID">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.ExerciseID">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.ExerciseID">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>

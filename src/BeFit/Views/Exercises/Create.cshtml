@@ -1,0 +1,70 @@
+@model BeFit.Models.ExerciseViewModels.CreateExerciseViewModel
+@using BeFit.Repositories 
+
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="container">
+    <div >
+        <h2>Create</h2>
+
+        <form method="post" asp-controller="Exercises"  asp-action="Create" class="form-horizontal" enctype="multipart/form-data">
+            
+            <div class="form-group">
+                <h4>Exercise</h4>
+                <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+    <label asp-for="Name" class="col-md-2 control-label"></label>
+    <div class="col-md-6">
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger" />
+      </div>
+</div>
+                <p>
+                    <div class="form-group">
+                        <label asp-for="Description" class="col-md-2 control-label"></label>
+
+                        <div class="col-md-6">
+                            <input asp-for="Description" class="form-control" />
+                            <span asp-validation-for="Description" class="text-danger" />
+                        </div>
+                    </div>
+                </p>
+                <p>
+                    <div class="form-group">
+                        <label asp-for="Muscles" class="col-md-2 control-label"></label>
+
+                        <div class="col-md-6">
+                            @foreach(Muscle muscl in Model._rep.Muscles) { 
+                            <input asp-for="Muscles" type="checkbox" value="muscl.muscleID"  /><label title="musc.Name"></label>}
+                            <span asp-validation-for="Muscles" class="text-danger" />
+                        </div>
+                    </div>
+                </p>
+                <div class="form-group " >
+                    <label class="col-md-2 control-label">Upload image</label>
+                    <div class="col-md-6">
+                       <input type="file" name="image" />
+                       
+                    </div>
+                 
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-6">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div>
+            <a asp-action="Index" class="btn-danger">Back to List</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

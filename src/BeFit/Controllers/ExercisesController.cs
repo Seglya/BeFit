@@ -117,13 +117,18 @@ namespace BeFit.Controllers
 
                 int saving = await _repository.SaveExerciseAsync(viewModel, 0);
                 if (saving != 0 & listId.Count()!=0)
-                {  foreach (var i in listId)
                     {
-                        viewModel.MusclesId.Add(await _groupOfMusclesRepository.NewGroupOfMusclesAsync(saving, i+1));
-                    }}
+                        foreach (var i in listId)
+                        {
+                            var gr = await _groupOfMusclesRepository.NewGroupOfMusclesAsync(saving, i + 1);
+
+                        }
+                        viewModel.MusclesId = _groupOfMusclesRepository.GroupsOfMusclesByExercise(saving).ToList();
+
+                    }
                 int saving1 = await _repository.SaveExerciseAsync(viewModel, saving);
                 if (saving1 != 0)
-                    return RedirectToAction("Details", new {id = saving});
+                    return RedirectToAction("Details", new {id = saving1});
             }
 
         viewModel.AllMuscles=_muscleRepository.Muscles;

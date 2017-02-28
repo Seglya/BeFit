@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using BeFit.Data;
 using BeFit.Models;
@@ -11,6 +12,7 @@ namespace BeFit.Repositories
     public interface IExerciseRepository
     {
         IEnumerable<Exercise> Exercises { get; }
+        IEnumerable<Exercise> ExercisesByFilter(string filter);
         Task<Exercise> GetExerciseAsync(int? id);
         Exercise GetExercise(string name);
         bool DeleteExercise(int id);
@@ -29,8 +31,13 @@ namespace BeFit.Repositories
         }
 
 
-        public IEnumerable<Exercise> Exercises => context.Exercise;
-
+        public IEnumerable<Exercise> Exercises => context.Exercise.AsNoTracking();
+        public IEnumerable<Exercise> ExercisesByFilter(string filter)
+        {
+            if (filter != null)
+                return context.Exercise.Where(s => s.Name.Contains(filter)).AsNoTracking();
+            return context.Exercise.AsNoTracking();
+        }
 
         public async Task<Exercise> GetExerciseAsync(int? id)
         {
@@ -69,12 +76,13 @@ namespace BeFit.Repositories
                 exercise = await GetExerciseAsync(id);
                 if (exercise == null)
                     return 0;
+                if (viewModel.Muscles.Count!=0)
+            exercise.Muscles = viewModel.Muscles;
             }
 
             exercise.Name = viewModel.Name;
             exercise.Description = viewModel.Description;
-            if(viewModel.Muscles.Count!=0)
-            exercise.Muscles = viewModel.Muscles;
+           
 
             if (viewModel.image != null)
                 using (var memoryStream = new MemoryStream())
@@ -92,10 +100,10 @@ namespace BeFit.Repositories
 
                 return GetExercise(exercise.Name).ExerciseID;
             }
-            else { 
+            
             context.Update(exercise);
             context.SaveChanges();
-            return id;}
+            return id;
            
         }
     }

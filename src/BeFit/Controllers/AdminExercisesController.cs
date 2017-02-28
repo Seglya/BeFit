@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BeFit.Controllers
 {
-    public class ExercisesController : Controller
+    public class AdminExercisesController : Controller
     {
         // private readonly BeFitDbContext _context;
         private readonly IExerciseRepository _repository;
@@ -19,7 +19,7 @@ namespace BeFit.Controllers
         private readonly IGroupOfMusclesRepository _groupOfMusclesRepository;
 
 
-        public ExercisesController(IExerciseRepository repository, IHostingEnvironment hostingEvironment,
+        public AdminExercisesController(IExerciseRepository repository, IHostingEnvironment hostingEvironment,
             IMusclesRepository muscleRepository, IGroupOfMusclesRepository groupOfMusclesRepository)
         {
             // _context = context;

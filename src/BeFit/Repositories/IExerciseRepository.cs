@@ -1,57 +1,55 @@
-﻿using BeFit.Data;
-using BeFit.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using BeFit.Data;
+using BeFit.Models;
 using BeFit.Models.ExerciseViewModels;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace BeFit.Repositories
 {
-   public interface IExerciseRepository
+    public interface IExerciseRepository
     {
         IEnumerable<Exercise> Exercises { get; }
         Task<Exercise> GetExerciseAsync(int? id);
         Exercise GetExercise(string name);
         bool DeleteExercise(int id);
-      Task<int> SaveExerciseAsync(CreateExerciseViewModel viewModel, int id);
-      
+        Task<int> SaveExerciseAsync(CreateExerciseViewModel viewModel, int id);
+
         //IEnumerable<GroupsOfMuscles> GetMusclesAsync(int id);
     }
-    public class ExerciseRepository:IExerciseRepository
+
+    public class ExerciseRepository : IExerciseRepository
     {
-       private readonly BeFitDbContext context;
-        
+        private readonly BeFitDbContext context;
+
         public ExerciseRepository(BeFitDbContext cont)
         {
             context = cont;
-            
         }
 
-    
-      
+
         public IEnumerable<Exercise> Exercises => context.Exercise;
 
-        
+
         public async Task<Exercise> GetExerciseAsync(int? id)
         {
-            return await context.Exercise.Include(s=>s.Muscles).AsNoTracking().SingleOrDefaultAsync(m=>m.ExerciseID==id);
+            return
+                await context.Exercise.Include(s => s.Muscles)
+                    .ThenInclude(m => m.Muscle)
+                    .AsNoTracking()
+                    .SingleOrDefaultAsync(m => m.ExerciseID == id);
         }
-        public  Exercise GetExercise(string name)
+
+        public Exercise GetExercise(string name)
         {
-           foreach(Exercise ex in context.Exercise)
-            {
-                if(ex.Name == name)
-                {
+            foreach (var ex in context.Exercise)
+                if (ex.Name == name)
                     return ex;
-                }
-              
-            }
-                   return null;
-            
+            return null;
         }
-        public bool DeleteExercise (int id)
+
+        public bool DeleteExercise(int id)
         {
             var del = context.Exercise.Find(id);
             if (del != null)
@@ -62,15 +60,23 @@ namespace BeFit.Repositories
             }
             return false;
         }
-      public async Task< int> SaveExerciseAsync(CreateExerciseViewModel viewModel, int id=0)
+
+        public async Task<int> SaveExerciseAsync(CreateExerciseViewModel viewModel, int id = 0)
         {
-            Exercise exercise = new Exercise
+            var exercise = new Exercise();
+            if (id != 0)
             {
-                Name = viewModel.Name,
-                Description = viewModel.Description,
-            };
+                exercise = await GetExerciseAsync(id);
+                if (exercise == null)
+                    return 0;
+            }
+
+            exercise.Name = viewModel.Name;
+            exercise.Description = viewModel.Description;
+            if(viewModel.Muscles.Count!=0)
+            exercise.Muscles = viewModel.Muscles;
+
             if (viewModel.image != null)
-            {
                 using (var memoryStream = new MemoryStream())
                 {
                     await viewModel.image.CopyToAsync(memoryStream);
@@ -78,24 +84,19 @@ namespace BeFit.Repositories
 
                     exercise.ImageMimeType = viewModel.image.ContentType;
                 }
-            }
+
             if (id == 0)
             {
-                    context.Exercise.Add(exercise);
+                context.Exercise.Add(exercise);
                 context.SaveChanges();
 
-                    return GetExercise(exercise.Name).ExerciseID;
-                }
-            else if(await GetExerciseAsync(id)!=null)
-            {
-                exercise.ExerciseID = id;
-                context.Update(exercise);
-                context.SaveChanges();
-                return id;
+                return GetExercise(exercise.Name).ExerciseID;
             }
-            return 0;
+            else { 
+            context.Update(exercise);
+            context.SaveChanges();
+            return id;}
+           
         }
-       
-      
     }
 }

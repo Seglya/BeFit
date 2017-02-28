@@ -33,7 +33,7 @@
                 </p>
                 <p>
                     <div class="form-group">
-                        <label asp-for="MusclesId" class="col-md-2 control-label"></label>
+                        <label asp-for="Muscles" class="col-md-2 control-label"></label>
 
                         <div class="col-md-6">
                             @if (Model.AllMuscles.Count()!=0)
@@ -48,7 +48,7 @@
                                     i++;
 
                                 }
-                            <span asp-validation-for="MusclesId" class="text-danger"/>
+                            <span asp-validation-for="Muscles" class="text-danger"/>
                                 }
                             
                         </div>

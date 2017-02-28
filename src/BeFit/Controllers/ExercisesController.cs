@@ -59,10 +59,10 @@ namespace BeFit.Controllers
             {
                 return NotFound();
             }
-            foreach (var item in exercise.Muscles)
-            {
-                item.Muscle = await _muscleRepository.GetMuscleAsync(item.MuscleID);
-            }
+            //foreach (var item in exercise.Muscles)
+            //{
+            //    item.Muscle = await _muscleRepository.GetMuscleAsync(item.MuscleID);
+            //}
             return View(exercise);
         }
 
@@ -123,7 +123,7 @@ namespace BeFit.Controllers
                             var gr = await _groupOfMusclesRepository.NewGroupOfMusclesAsync(saving, i + 1);
 
                         }
-                        viewModel.MusclesId = _groupOfMusclesRepository.GroupsOfMusclesByExercise(saving).ToList();
+                        viewModel.Muscles = _groupOfMusclesRepository.GroupsOfMusclesByExercise(saving).ToList();
 
                     }
                 int saving1 = await _repository.SaveExerciseAsync(viewModel, saving);
@@ -147,16 +147,13 @@ namespace BeFit.Controllers
             if (exercise == null)
             {
                 return NotFound();
-            }   foreach (var item in exercise.Muscles)
-            {
-                item.Muscle = await _muscleRepository.GetMuscleAsync(item.MuscleID);
             }
-            CreateExerciseViewModel viewModel=new CreateExerciseViewModel
+         CreateExerciseViewModel viewModel=new CreateExerciseViewModel
             {
                 AllMuscles = _muscleRepository.Muscles,
                 Name = exercise.Name,
                 Description = exercise.Description,
-                MusclesId= exercise.Muscles
+                Muscles= exercise.Muscles
             };
          
             if (exercise.ImageData!=null)
@@ -185,22 +182,20 @@ namespace BeFit.Controllers
                 }
 
             }
-           
-                _groupOfMusclesRepository.DeleteGroupOfMuscle(_groupOfMusclesRepository.GroupsOfMuscles.ToList());
-
-            if (listId.Count() != 0)
-            {
+         if (listId.Count() != 0)
+            { _groupOfMusclesRepository.DeleteGroupOfMuscle(_groupOfMusclesRepository.GroupsOfMuscles.ToList());
                 foreach (var i in listId)
                 {
                     var gr = await _groupOfMusclesRepository.NewGroupOfMusclesAsync(id, i + 1);
 
                 }
-                viewModel.MusclesId = _groupOfMusclesRepository.GroupsOfMusclesByExercise(id).ToList();
+                viewModel.Muscles = _groupOfMusclesRepository.GroupsOfMusclesByExercise(id).ToList();
 
             }
             int saving1 = await _repository.SaveExerciseAsync(viewModel, id);
             if (saving1 != 0)
-                return RedirectToAction("Details", new {id = id});
+            { return RedirectToAction("Details", new {id = id});}
+            viewModel.AllMuscles = _muscleRepository.Muscles;
              return View(viewModel);
         }
 

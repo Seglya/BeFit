@@ -19,7 +19,7 @@ namespace BeFit.Models.ExerciseViewModels
         public string Description { get; set; }
        
         [Display(Name ="Group of muscles")]
-        public ICollection<GroupsOfMuscles> MusclesId { get; set; } 
+        public ICollection<GroupsOfMuscles> Muscles { get; set; } 
         [DataType(DataType.Upload)]
        //[FileExtensions(ErrorMessage ="Image should have extension .jpg", Extensions = "jpg")]
         public IFormFile image { get; set; }

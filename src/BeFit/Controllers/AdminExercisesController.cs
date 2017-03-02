@@ -90,7 +90,7 @@ namespace BeFit.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateExerciseViewModel viewModel)
+        public async Task<IActionResult> Create(CreateExerciseViewModel viewModel, string [] musclesIndex)
         {
            
             if (_repository.GetExercise(viewModel.Name) != null)
@@ -114,7 +114,7 @@ namespace BeFit.Controllers
                 {
                     foreach (var i in listId)
                     {
-                        var gr = await _groupOfMusclesRepository.NewGroupOfMusclesAsync(saving, i + 1);
+                        var gr = await _groupOfMusclesRepository.NewGroupOfMusclesAsync(saving, _muscleRepository.GetMuscleByIndex(i));
                     }
                     viewModel.Muscles = _groupOfMusclesRepository.GroupsOfMusclesByExercise(saving).ToList();
                 }
@@ -144,6 +144,7 @@ namespace BeFit.Controllers
             var exercise = await _repository.GetExerciseAsync(id);
             if (exercise == null)
                 return NotFound();
+
             var viewModel = new CreateExerciseViewModel
             {
                 AllMuscles = _muscleRepository.Muscles,
@@ -151,7 +152,14 @@ namespace BeFit.Controllers
                 Description = exercise.Description,
                 Muscles = exercise.Muscles
             };
-
+            int i = 0;
+            string[] musclesIndex = new string[viewModel.Muscles.Count];
+            foreach (var muscle in viewModel.Muscles)
+            {
+                musclesIndex[i] = _muscleRepository.GetIndex(muscle.Muscle).ToString();
+                i++;
+            }
+            ViewBag.muscles = musclesIndex;
             if (exercise.ImageData != null)
                 viewModel.ImageData = exercise.ImageData.ToArray();
             return View(viewModel);
@@ -163,26 +171,30 @@ namespace BeFit.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, CreateExerciseViewModel viewModel)
+        public async Task<IActionResult> Edit(int id, CreateExerciseViewModel viewModel, string[] musclesIndex)
         {
             
             if (id == 0)
                 return NotFound();
             var listId = new List<int>();
-            foreach (var formKey in Request.Form.Keys)
+           
+            foreach (var s in musclesIndex)
             {
-                int i;
-                if (int.TryParse(formKey, out i))
-                    listId.Add(i);
+                
+            
+                    listId.Add(int.Parse(s));
             }
-try { 
-            if (listId.Count != 0)
+            if (listId.Count == 0)
+                ModelState.AddModelError("", "Choose at least one group of muscle");
+            try { 
+            if (ModelState.IsValid)
             {
                 _groupOfMusclesRepository.DeleteGroupOfMuscle(_groupOfMusclesRepository.GroupsOfMuscles.ToList());
                 foreach (var i in listId)
                 {
-                    var gr = await _groupOfMusclesRepository.NewGroupOfMusclesAsync(id, i + 1);
+                    var gr = await _groupOfMusclesRepository.NewGroupOfMusclesAsync(id, _muscleRepository.GetMuscleByIndex(i) );
                 }
+                
                 viewModel.Muscles = _groupOfMusclesRepository.GroupsOfMusclesByExercise(id).ToList();
             }
 

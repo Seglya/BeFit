@@ -28,21 +28,28 @@
         <div class="row">
             <div class="col-md-12">
                 <h2>Exercises</h2>
-                
-                <form  asp-action="List" Method="get">
-                    <div class="form-actions no-color" >
+
+                <form asp-action="List" Method="get">
+                    <div class="form-actions no-color">
                         <label>Search: </label>
                         <input type="text" name="filter" value="@ViewData["currentFilter"]" />
-                        <input type="submit" value="search" class="btn-default"/>
-                        <a asp-action="List" >Back to full list</a>
+                        <input type="submit" value="search" class="btn-default" />
+                        <a asp-action="List">Back to full list</a>
+                    <div class="pull-right">
+                        <a  asp-action="List" asp-route-pageSize="6"> 6 </a>
+                        <label > | </label>
+                        <a  asp-action="List" asp-route-pageSize="12"> 12  </a>
                     </div>
+                        </div>
                 </form>
-                
+            
+               
+               <hr/>
                    @foreach (var item in Model)
                    {
                     <div class="in-block">
-                        <div class="well">
-                            @Html.DisplayFor(modelItem => item.Name)
+                        <div class="well"><a asp-controller="AdminExercises" asp-action="Details" asp-route-id="@item.ExerciseID">@item.Name</a>
+                           
                             @if (item.Muscles != null)
                             {
 
@@ -56,7 +63,7 @@
                                     <img alt="Exercise image"  src="data:image/jpeg;base64,@(Convert.ToBase64String(item.ImageData))" />
 
                                 }
-                                <a asp-controller="AdminExercises" asp-action="Details" asp-route-id="@item.ExerciseID">Details</a>
+                                
                             </p>
                         </div>
 
@@ -71,7 +78,7 @@
         var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
         var nextDisabled = !Model.HasNextPage ? "disabled" : "";
     }
-    <a asp-action="List" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex-1)" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @prevDisabled btn">Previous</a>
-    <a asp-action="List" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex+1)" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @nextDisabled btn">Next</a>
+    <a asp-action="List" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex-1)" asp-route-pageSize="@ViewData["SizePage"]" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @prevDisabled btn">Previous</a>
+    <a asp-action="List" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex+1)" asp-route-pageSize="@ViewData["SizePage"]" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @nextDisabled btn">Next</a>
 
 </div>

@@ -9,10 +9,11 @@ namespace BeFit.Repositories
 {
    public interface IGroupOfMusclesRepository
     {
-        Task<GroupsOfMuscles> NewGroupOfMusclesAsync(int exerciseId, int muscleId);
+        Task<GroupsOfMuscles> NewGroupOfMusclesAsync(int exerciseId, Muscle muscle);
         IEnumerable<GroupsOfMuscles> GroupsOfMuscles { get; }
         IEnumerable<GroupsOfMuscles> GroupsOfMusclesByExercise(int exerciseId);
         void DeleteGroupOfMuscle(ICollection<GroupsOfMuscles> groups);
+        
 
     }
 
@@ -38,22 +39,37 @@ namespace BeFit.Repositories
           
         }
 
-        public async Task<GroupsOfMuscles> NewGroupOfMusclesAsync(int exerciseId, int muscleId)
-        {
-            GroupsOfMuscles newGroupsOfMuscles = new GroupsOfMuscles
-            {
+       
 
-                ExerciseID = exerciseId,
-                MuscleID = muscleId
-            };
-            if (_context.GroupsOfMuscles.Contains(newGroupsOfMuscles) == false)
-            {
-                await _context.GroupsOfMuscles.AddAsync(newGroupsOfMuscles);
-           
-            await _context.SaveChangesAsync();
-            return newGroupsOfMuscles; }
-            return null;
-        }
+        public async Task<GroupsOfMuscles> NewGroupOfMusclesAsync(int exerciseId, Muscle muscle)
+        {
+            //int t = _context.Muscle.Count();
+           int muscleId=muscle.MuscleID;
+//            int i = 0;
+//            foreach (var muscles in _context.Muscle)
+//            {
+//                if (i == muscleIndex)
+//                  muscleId = muscles.MuscleID;
+//i++;}
+            if(muscleId>0)
+            { GroupsOfMuscles newGroupsOfMuscles = new GroupsOfMuscles
+                {
+
+                    ExerciseID = exerciseId,
+                    MuscleID = muscleId
+                };
+                if (_context.GroupsOfMuscles.Contains(newGroupsOfMuscles) == false)
+                {
+                    await _context.GroupsOfMuscles.AddAsync(newGroupsOfMuscles);
+
+                    await _context.SaveChangesAsync();
+                    return newGroupsOfMuscles;
+                }
+            }
+            
+        
+        return null;
+    }
     
         public IEnumerable<GroupsOfMuscles> GroupsOfMuscles => _context.GroupsOfMuscles;
 

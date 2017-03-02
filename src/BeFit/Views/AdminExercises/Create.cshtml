@@ -36,19 +36,22 @@
                         <label asp-for="Muscles" class="col-md-2 control-label"></label>
 
                         <div class="col-md-6">
-                            @if (Model.AllMuscles.Count()!=0)
+                            @if (Model.AllMuscles.Count() != 0)
                             {
                                 int i = 0;
                                 foreach (var muscl in Model.AllMuscles)
                                 {
+                                  
+                                        <input id="@i" type="checkbox" name="musclesIndex" value="@i" />
+                                        <label asp-for="@i">@muscl.Name</label>
 
-
-                                    <input id="@i" type="checkbox" name="@i"  value="true" />
-                                    <label asp-for="@i">@muscl.Name</label>
                                     i++;
-
                                 }
-                            <span asp-validation-for="Muscles" class="text-danger"/>
+
+                            }
+                                <span asp-validation-for="Muscles" class="text-danger"></span>
+
+                        
                                 }
                             
                         </div>

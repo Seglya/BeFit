@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BeFit.Data;
 using BeFit.Models;
 using BeFit.Models.ExerciseViewModels;
+using Microsoft.DotNet.Cli.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace BeFit.Repositories
@@ -76,7 +77,7 @@ namespace BeFit.Repositories
                 exercise = await GetExerciseAsync(id);
                 if (exercise == null)
                     return 0;
-                if (viewModel.Muscles.Count!=0)
+                if (viewModel.Muscles!=null)
             exercise.Muscles = viewModel.Muscles;
             }
 

@@ -24,10 +24,21 @@ namespace BeFit.Controllers
             _muscleRepository = musclesRepository;
         }
 
-        public ActionResult List(string sortOrder, string filter, string currentFilter, int? page)
+        public ActionResult List(string sortOrder, string filter,string pageSize, string currentFilter, int? page)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            if(!string.IsNullOrEmpty(pageSize))
+            ViewData["SizePage"] = pageSize;
+            else if (string.IsNullOrEmpty(pageSize) & string.IsNullOrEmpty((string)ViewData["SizePage"]))
+            {
+                pageSize = (string) ViewData["SizePage"];
+            }
+           
+               
+            int sizeOfPage;
+            if(int.TryParse(pageSize,out sizeOfPage)==false)
+            sizeOfPage=6;
             if (filter != null)
             {
                 page = 1;
@@ -46,8 +57,8 @@ namespace BeFit.Controllers
                     break;
                 default: collExercises = collExercises.OrderBy(s => s.Name); break;
             }
-            int pageSize = 6;
-            return View(PagerList<Exercise>.Create(collExercises, page ?? 1, pageSize));
+           
+            return View(PagerList<Exercise>.Create(collExercises, page ?? 1, sizeOfPage));
         }
     }
 }

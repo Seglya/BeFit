@@ -39,7 +39,7 @@
            @if (Model.ImageData != null)
 
            {
-               <img style="width:400px; height:300px;" alt="Exercise image"  src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.ImageData))" />
+               <img  alt="Exercise image"  src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.ImageData))" />
     
            }
         </dd>
@@ -47,6 +47,7 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ExerciseID">Edit</a> |
+    @if (User.IsInRole("Admin")) { 
+    <a asp-action="Edit" asp-route-id="@Model.ExerciseID">Edit</a> }
     <a asp-action="Index">Back to List</a>
 </div>

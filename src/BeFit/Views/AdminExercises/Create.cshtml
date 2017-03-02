@@ -8,7 +8,7 @@
     <div >
         <h2>Create</h2>
 
-        <form method="post" asp-controller="Exercises"  asp-action="Create" class="form-horizontal" enctype="multipart/form-data">
+        <form method="post" asp-controller="AdminExercises"  asp-action="Create" class="form-horizontal" enctype="multipart/form-data">
             
             <div class="form-group">
                 <h4>Exercise</h4>
@@ -33,22 +33,25 @@
                 </p>
                 <p>
                     <div class="form-group">
-                        <label asp-for="MusclesId" class="col-md-2 control-label"></label>
+                        <label asp-for="Muscles" class="col-md-2 control-label"></label>
 
                         <div class="col-md-6">
-                            @if (Model.AllMuscles.Count()!=0)
+                            @if (Model.AllMuscles.Count() != 0)
                             {
                                 int i = 0;
                                 foreach (var muscl in Model.AllMuscles)
                                 {
+                                  
+                                        <input id="@i" type="checkbox" name="musclesIndex" value="@i" />
+                                        <label asp-for="@i">@muscl.Name</label>
 
-
-                                    <input id="@i" type="checkbox" name="@i"  value="true" />
-                                    <label asp-for="@i">@muscl.Name</label>
                                     i++;
-
                                 }
-                            <span asp-validation-for="MusclesId" class="text-danger"/>
+
+                            }
+                                <span asp-validation-for="Muscles" class="text-danger"></span>
+
+                        
                                 }
                             
                         </div>

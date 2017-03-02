@@ -9,7 +9,7 @@
     <div>
         <h2>Edit</h2>
 
-        <form method="post" asp-controller="Exercises" asp-action="Edit" class="form-horizontal" enctype="multipart/form-data">
+        <form method="post" asp-controller="AdminExercises" asp-action="Edit" class="form-horizontal" enctype="multipart/form-data">
 
             <div class="form-group">
                 <h4>Exercise</h4>
@@ -33,26 +33,9 @@
                     </div>
                 </p>
                 <p>
-                <p>
-                    <div class="form-group">
-                        <label asp-for="MusclesId" class="col-md-2 control-label"></label>
-
-                        <div class="col-md-6">
-                            @if (Model.MusclesId != null)
-            {
-                                foreach (var item in Model.MusclesId)
-                                {<div>
-                                @Html.DisplayFor(modelItem => item.Muscle.Name)
-                            </div>
-
-                                }}
-                        </div>
-                    </div>
-                </p>
-                <p>
-                    <div class="form-group">
-                        <label class="col-md-2 control-label">Change to:</label>
-
+             <div class="form-group">
+                       
+                        <label asp-for="Muscles" class="col-md-2 control-label"></label>
                         <div class="col-md-6">
 
                             @if (Model.AllMuscles.Count() != 0)
@@ -60,14 +43,28 @@
                                 int i = 0;
                                 foreach (var muscl in Model.AllMuscles)
                                 {
+                                    bool flag=false;
+                                    foreach (var muscle in ViewBag.muscles)
+                                    {
+                                        if (i.ToString() == muscle)
+                                        {
+
+                                            <input id="@i" type="checkbox" name="muscleIndex" value="@i" checked="checked"/>
+                                            <label asp-for="@i">@muscl.Name</label>
+                                            flag = true;
+                                            break;
+                                        }
 
 
-                                    <input id="@i" type="checkbox" name="@i" value="true" />
+                                    }
+                                    if (flag == false) { 
+                                    <input id="@i" type="checkbox" name="musclesIndex" value="@i" />
                                     <label asp-for="@i">@muscl.Name</label>
+                                    }
                                     i++;
 
                                 }
-                                <span asp-validation-for="MusclesId" class="text-danger" />
+                                <span asp-validation-for="Muscles" class="text-danger" ></span>
                             }
 
                         </div>

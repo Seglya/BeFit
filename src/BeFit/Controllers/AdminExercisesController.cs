@@ -189,7 +189,7 @@ namespace BeFit.Controllers
             try { 
             if (ModelState.IsValid)
             {
-                _groupOfMusclesRepository.DeleteGroupOfMuscle(_groupOfMusclesRepository.GroupsOfMuscles.ToList());
+                _groupOfMusclesRepository.DeleteGroupOfMuscle(_groupOfMusclesRepository.GroupsOfMusclesByExercise(id).ToList());
                 foreach (var i in listId)
                 {
                     var gr = await _groupOfMusclesRepository.NewGroupOfMusclesAsync(id, _muscleRepository.GetMuscleByIndex(i) );
@@ -244,11 +244,6 @@ namespace BeFit.Controllers
             return RedirectToAction("Index");
         }
 
-        private bool ExerciseExists(int id)
-        {
-            return _repository.Exercises.Any(e => e.ExerciseID == id);
-        }
-
-      
+        
     }
 }

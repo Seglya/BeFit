@@ -43,14 +43,9 @@ namespace BeFit.Repositories
 
         public async Task<GroupsOfMuscles> NewGroupOfMusclesAsync(int exerciseId, Muscle muscle)
         {
-            //int t = _context.Muscle.Count();
+            
            int muscleId=muscle.MuscleID;
-//            int i = 0;
-//            foreach (var muscles in _context.Muscle)
-//            {
-//                if (i == muscleIndex)
-//                  muscleId = muscles.MuscleID;
-//i++;}
+
             if(muscleId>0)
             { GroupsOfMuscles newGroupsOfMuscles = new GroupsOfMuscles
                 {

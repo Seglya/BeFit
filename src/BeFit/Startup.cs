@@ -63,6 +63,9 @@ namespace BeFit
             services.AddScoped<IExerciseRepository, ExerciseRepository>();
             services.AddTransient<IMusclesRepository, MuscleRepository>();
             services.AddTransient<IGroupOfMusclesRepository, GroupOfMusclesRepository>();
+            services.AddTransient<IWorkoutRepository, WorkoutRepository>();
+            services.AddTransient<ITagRepository, TagRepository>();
+            services.AddTransient<IFillingWorkoutRepository, FillingWorkoutRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

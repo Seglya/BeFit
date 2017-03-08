@@ -341,6 +341,20 @@ namespace BeFit.Migrations
                     b.ToTable("Subscription");
                 });
 
+            modelBuilder.Entity("BeFit.Models.Tag", b =>
+                {
+                    b.Property<int>("TagID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 15);
+
+                    b.HasKey("TagID");
+
+                    b.ToTable("Tag");
+                });
+
             modelBuilder.Entity("BeFit.Models.Trainer", b =>
                 {
                     b.Property<int>("TrainerID")
@@ -409,9 +423,11 @@ namespace BeFit.Migrations
 
                     b.Property<bool>("PersonWorkout");
 
-                    b.Property<string>("Tag");
+                    b.Property<int>("TagID");
 
                     b.HasKey("WorkoutID");
+
+                    b.HasIndex("TagID");
 
                     b.ToTable("Workout");
                 });
@@ -518,6 +534,14 @@ namespace BeFit.Migrations
                     b.HasOne("BeFit.Models.Food", "Food")
                         .WithMany("WeightsOfFood")
                         .HasForeignKey("FoodID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("BeFit.Models.Workout", b =>
+                {
+                    b.HasOne("BeFit.Models.Tag", "Tag")
+                        .WithMany("Workouts")
+                        .HasForeignKey("TagID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

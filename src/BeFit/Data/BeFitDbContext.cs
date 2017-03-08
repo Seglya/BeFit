@@ -37,6 +37,7 @@ namespace BeFit.Data
         public DbSet<MeasurementOnDate> MeasurementOnDate { get; set; }
         public DbSet<OneDayFood> OneDayFood { get; set; }
         public DbSet<OneDayWorkout> OneDayWorkout { get; set; }
+        public DbSet<Tag> Tag { get; set; }
         public DbSet<WeightOfFood> WeightOfFood { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -58,6 +59,7 @@ namespace BeFit.Data
             builder.Entity<OneDayWorkout>().ToTable("OneDayWorkout");
             builder.Entity<Service>().ToTable("Service");
             builder.Entity<Subscription>().ToTable("Subscription");
+            builder.Entity<Tag>().ToTable("Tag");
             builder.Entity<Trainer>().ToTable("Trainer");
             builder.Entity<TrainersServices>().ToTable("TrainersServices");
             builder.Entity<WeightOfFood>().ToTable("WeightOfFood");

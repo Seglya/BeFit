@@ -1,0 +1,94 @@
+@model PagerList<BeFit.Models.Workout>
+@using BeFit.Models
+
+
+@{
+    ViewData["Title"] = "List";
+}
+<style>
+    .in-block {
+       
+        display: inline-block;
+       height: 100px;
+        width: 360px; /* Ширина */
+    margin: 0 10px 10px 0; /* Отступы */
+    padding: 10px 0; /* Поля сверху и снизу */
+        vertical-align: top;
+    }
+    .in-block img{ 
+        border: black;
+        height: 200px;
+        max-width: 250px;
+         
+                    
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Workouts</h2>
+
+                <form asp-action="List" Method="get">
+                    <div class="form-actions no-color">
+                        <div class="form-group">
+                            <div class="form-group col-md-4">
+                                <label>Search: </label>
+                                <input type="text" name="filter" value="@ViewData["currentFilter"]" />
+                                <input type="submit" value="search" class="btn-default" />
+                                
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label>Sort by</label>
+                                <a asp-action="List" asp-route-filterTag="@ViewData["FilterTagParam"]" asp-route-sortOrder="@ViewBag.NameSortParam"
+                                   asp-route-currentFilter="@ViewData["currentFilter"]">Name</a>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="check">Filter by tag</label>
+                                <select id="check" name="filterTag" >
+                                    <option value="">All tags</option>
+                                    @{List<Tag> t = (List<Tag>) @ViewData["AllTags"];
+                                        foreach (var i in t)
+                                        {
+                                            <option value="@i.Name">@i.Name</option>
+                                        }
+                                    }
+                                   
+                                </select><input type="submit" value="filter" class="btn-default" />
+    </div>
+                            <div class="form-group col-md-offset-3 text-right">
+                                <a asp-action="List" asp-route-pageSize="12"> 12 </a>
+                                <label> | </label>
+                                <a asp-action="List" asp-route-pageSize="24"> 24 </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            
+               
+               <hr/>
+                   @foreach (var item in Model)
+                   {
+                    <div class="in-block">
+                        <div class="well"><a asp-controller="AdminWorkout" asp-action="Details" asp-route-id="@item.WorkoutID"><strong>@item.Name</strong></a>
+                            <div>
+                                @Html.DisplayFor(modelItem => item.Tag.Name)
+                            </div>
+                           
+                        </div>
+
+                    </div>
+                   }
+
+
+            </div>
+        </div>
+    </div>
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    }<a asp-action="List">Back to full list</a><br/>
+    <a asp-action="List" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex-1)" asp-route-pageSize="@ViewData["SizePage"]" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @prevDisabled btn">Previous</a>
+    <a asp-action="List" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex+1)" asp-route-pageSize="@ViewData["SizePage"]" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @nextDisabled btn">Next</a>
+
+</div>

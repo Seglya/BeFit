@@ -1,0 +1,64 @@
+﻿@using System.Collections
+@model BeFit.Models.Workout
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.Name)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Name)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Description)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Description)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Tag)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Tag.Name)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Exercises)
+    </dt>
+
+    <dd>
+        @if (Model.Exercises != null)
+        {
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Sets</th>
+                    <th>Repeat</th>
+                </tr>
+
+                @foreach (var item in Model.Exercises)
+                {
+                    <tr>
+                        <td>
+                            <a asp-action="Details" asp-controller="AdminExercises" asp-route-id="@item.ExerciseID"> @Html.DisplayFor(modelItem => item.Exercise.Name)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Sets)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RepeatMin)-
+                            @Html.DisplayFor(modelItem => item.RepeatMax)
+                        </td>
+                    </tr>
+
+                }
+
+
+            </table>}
+    </dd>
+
+
+</dl>
+
+
+
+
+

@@ -1,0 +1,126 @@
+﻿@using System.Collections
+@model ICollection<Exercise>
+
+<strong class="col-sm-2 control-label">Add exercise</strong>
+
+@if (@ViewData["chosenExerises[]"] != null)
+{
+    string[] exe = (string[])ViewData["chosenExerises[]"];
+    string[] setes = (string[])ViewData["inputSets[]"];
+    string[] minimum = (string[])ViewData["inputMinRep[]"];
+    string[] maximum = (string[])ViewData["inputMaxRep[]"];
+    for (int i = 0; i < exe.Length; i++)
+    {
+
+        <div class="form-group removeclass @i">
+            @if (i != 0)
+            {
+            <div class="col-md-2 "></div>
+            }
+
+            <div class="form-group">
+                <div class="col-md-2 ">
+
+                    <div class="form-group">
+                        <select name="Exercises[]"  class="form-control">
+
+                            @foreach (var ex in Model)
+                            {
+                                if (ex.Name == exe[i])
+                                {
+                                    <option name="2" selected="selected" value="@ex.Name">@ex.Name</option>}
+                                else
+                                {
+                                    <option name="2" value="@ex.Name">@ex.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-1 nopadding">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="Sets[]" value="@setes[i]" placeholder="Counts of sets...">
+
+                    </div>
+                </div>
+                <div class="col-sm-1 nopadding">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="MinRep[]" value="@minimum[i]" placeholder="Min repeats...">
+
+                    </div>
+                </div>
+                <div class="col-sm-1 nopadding">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="MaxRep[]" value="@maximum[i]" placeholder="Max rep...">
+
+                            <span class="input-group-btn">
+
+                                @if (i == 0)
+                                {
+                                    <button class="btn btn-success" type="button" onclick="education_fields();"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-danger" type="button" onclick="remove_education_fields(@i);"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </button>
+                                }
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+<div class="form-group">
+    <div class="col-md-2 ">
+
+        <div class="form-group">
+            <select name="Exercises[]" class="form-control">
+
+                @foreach (var ex in Model)
+            {
+
+                    <option name="2" value="@ex.Name">@ex.Name</option>
+                }
+            </select>
+        </div>
+
+    </div>
+
+    <div class="col-sm-1 nopadding">
+        <div class="form-group">
+            <input type="text" class="form-control" name="Sets[]" value="" placeholder="Counts of sets...">
+
+        </div>
+    </div>
+    <div class="col-sm-1 nopadding">
+        <div class="form-group">
+            <input type="text" class="form-control" name="MinRep[]" value="" placeholder="Min repeats...">
+
+        </div>
+    </div>
+    <div class="col-sm-1 nopadding">
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" class="form-control" name="MaxRep[]" value="" placeholder="Max rep...">
+
+                <span class="input-group-btn">
+
+
+                    <button class="btn btn-success" type="button" onclick="education_fields();"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>}<p>
+    <div id="FillingWorkout_fields">
+    </div>
+</p>
+<div class="clear"></div>
+
+

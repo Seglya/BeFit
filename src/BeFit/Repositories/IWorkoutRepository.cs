@@ -43,8 +43,8 @@ namespace BeFit.Repositories
         public IEnumerable<Workout> WorkoutsByFilter(string filter)
         {
             if (filter != null)
-                return _context.Workout.Where(s => s.Name.Contains(filter)).AsNoTracking();
-            return _context.Workout.AsNoTracking();
+                return _context.Workout.Where(s => s.Name.Contains(filter)).Include(t=>t.Exercises).ThenInclude(e=>e.Exercise).Include(t=>t.Tag).AsNoTracking();
+            return _context.Workout.Include(t => t.Exercises).ThenInclude(e => e.Exercise).Include(t => t.Tag).AsNoTracking();
         }
         public async Task<Workout> GetWorkoutAsync(int? id)
         {

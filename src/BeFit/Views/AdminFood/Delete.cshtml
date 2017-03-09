@@ -1,0 +1,41 @@
+@model BeFit.Models.FoodViewModels.FoodViewModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Food</h4>
+    <hr />
+    <div class="form-group">
+        <label asp-for="Name" class="col-md-2 control-label"></label>
+        <label>@Model.Name</label>
+    </div>
+    <div class="form-group">
+        <label asp-for="Calories" class="col-md-2 control-label"></label>
+        <label>@Model.Calories</label>
+    </div>
+    <div class="form-group">
+        <label asp-for="Protein" class="col-md-2 control-label"></label>
+        <label>@Model.Protein</label>
+        </div>
+    
+    <div class="form-group">
+        <label asp-for="Fat" class="col-md-2 control-label"></label>
+        <label>@Model.Fat</label>
+    </div>
+    <div class="form-group">
+        <label asp-for="Carbohydrate" class="col-md-2 control-label"></label>
+        <label>@Model.Carbohydrate</label>
+    </div>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>

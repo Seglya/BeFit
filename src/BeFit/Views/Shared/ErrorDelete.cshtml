@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+
+<h3>Reason</h3>
+<p>
+    <strong>You can't delete this object while it has connection to another objects!!! First clean all connections and then try again.</strong>
+</p>
+<a asp-controller="Admin" asp-action="index" class="btn-danger">Back to Admin menu</a>

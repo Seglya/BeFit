@@ -15,7 +15,7 @@ namespace BeFit.Repositories
         IEnumerable<Workout> Workouts { get; }
         IEnumerable<Workout> WorkoutsByFilter(string filter);
         Task<Workout> GetWorkoutAsync(int? id);
-        Task<int> SaveWorkoutAsync(WorkoutViewModel viewModel, int id);
+        int SaveWorkoutAsync(WorkoutViewModel viewModel, int id);
         bool DeleteWorkout(int id);
 
     }
@@ -55,7 +55,7 @@ namespace BeFit.Repositories
                     
                     .SingleOrDefaultAsync(m => m.WorkoutID == id);
         }
-        public async Task<int> SaveWorkoutAsync(WorkoutViewModel viewModel, int id = 0)
+        public int SaveWorkoutAsync(WorkoutViewModel viewModel, int id = 0)
         {
             var workout = new Workout();
             if (id != 0)

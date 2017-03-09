@@ -186,13 +186,9 @@ namespace BeFit.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    int t = 1;
-                    foreach (var tag in _tagRepository.Tags)
-                    {
-                        if (t == int.Parse(tagIndex))
-                            viewModel.TagId = tag.TagID;
-                        t++;
-                    }
+                    viewModel.TagId = int.Parse(tagIndex);
+                        
+                   
                     ViewData["Title"] = "Create";
                     if (id != 0)
                     {
@@ -201,7 +197,7 @@ namespace BeFit.Controllers
                     
                     _fillingWorkoutRepository.DeleteFillingWorkout(workEx);
                 }
-                var saving = await _workoutRepository.SaveWorkoutAsync(viewModel, id);
+                var saving =  _workoutRepository.SaveWorkoutAsync(viewModel, id);
                     for (int i = 0; i < Exercises.Length; i++)
                     {
                        

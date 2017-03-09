@@ -14,9 +14,8 @@ namespace BeFit.Repositories
         IEnumerable<Tag> Tags { get; }
         Task<Tag> SaveTagAsync( string name,int id);
         IEnumerable<Tag> TagByFilter(string filter);
+        void  DeleteTag(int id);
         Task<Tag> GetTagAsync(int id);
-       void  DeleteTag(int id);
-        
     }
 
     public class TagRepository:ITagRepository

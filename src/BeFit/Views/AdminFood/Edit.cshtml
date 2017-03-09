@@ -1,0 +1,67 @@
+﻿@model BeFit.Models.FoodViewModels.FoodViewModel
+
+
+
+<div class="container">
+    <div>
+        <h2>@ViewData["Title"]</h2>
+
+        <form method="post"  asp-action="Edit" class="form-horizontal" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <h4>Food</h4>
+                <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="col-md-2 control-label"></label>
+                    <div class="col-md-5">
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Calories" class="col-md-2 control-label"></label>
+                    <div class="col-md-5">
+                        <input asp-for="Calories" class="form-control" />
+                        <span asp-validation-for="Calories" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Protein" class="col-md-2 control-label"></label>
+                    <div class="col-md-5">
+                        <input asp-for="Protein" class="form-control" />
+                        <span asp-validation-for="Protein" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Fat" class="col-md-2 control-label"></label>
+                    <div class="col-md-5">
+                        <input asp-for="Fat" class="form-control" />
+                        <span asp-validation-for="Fat" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Carbohydrate" class="col-md-2 control-label"></label>
+                    <div class="col-md-5">
+                        <input asp-for="Carbohydrate" class="form-control" />
+                        <span asp-validation-for="Carbohydrate" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <div class="col-md-3"></div>
+                <input type="submit" value="Save" class="btn btn-default "/>|
+                <a asp-action="Index" class="btn-danger">Back to List</a>
+            </div>
+        </form>
+
+        
+            
+       
+    </div>
+</div>
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -122,7 +122,7 @@ namespace BeFit.Controllers
             if (muscle.GroupsOfMuscles.Count != 0)
                 return View("ErrorDelete");
 
-            return View(muscle);
+            return View(new TagViewModel {Name = muscle.Name});
         }
 
         // POST: Exercises/Delete/5

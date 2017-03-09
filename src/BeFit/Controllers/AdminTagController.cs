@@ -124,7 +124,7 @@ namespace BeFit.Controllers
             if (tag.Workouts.Count!=0)
                 return View("ErrorDelete");
 
-            return View(tag);
+            return View(new TagViewModel {Name = tag.Name});
         }
 
         // POST: Exercises/Delete/5

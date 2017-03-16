@@ -22,7 +22,7 @@ namespace BeFit.Controllers
         public AdminExercisesController(IExerciseRepository repository, IHostingEnvironment hostingEvironment,
             IMusclesRepository muscleRepository, IGroupOfMusclesRepository groupOfMusclesRepository)
         {
-            // _context = context;
+            
             _repository = repository;
             _hostingEnvironment = hostingEvironment;
             _muscleRepository = muscleRepository;

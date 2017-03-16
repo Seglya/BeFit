@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
-namespace BeFit.Models
+namespace BeFit.Models.UserProfileViewModels
 {
-    public class AppUser
+    public class UserProfileViewModel
     {
-       public int AppUserID { get; set; }
         [Required]
         [RegularExpression(@"^[A-Z]+[a-zA-Z\-\s]*$")]
         [StringLength(50, ErrorMessage = "First Name can't be longer than 50 characters!")]
@@ -19,10 +20,12 @@ namespace BeFit.Models
         [StringLength(50, ErrorMessage = "Second Name can't be longer than 50 characters!")]
         [Display(Name = "Second Name")]
         public string SecondName { get; set; } //Фамилия пользователя
+        [Required]
+
         public string Sex { get; set; }//Пол пользователя
-        [RegularExpression(@"(\.+[(jpeg)(jpg)])$", ErrorMessage = "Invalid format of image. Extation must be .jpg or jpeg")]
         public string ImageName { set; get; } //Имя Изображения
         public string ImagePath { set; get; } // Месторасположение изображения 
+        public IFormFile ImageFile { get; set; }//Изображение
         [Required]
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }//Дата рождения
@@ -30,11 +33,19 @@ namespace BeFit.Models
         [DataType(DataType.Date)]
         public DateTime DateOfRegoistration { get; set; }//Дата ренистрации
         [Display(Name = "Full Name")]
-       public double Goal { get; set; } //цель в кг
+        public string FullName
+        {
+            get
+            {
+                return SecondName + ", " + FirstName;
+            }
+        }
+        [Range(30,300)]
+        public double Goal { get; set; } //цель в кг
         public int WeeksForGoal { get; set; } // срок достижения цели
-        public int CurrentWeight { get; set; }
-        public ICollection<OneDayFood> Food { get; set; }
-        public ICollection<OneDayWorkout> Workouts { get; set; }
-        public ICollection<MeasurementOnDate> Measurements { get; set; }
+        [Range(30,300)]
+        public int CurrentWeight { get; set; }//Текуший вес
+
+       
     }
 }

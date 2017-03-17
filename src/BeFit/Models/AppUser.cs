@@ -9,6 +9,7 @@ namespace BeFit.Models
     public class AppUser
     {
        public int AppUserID { get; set; }
+        public string Key { get; set; }
         [Required]
         [RegularExpression(@"^[A-Z]+[a-zA-Z\-\s]*$")]
         [StringLength(50, ErrorMessage = "First Name can't be longer than 50 characters!")]

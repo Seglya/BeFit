@@ -14,8 +14,9 @@ namespace BeFit.Repositories
     public interface IAppUserRepository
     {
        IEnumerable<AppUser> UsersProfile { get; }
-        Task<AppUser> SaveUserProfileAsync(string key, UserProfileViewModel viewModel,int? id);
+        Task<AppUser> SaveUserProfileAsync(string key, UserProfileViewModel viewModel);
         Task<AppUser> GetUserProfileById(int id);
+        Task<AppUser> GetUserByKeyAsync(string key);
     }
 
     public class AppUserRepository : IAppUserRepository
@@ -40,25 +41,58 @@ namespace BeFit.Repositories
             return null;
         }
 
-        public async Task<AppUser> SaveUserProfileAsync(string key, UserProfileViewModel viewModel, int? id)
+        public async Task<AppUser> SaveUserProfileAsync(string key, UserProfileViewModel viewModel)
         {
-            if (key == null & (id == null || id == 0))
+            if (key == null)
             {
                 return null;
             }
-            else if (key != null & id > 0)
+            if (viewModel == null)
             {
                 return null;
             }
-            if(viewModel==null)
+            AppUser user = await GetUserByKeyAsync(key);
+            if (user == default(AppUser))
             {
-                return null;
-            }
-            
-            
-            return 
 
+                await _context.AppUser.AddAsync(new AppUser
+                {
+                    FirstName = viewModel.FirstName,
+                    SecondName = viewModel.SecondName,
+                    DateOfBirth = viewModel.DateOfBirth,
+                    DateOfRegoistration = DateTime.Now,
+                    Key = key,
+                    Sex = viewModel.Sex,
+                    CurrentWeight = viewModel.CurrentWeight,
+                    Goal = viewModel.Goal,
+                    WeeksForGoal = viewModel.WeeksForGoal,
+                    ImageName = viewModel.ImageName,
+                    ImagePath = viewModel.ImagePath
 
+                });
+              
+                
+
+            }
+            else
+            {
+                user.FirstName = viewModel.FirstName;
+                user.SecondName = viewModel.SecondName;
+                user.DateOfBirth = viewModel.DateOfBirth;
+                user.Sex = viewModel.Sex;
+                user.CurrentWeight = viewModel.CurrentWeight;
+                user.Goal = viewModel.Goal;
+                user.WeeksForGoal = viewModel.WeeksForGoal;
+                user.ImageName = viewModel.ImageName;
+                user.ImagePath = viewModel.ImagePath;
+             } await _context.SaveChangesAsync();
+            return await GetUserByKeyAsync(key); 
+
+        }
+
+        public async Task<AppUser> GetUserByKeyAsync(string key)
+        {
+            return await _context.AppUser.Where(k => k.Key.Contains(key)).SingleOrDefaultAsync();
         }
     }
 

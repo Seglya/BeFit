@@ -1,10 +1,23 @@
 ﻿@model BeFit.Models.UserProfileViewModels.UserProfileViewModel
-@{
-    ViewData["Title"] = "New User";
-}
+
+<header>
+    <script >
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $("#img").attr("src", e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</header>
 <div class="container">
     <h2>@ViewData["Title"].</h2>
-    <form  asp-action="NewUser" method="post" class="form-horizontal">
+    <form  asp-action="NewUser" method="post" class="form-horizontal" enctype="multipart/form-data">
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
@@ -62,14 +75,17 @@
         <div class="form-group ">
             <label class="col-md-2 control-label">Upload image</label>
             <div class="col-md-6">
-                <input type="file" name="ImageFile" />
+                <img id="img" src="@Url.Content(Model.ImagePath)" height="100px" alt="photo"/>
+                <input type="file" name="IFile" onchange="readURL(this);"/>
+                <span asp-validation-for="IFile" class="text-danger"></span>
 
             </div>
 
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default"/>
+               
+                <input  type="submit" value="Save" class="btn btn-default"/>
             </div>
         </div>
     </form>

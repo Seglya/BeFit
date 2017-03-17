@@ -25,13 +25,13 @@ namespace BeFit.Models.UserProfileViewModels
         public string Sex { get; set; }//Пол пользователя
         public string ImageName { set; get; } //Имя Изображения
         public string ImagePath { set; get; } // Месторасположение изображения 
-        public IFormFile ImageFile { get; set; }//Изображение
+        [DataType(DataType.Upload)]
+      public IFormFile IFile { get; set; }//Изображение
         [Required]
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }//Дата рождения
-        [Required]
         [DataType(DataType.Date)]
-        public DateTime DateOfRegoistration { get; set; }//Дата ренистрации
+        public DateTime DateOfRegisrtration{ get; set; }//Дата рождения
         [Display(Name = "Full Name")]
         public string FullName
         {

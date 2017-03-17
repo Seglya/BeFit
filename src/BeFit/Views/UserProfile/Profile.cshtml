@@ -1,0 +1,73 @@
+﻿@using System.IO
+@using System.Text
+@using BundlerMinifier
+@model BeFit.Models.UserProfileViewModels.UserProfileViewModel
+  @{  ViewData["Title"] = "Profile";
+  }
+
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+    <form  id="form" asp-action="Edit" enctype="multipart/form-data" method="get" class="form-horizontal" >
+        <div id="img">
+           
+       <img alt="photo" src="@Url.Content(Model.ImagePath)"/>
+   </div>
+      <div class="form-group">
+            <label asp-for="FirstName" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+                <label   >@Model.FirstName</label>
+             
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SecondName" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+                <label>@Model.SecondName</label>
+            </div></div>
+        <div class="form-group">
+            <label asp-for="Sex" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+                <label >@Model.Sex</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateOfBirth" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+                <label >@Model.DateOfBirth.Date.Date</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateOfRegisrtration" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+                <label >@Model.DateOfRegisrtration.Date</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CurrentWeight" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+                <label >@Model.CurrentWeight</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Goal" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+                <label >@Model.Goal</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="WeeksForGoal" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+                <label class="text-nowrap" >@Model.WeeksForGoal</label>
+            </div>
+        </div>
+       
+      
+    </form>
+    <a asp-action="Edit" >Edit</a> 
+   
+</div>
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+
+

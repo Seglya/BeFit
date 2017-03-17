@@ -128,6 +128,7 @@ namespace BeFit.Data.Migrations
             modelBuilder.Entity("BeFit.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id");
+                    
 
                     b.Property<int>("AccessFailedCount");
 

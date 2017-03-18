@@ -1,4 +1,4 @@
-﻿@model PagerList<Food>
+﻿@model PagerList<Measurement>
 @{
     ViewData["Title"] = "Index";
 }
@@ -9,7 +9,7 @@
     <div class="row">
         <div class="row">
             <div class="col-md-12">
-                <h2>Administration Food</h2>
+                <h2>Administration Measurement</h2>
                 <p>
                     <a asp-action="Edit">Create New</a>
                 </p>
@@ -36,20 +36,8 @@
                                    asp-route-currentFilter="@ViewData["currentFilter"]">Name</a>
 
                             </th>
-                            <th class="col-md-2"> <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewBag.CalSortParam"
-                                                     asp-route-currentFilter="@ViewData["currentFilter"]">Cal</a></th>
-                            <th class="col-md-2">
-                                <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewBag.ProtSortParam"
-                                   asp-route-currentFilter="@ViewData["currentFilter"]">Protein</a>
-                            </th>
-                            <th class="col-md-2">
-                                <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewBag.FatSortParam"
-                                   asp-route-currentFilter="@ViewData["currentFilter"]">Fat</a>
-                            </th>
-                            <th class="col-md-2">
-                                <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewBag.CarbSortParam"
-                                   asp-route-currentFilter="@ViewData["currentFilter"]">Carbohydrate</a>
-                            </th>
+                            <th class="col-md-2">Units</th>
+                          
                             <th class="col-md-2"></th>
 </tr>
                     </thead>
@@ -62,20 +50,12 @@
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </td>
                                 <td class="col-md-2">
-                                    @Html.DisplayFor(modelItem => item.Calories)
+                                    @Html.DisplayFor(modelItem => item.UnitsOfMeasurement)
                                 </td>
+                              
                                 <td class="col-md-2">
-                                    @Html.DisplayFor(modelItem => item.Protein)
-                                </td>
-                                <td class="col-md-2">
-                                    @Html.DisplayFor(modelItem => item.Fat)
-                                </td>
-                                <td class="col-md-2">
-                                    @Html.DisplayFor(modelItem => item.Carbohydrate)
-                                </td>
-                                <td class="col-md-2">
-                                    <a asp-action="Edit" asp-route-id="@item.FoodID">Edit</a> |
-                                    <a asp-action="Delete" asp-route-id="@item.FoodID">Delete</a>
+                                    <a asp-action="Edit" asp-route-id="@item.MeasurementID">Edit</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.MeasurementID">Delete</a>
                                 </td>
                             </tr>
                         }
@@ -88,7 +68,7 @@
         var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
         var nextDisabled = !Model.HasNextPage ? "disabled" : "";
     }
-    <a asp-action="Index" as asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex-1)" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @prevDisabled btn">Previous</a>
+    <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex-1)" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @prevDisabled btn">Previous</a>
     <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex+1)" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @nextDisabled btn">Next</a>
 
 </div>

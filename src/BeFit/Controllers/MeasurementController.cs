@@ -11,7 +11,7 @@ namespace BeFit.Controllers
     public class MeasurementController : Controller
     {
         // GET: /<controller>/
-        public IActionResult Index()
+        public IActionResult AddMeasurement()
         {
             return View();
         }

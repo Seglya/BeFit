@@ -1,0 +1,47 @@
+﻿@model BeFit.Models.MeasurementViewModels.MeasurementViewModel
+
+
+
+<div class="container">
+    <div>
+        <h2>@ViewData["Title"]</h2>
+
+        <form method="post"  asp-action="Edit" class="form-horizontal" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <h4>Measurement</h4>
+                <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="col-md-2 control-label"></label>
+                    <div class="col-md-5">
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UnitsOfMeasurement" class="col-md-2 control-label"></label>
+                    <div class="col-md-5">
+                        <input asp-for="UnitsOfMeasurement" class="form-control" />
+                        <span asp-validation-for="UnitsOfMeasurement" class="text-danger"></span>
+                    </div>
+                </div>
+              
+            </div>
+            <div class="form-group col-md-12">
+                <div class="col-md-3"></div>
+                <input type="submit" value="Save" class="btn btn-default "/>|
+                <a asp-action="Index" class="btn-danger">Back to List</a>
+            </div>
+        </form>
+
+        
+            
+       
+    </div>
+</div>
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

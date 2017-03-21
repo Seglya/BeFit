@@ -1,0 +1,38 @@
+@model List<BeFit.Models.UserProfileViewModels.AddMeasurementViewModel>
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Measurement</h4>
+    <hr /><form asp-action="Delete">
+    <div class="form-group">
+        <label asp-for="@Model[0].Date" class="col-md-2 control-label"></label>
+        <label>"@Model[0].Date"</label>
+    </div>
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <div class="form-group">
+            <label class="col-md-2 control-label">@Model[i].Measurement.Name</label>
+            <div class="col-md-6">
+                <input asp-for="@Model[i].ID" value="@Model[i].ID" class="hidden" /><input asp-for="@Model[i].AppUserID" value="@Model[i].AppUserID" class="hidden" />
+                <label class="col-md-2 control-label">@Model[i].PutMesurement</label>
+
+                <span asp-validation-for="@Model[i].PutMesurement"></span>
+            </div>
+            <label class="control-label">@Model[i].Measurement.UnitsOfMeasurement</label>
+        </div>
+
+    }
+
+
+    <div class="form-actions no-color">
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Detail" asp-route-id="@Model[0].AppUserID">Back to Measurements</a>
+    </div>
+</form>
+</div>

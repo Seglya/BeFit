@@ -8,9 +8,10 @@ using BeFit.Data;
 namespace BeFit.Migrations
 {
     [DbContext(typeof(BeFitDbContext))]
-    partial class BeFitDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170316020509_AddKey")]
+    partial class AddKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")
@@ -117,19 +118,17 @@ namespace BeFit.Migrations
                     b.Property<int>("FillMeasurementID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AppUserID");
-
-                    b.Property<DateTime>("Date");
-
                     b.Property<int>("MeasurementID");
+
+                    b.Property<int>("MeasurementOnDateID");
 
                     b.Property<double>("PutMesurement");
 
                     b.HasKey("FillMeasurementID");
 
-                    b.HasIndex("AppUserID");
-
                     b.HasIndex("MeasurementID");
+
+                    b.HasIndex("MeasurementOnDateID");
 
                     b.ToTable("FillMeasurement");
                 });
@@ -206,6 +205,22 @@ namespace BeFit.Migrations
                     b.HasKey("MeasurementID");
 
                     b.ToTable("Measurement");
+                });
+
+            modelBuilder.Entity("BeFit.Models.MeasurementOnDate", b =>
+                {
+                    b.Property<int>("MeasurementOnDateID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AppUserID");
+
+                    b.Property<DateTime>("Date");
+
+                    b.HasKey("MeasurementOnDateID");
+
+                    b.HasIndex("AppUserID");
+
+                    b.ToTable("MeasurementOnDate");
                 });
 
             modelBuilder.Entity("BeFit.Models.Muscle", b =>
@@ -439,14 +454,14 @@ namespace BeFit.Migrations
 
             modelBuilder.Entity("BeFit.Models.FillMeasurement", b =>
                 {
-                    b.HasOne("BeFit.Models.AppUser", "AppUser")
-                        .WithMany("Measurements")
-                        .HasForeignKey("AppUserID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("BeFit.Models.Measurement", "Measurement")
                         .WithMany()
                         .HasForeignKey("MeasurementID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("BeFit.Models.MeasurementOnDate", "MeasurementOnDate")
+                        .WithMany("Measuarements")
+                        .HasForeignKey("MeasurementOnDateID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -473,6 +488,14 @@ namespace BeFit.Migrations
                     b.HasOne("BeFit.Models.WeightOfFood", "WeightOfFood")
                         .WithMany()
                         .HasForeignKey("WeightOfFoodID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("BeFit.Models.MeasurementOnDate", b =>
+                {
+                    b.HasOne("BeFit.Models.AppUser", "AppUser")
+                        .WithMany("Measurements")
+                        .HasForeignKey("AppUserID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

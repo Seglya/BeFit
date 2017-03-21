@@ -21,12 +21,17 @@
                         <input type="submit" value="search" class="btn-default"/>
                         <a asp-action="Index" >Back to full list</a>
                     </div>
+                    <div class="pull-right">
+                        <a asp-action="Index" asp-route-pageSize="12"> 12 </a>
+                        <label> | </label>
+                        <a asp-action="Index" asp-route-pageSize="24"> 24  </a>
+                    </div>
                 </form>
                 <table class="table" >
                     <thead>
                     <tr>
 
-                        <th><a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSortParam" 
+                        <th><a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewBag.NameSortParam" 
                                asp-route-currentFilter="@ViewData["currentFilter"]">Name</a>
                                 
                         </th>
@@ -57,7 +62,7 @@
         var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
         var nextDisabled = !Model.HasNextPage ? "disabled" : "";
     }
-    <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex-1)" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @prevDisabled btn">Previous</a>
-    <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex+1)" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @nextDisabled btn">Next</a>
+    <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex-1)" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @prevDisabled btn">Previous</a>
+    <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex+1)" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @nextDisabled btn">Next</a>
 
 </div>

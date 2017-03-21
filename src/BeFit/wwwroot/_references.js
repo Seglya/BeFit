@@ -1,6 +1,6 @@
 ﻿/// <autosync enabled="true" />
-/// <reference path="js/combobox.js" />
 /// <reference path="js/newfield.js" />
+/// <reference path="js/preview.js" />
 /// <reference path="js/site.js" />
 /// <reference path="lib/bootstrap/dist/js/bootstrap.js" />
 /// <reference path="lib/jquery/dist/jquery.js" />

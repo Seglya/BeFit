@@ -22,7 +22,7 @@ namespace BeFit.Controllers
         public AdminExercisesController(IExerciseRepository repository, IHostingEnvironment hostingEvironment,
             IMusclesRepository muscleRepository, IGroupOfMusclesRepository groupOfMusclesRepository)
         {
-            // _context = context;
+            
             _repository = repository;
             _hostingEnvironment = hostingEvironment;
             _muscleRepository = muscleRepository;
@@ -30,10 +30,21 @@ namespace BeFit.Controllers
         }
 
         // GET: Exercises
-        public IActionResult Index(string sortOrder, string filter, string currentFilter, int? page)
+        public IActionResult Index(string sortOrder,string pageSize, string filter, string currentFilter, int? page)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            if (!string.IsNullOrEmpty(pageSize))
+                ViewData["SizePage"] = pageSize;
+            else if (string.IsNullOrEmpty(pageSize) & string.IsNullOrEmpty((string)ViewData["SizePage"]))
+            {
+                pageSize = (string)ViewData["SizePage"];
+            }
+
+
+            int sizeOfPage;
+            if (int.TryParse(pageSize, out sizeOfPage) == false)
+                sizeOfPage = 12;
             if (filter != null)
             {
                 page = 1;
@@ -50,8 +61,7 @@ namespace BeFit.Controllers
                     break;
                 default: collExercises=collExercises.OrderBy(s => s.Name);break;
             }
-            int pageSize = 6;
-            return View(PagerList<Exercise>.Create(collExercises, page ?? 1, pageSize));
+            return View(PagerList<Exercise>.Create(collExercises, page ?? 1, sizeOfPage));
         }
 
         //GET: Exercises/Details/5

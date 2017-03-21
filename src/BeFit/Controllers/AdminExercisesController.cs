@@ -12,17 +12,16 @@ namespace BeFit.Controllers
 {
     public class AdminExercisesController : Controller
     {
-        // private readonly BeFitDbContext _context;
-        private readonly IExerciseRepository _repository;
+        private readonly IGroupOfMusclesRepository _groupOfMusclesRepository;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IMusclesRepository _muscleRepository;
-        private readonly IGroupOfMusclesRepository _groupOfMusclesRepository;
+        // private readonly BeFitDbContext _context;
+        private readonly IExerciseRepository _repository;
 
 
         public AdminExercisesController(IExerciseRepository repository, IHostingEnvironment hostingEvironment,
             IMusclesRepository muscleRepository, IGroupOfMusclesRepository groupOfMusclesRepository)
         {
-            
             _repository = repository;
             _hostingEnvironment = hostingEvironment;
             _muscleRepository = muscleRepository;
@@ -30,36 +29,34 @@ namespace BeFit.Controllers
         }
 
         // GET: Exercises
-        public IActionResult Index(string sortOrder,string pageSize, string filter, string currentFilter, int? page)
+        public IActionResult Index(string sortOrder, string pageSize, string filter, string currentFilter, int? page)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             if (!string.IsNullOrEmpty(pageSize))
                 ViewData["SizePage"] = pageSize;
-            else if (string.IsNullOrEmpty(pageSize) & string.IsNullOrEmpty((string)ViewData["SizePage"]))
-            {
-                pageSize = (string)ViewData["SizePage"];
-            }
+            else if (string.IsNullOrEmpty(pageSize) & string.IsNullOrEmpty((string) ViewData["SizePage"]))
+                pageSize = (string) ViewData["SizePage"];
 
 
             int sizeOfPage;
             if (int.TryParse(pageSize, out sizeOfPage) == false)
                 sizeOfPage = 12;
             if (filter != null)
-            {
                 page = 1;
-            }
             else
-            {
                 filter = currentFilter;
-            }ViewData["CurrentFilter"] = filter;
+            ViewData["CurrentFilter"] = filter;
             var collExercises = _repository.ExercisesByFilter(filter);
 
             switch (sortOrder)
             {
-                case "name_desc": collExercises=collExercises.OrderByDescending(s => s.Name);
+                case "name_desc":
+                    collExercises = collExercises.OrderByDescending(s => s.Name);
                     break;
-                default: collExercises=collExercises.OrderBy(s => s.Name);break;
+                default:
+                    collExercises = collExercises.OrderBy(s => s.Name);
+                    break;
             }
             return View(PagerList<Exercise>.Create(collExercises, page ?? 1, sizeOfPage));
         }
@@ -73,7 +70,7 @@ namespace BeFit.Controllers
             var exercise = await _repository.GetExerciseAsync(id);
             if (exercise == null)
                 return NotFound();
-         return View(exercise);
+            return View(exercise);
         }
 
         public async Task<FileContentResult> GetImageAsync(int id)
@@ -100,9 +97,8 @@ namespace BeFit.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateExerciseViewModel viewModel, string [] musclesIndex)
+        public async Task<IActionResult> Create(CreateExerciseViewModel viewModel, string[] musclesIndex)
         {
-           
             if (_repository.GetExercise(viewModel.Name) != null)
                 ModelState.AddModelError("", "Exercise with this name already exist!!!");
 
@@ -116,29 +112,31 @@ namespace BeFit.Controllers
             }
             if (listId.Count == 0)
                 ModelState.AddModelError("", "Choose at least one group of muscle");
-            try { 
-            if (ModelState.IsValid)
+            try
             {
-                var saving = await _repository.SaveExerciseAsync(viewModel, 0);
-                if (saving != 0)
+                if (ModelState.IsValid)
                 {
-                    foreach (var i in listId)
+                    var saving = await _repository.SaveExerciseAsync(viewModel, 0);
+                    if (saving != 0)
                     {
-                        var gr = await _groupOfMusclesRepository.NewGroupOfMusclesAsync(saving, _muscleRepository.GetMuscleByIndex(i));
+                        foreach (var i in listId)
+                        {
+                            var gr = await _groupOfMusclesRepository.NewGroupOfMusclesAsync(saving,
+                                _muscleRepository.GetMuscleByIndex(i));
+                        }
+                        viewModel.Muscles = _groupOfMusclesRepository.GroupsOfMusclesByExercise(saving).ToList();
                     }
-                    viewModel.Muscles = _groupOfMusclesRepository.GroupsOfMusclesByExercise(saving).ToList();
-                }
 
-                if (saving != 0)
-                    return RedirectToAction("Details", new {id = saving});
+                    if (saving != 0)
+                        return RedirectToAction("Details", new {id = saving});
+                }
             }
-        }
-        catch (DbUpdateException /* ex */)
+            catch (DbUpdateException /* ex */)
             {
                 //Log the error (uncomment ex variable name and write a log.
                 ModelState.AddModelError("", "Unable to save changes. " +
-                    "Try again, and if the problem persists " +
-                    "see your system administrator.");
+                                             "Try again, and if the problem persists " +
+                                             "see your system administrator.");
             }
 
             viewModel.AllMuscles = _muscleRepository.Muscles;
@@ -162,8 +160,8 @@ namespace BeFit.Controllers
                 Description = exercise.Description,
                 Muscles = exercise.Muscles
             };
-            int i = 0;
-            string[] musclesIndex = new string[viewModel.Muscles.Count];
+            var i = 0;
+            var musclesIndex = new string[viewModel.Muscles.Count];
             foreach (var muscle in viewModel.Muscles)
             {
                 musclesIndex[i] = _muscleRepository.GetIndex(muscle.Muscle).ToString();
@@ -173,7 +171,6 @@ namespace BeFit.Controllers
             if (exercise.ImageData != null)
                 viewModel.ImageData = exercise.ImageData.ToArray();
             return View(viewModel);
-
         }
 
         // POST: Exercises/Edit/5
@@ -183,41 +180,39 @@ namespace BeFit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, CreateExerciseViewModel viewModel, string[] musclesIndex)
         {
-            
             if (id == 0)
                 return NotFound();
             var listId = new List<int>();
-           
+
             foreach (var s in musclesIndex)
-            {
-                
-            
-                    listId.Add(int.Parse(s));
-            }
+                listId.Add(int.Parse(s));
             if (listId.Count == 0)
                 ModelState.AddModelError("", "Choose at least one group of muscle");
-            try { 
-            if (ModelState.IsValid)
+            try
             {
-                _groupOfMusclesRepository.DeleteGroupOfMuscle(_groupOfMusclesRepository.GroupsOfMusclesByExercise(id).ToList());
-                foreach (var i in listId)
+                if (ModelState.IsValid)
                 {
-                    var gr = await _groupOfMusclesRepository.NewGroupOfMusclesAsync(id, _muscleRepository.GetMuscleByIndex(i) );
-                }
-                
-                viewModel.Muscles = _groupOfMusclesRepository.GroupsOfMusclesByExercise(id).ToList();
-            }
+                    _groupOfMusclesRepository.DeleteGroupOfMuscle(
+                        _groupOfMusclesRepository.GroupsOfMusclesByExercise(id).ToList());
+                    foreach (var i in listId)
+                    {
+                        var gr = await _groupOfMusclesRepository.NewGroupOfMusclesAsync(id,
+                            _muscleRepository.GetMuscleByIndex(i));
+                    }
 
-            var saving1 = await _repository.SaveExerciseAsync(viewModel, id);
-            if (saving1 != 0)
-                return RedirectToAction("Details", new {id});
-        }
-        catch (DbUpdateException /* ex */)
+                    viewModel.Muscles = _groupOfMusclesRepository.GroupsOfMusclesByExercise(id).ToList();
+                }
+
+                var saving1 = await _repository.SaveExerciseAsync(viewModel, id);
+                if (saving1 != 0)
+                    return RedirectToAction("Details", new {id});
+            }
+            catch (DbUpdateException /* ex */)
             {
                 //Log the error (uncomment ex variable name and write a log.
                 ModelState.AddModelError("", "Unable to save changes. " +
-                    "Try again, and if the problem persists " +
-                    "see your system administrator.");
+                                             "Try again, and if the problem persists " +
+                                             "see your system administrator.");
             }
             viewModel.AllMuscles = _muscleRepository.Muscles;
             return View(viewModel);
@@ -242,18 +237,18 @@ namespace BeFit.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            try { 
-            var exercise = _repository.DeleteExercise(id);}
-             catch (DbUpdateException /* ex */)
+            try
+            {
+                var exercise = _repository.DeleteExercise(id);
+            }
+            catch (DbUpdateException /* ex */)
             {
                 //Log the error (uncomment ex variable name and write a log.
                 ModelState.AddModelError("", "Delete failed. Try again, and if the problem persists " +
-                    "see your system administrator.");
+                                             "see your system administrator.");
             }
 
             return RedirectToAction("Index");
         }
-
-        
     }
 }

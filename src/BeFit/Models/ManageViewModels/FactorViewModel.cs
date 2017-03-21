@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BeFit.Models.ManageViewModels
+﻿namespace BeFit.Models.ManageViewModels
 {
     public class FactorViewModel
     {

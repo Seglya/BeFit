@@ -1,19 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using BeFit.Models;
-using BeFit.Models.ExerciseViewModels;
 using BeFit.Repositories;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace BeFit.Controllers
 {
-    public class ExerciseController: Controller
+    public class ExerciseController : Controller
     {
-        private readonly IMusclesRepository _muscleRepository;
         private readonly IGroupOfMusclesRepository _groupOfMusclesRepository;
+        private readonly IMusclesRepository _muscleRepository;
         private readonly IExerciseRepository _repository;
 
         public ExerciseController(IGroupOfMusclesRepository groupOfMusclesRepository, IExerciseRepository repository,
@@ -24,29 +19,23 @@ namespace BeFit.Controllers
             _muscleRepository = musclesRepository;
         }
 
-        public ActionResult List(string sortOrder, string filter,string pageSize, string currentFilter, int? page)
+        public ActionResult List(string sortOrder, string filter, string pageSize, string currentFilter, int? page)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            if(!string.IsNullOrEmpty(pageSize))
-            ViewData["SizePage"] = pageSize;
-            else if (string.IsNullOrEmpty(pageSize) & string.IsNullOrEmpty((string)ViewData["SizePage"]))
-            {
+            if (!string.IsNullOrEmpty(pageSize))
+                ViewData["SizePage"] = pageSize;
+            else if (string.IsNullOrEmpty(pageSize) & string.IsNullOrEmpty((string) ViewData["SizePage"]))
                 pageSize = (string) ViewData["SizePage"];
-            }
-           
-               
+
+
             int sizeOfPage;
-            if(int.TryParse(pageSize,out sizeOfPage)==false)
-            sizeOfPage=6;
+            if (int.TryParse(pageSize, out sizeOfPage) == false)
+                sizeOfPage = 6;
             if (filter != null)
-            {
                 page = 1;
-            }
             else
-            {
                 filter = currentFilter;
-            }
             ViewData["CurrentFilter"] = filter;
             var collExercises = _repository.ExercisesByFilter(filter);
 
@@ -55,9 +44,11 @@ namespace BeFit.Controllers
                 case "name_desc":
                     collExercises = collExercises.OrderByDescending(s => s.Name);
                     break;
-                default: collExercises = collExercises.OrderBy(s => s.Name); break;
+                default:
+                    collExercises = collExercises.OrderBy(s => s.Name);
+                    break;
             }
-           
+
             return View(PagerList<Exercise>.Create(collExercises, page ?? 1, sizeOfPage));
         }
     }

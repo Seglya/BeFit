@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using BeFit.Models;
-using BeFit.Models.ExerciseViewModels;
 using BeFit.Models.FoodViewModels;
 using BeFit.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -15,12 +12,13 @@ namespace BeFit.Controllers
 {
     public class AdminFoodController : Controller
     {
-        private IFoodRepository _foodRepository;
+        private readonly IFoodRepository _foodRepository;
 
         public AdminFoodController(IFoodRepository foodRepository)
         {
             _foodRepository = foodRepository;
         }
+
         // GET: /Food/
         public IActionResult Index(string sortOrder, string pageSize, string filter, string currentFilter, int? page)
         {
@@ -32,23 +30,17 @@ namespace BeFit.Controllers
             ViewData["CarbSortParam"] = string.IsNullOrEmpty(sortOrder) ? "carb_desc" : "carb";
             if (!string.IsNullOrEmpty(pageSize))
                 ViewData["SizePage"] = pageSize;
-            else if (string.IsNullOrEmpty(pageSize) & string.IsNullOrEmpty((string)ViewData["SizePage"]))
-            {
-                pageSize = (string)ViewData["SizePage"];
-            }
+            else if (string.IsNullOrEmpty(pageSize) & string.IsNullOrEmpty((string) ViewData["SizePage"]))
+                pageSize = (string) ViewData["SizePage"];
 
 
             int sizeOfPage;
             if (int.TryParse(pageSize, out sizeOfPage) == false)
                 sizeOfPage = 12;
             if (filter != null)
-            {
                 page = 1;
-            }
             else
-            {
                 filter = currentFilter;
-            }
             ViewData["CurrentFilter"] = filter;
             var collTag = _foodRepository.FoodByFilter(filter);
 
@@ -81,32 +73,33 @@ namespace BeFit.Controllers
                 case "fat":
                     collTag = collTag.OrderBy(s => s.Fat);
                     break;
-                default: collTag = collTag.OrderBy(s => s.Name); break;
+                default:
+                    collTag = collTag.OrderBy(s => s.Name);
+                    break;
             }
-             
+
             return View(PagerList<Food>.Create(collTag, page ?? 1, sizeOfPage));
         }
+
         // GET: Food/Edit/5
-       public  async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
                 return View();
-            var food = await _foodRepository.GetFoodAsync((int)id);
+            var food = await _foodRepository.GetFoodAsync((int) id);
             if (food == null)
                 return View();
-            
-            var viewModel =new FoodViewModel
+
+            var viewModel = new FoodViewModel
             {
-                
                 Name = food.Name,
                 Calories = food.Calories,
                 Protein = food.Protein,
                 Fat = food.Fat,
                 Carbohydrate = food.Carbohydrate
             };
-           
-            return View(viewModel);
 
+            return View(viewModel);
         }
 
         // POST: Food/Edit/5
@@ -116,15 +109,13 @@ namespace BeFit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int? id, FoodViewModel viewModel)
         {
-
             if (id == null)
-               id=0;
-         try
+                id = 0;
+            try
             {
                 if (ModelState.IsValid)
                 {
-
-                    var saving1 = await _foodRepository.SaveFoodAsync(viewModel, (int)id);
+                    var saving1 = await _foodRepository.SaveFoodAsync(viewModel, (int) id);
                     if (saving1 != null)
                         return RedirectToAction("Index");
                 }
@@ -133,10 +124,10 @@ namespace BeFit.Controllers
             {
                 //Log the error (uncomment ex variable name and write a log.
                 ModelState.AddModelError("", "Unable to save changes. " +
-                    "Try again, and if the problem persists " +
-                    "see your system administrator.");
+                                             "Try again, and if the problem persists " +
+                                             "see your system administrator.");
             }
-           
+
             return View(viewModel);
         }
 
@@ -146,11 +137,19 @@ namespace BeFit.Controllers
             if (id == null)
                 return NotFound();
 
-            var food = await _foodRepository.GetFoodAsync((int)id);
+            var food = await _foodRepository.GetFoodAsync((int) id);
             if (food == null)
                 return NotFound();
 
-            return View(new FoodViewModel {Name = food.Name, Protein = food.Protein, Fat = food.Fat, Calories = food.Calories, Carbohydrate = food.Carbohydrate});
+            return
+                View(new FoodViewModel
+                {
+                    Name = food.Name,
+                    Protein = food.Protein,
+                    Fat = food.Fat,
+                    Calories = food.Calories,
+                    Carbohydrate = food.Carbohydrate
+                });
         }
 
         // POST: Exercises/Delete/5
@@ -167,7 +166,7 @@ namespace BeFit.Controllers
             {
                 //Log the error (uncomment ex variable name and write a log.
                 ModelState.AddModelError("", "Delete failed. Try again, and if the problem persists " +
-                    "see your system administrator.");
+                                             "see your system administrator.");
             }
 
             return RedirectToAction("Index");

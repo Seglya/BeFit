@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BeFit.Data;
@@ -11,7 +10,6 @@ namespace BeFit.Repositories
 {
     public interface IMeasurementRepository
     {
-
         IEnumerable<Measurement> Measurement { get; }
         Task<Measurement> SaveMeasurementAsync(MeasurementViewModel viewModel, int id);
         IEnumerable<Measurement> MeasurementByFilter(string filter);
@@ -22,7 +20,7 @@ namespace BeFit.Repositories
 
     public class MeasurementRepository : IMeasurementRepository
     {
-        private BeFitDbContext _context;
+        private readonly BeFitDbContext _context;
 
         public MeasurementRepository(BeFitDbContext context)
         {
@@ -33,20 +31,24 @@ namespace BeFit.Repositories
 
         public async Task<Measurement> SaveMeasurementAsync(MeasurementViewModel viewModel, int id = 0)
         {
-
-         
-            if (id == 0 & await _context.Measurement.SingleOrDefaultAsync(t => t.Name == viewModel.Name)==default(Measurement))
+            if ((id == 0) &
+                (await _context.Measurement.SingleOrDefaultAsync(t => t.Name == viewModel.Name) == default(Measurement)))
             {
-                await _context.Measurement.AddAsync(new Measurement { Name = viewModel.Name, UnitsOfMeasurement = viewModel.UnitsOfMeasurement});
+                await _context.Measurement.AddAsync(new Measurement
+                {
+                    Name = viewModel.Name,
+                    UnitsOfMeasurement = viewModel.UnitsOfMeasurement
+                });
                 await _context.SaveChangesAsync();
                 return await GetMeasurementByNameAsync(viewModel.Name);
             }
-            var measure =await GetMeasurementAsync(id);
+            var measure = await GetMeasurementAsync(id);
             measure.Name = viewModel.Name;
             measure.UnitsOfMeasurement = viewModel.UnitsOfMeasurement;
             await _context.SaveChangesAsync();
             return measure;
         }
+
         public IEnumerable<Measurement> MeasurementByFilter(string filter)
         {
             if (filter != null)
@@ -58,19 +60,14 @@ namespace BeFit.Repositories
         {
             if (id != 0)
                 return await _context.Measurement.FindAsync(id);
-            else
-            {
-                return null;
-            }
+            return null;
         }
+
         public async Task<Measurement> GetMeasurementByNameAsync(string name)
         {
             if (name != null)
-                return await _context.Measurement.SingleOrDefaultAsync(s=>s.Name.Equals(name));
-            else
-            {
-                return null;
-            }
+                return await _context.Measurement.SingleOrDefaultAsync(s => s.Name.Equals(name));
+            return null;
         }
 
         public void DeleteMeasurement(int id)

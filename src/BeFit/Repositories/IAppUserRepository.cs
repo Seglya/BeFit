@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using BeFit.Data;
 using BeFit.Models;
 using BeFit.Models.UserProfileViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +12,7 @@ namespace BeFit.Repositories
 {
     public interface IAppUserRepository
     {
-       IEnumerable<AppUser> UsersProfile { get; }
+        IEnumerable<AppUser> UsersProfile { get; }
         Task<AppUser> SaveUserProfileAsync(string key, UserProfileViewModel viewModel, int id);
         Task<AppUser> GetUserProfileById(int id);
         Task<AppUser> GetUserByKeyAsync(string key);
@@ -21,11 +20,12 @@ namespace BeFit.Repositories
 
     public class AppUserRepository : IAppUserRepository
     {
-        private BeFitDbContext _context;
-        private UserManager<ApplicationUser> _userManager;
+        private readonly BeFitDbContext _context;
         private SignInManager<ApplicationUser> _signInManager;
+        private UserManager<ApplicationUser> _userManager;
 
-        public AppUserRepository(BeFitDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager  )
+        public AppUserRepository(BeFitDbContext context, UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             _signInManager = signInManager;
@@ -36,27 +36,22 @@ namespace BeFit.Repositories
 
         public async Task<AppUser> GetUserProfileById(int id)
         {
-            if(id>0)
-            return await _context.AppUser.Include(f=>f.Measurements).SingleOrDefaultAsync(d=>d.AppUserID==id);
+            if (id > 0)
+                return await _context.AppUser.Include(f => f.Measurements).SingleOrDefaultAsync(d => d.AppUserID == id);
             return null;
         }
 
         public async Task<AppUser> SaveUserProfileAsync(string key, UserProfileViewModel viewModel, int id)
         {
-            if (key == null & id==0)
-            {
+            if ((key == null) & (id == 0))
                 return null;
-            }
             if (viewModel == null)
-            {
                 return null;
-            }
-            AppUser user=null;
-            if(id!=0)
-             user=await GetUserProfileById(id);
+            AppUser user = null;
+            if (id != 0)
+                user = await GetUserProfileById(id);
             if (user == null)
             {
-
                 await _context.AppUser.AddAsync(new AppUser
                 {
                     FirstName = viewModel.FirstName,
@@ -70,11 +65,7 @@ namespace BeFit.Repositories
                     WeeksForGoal = viewModel.WeeksForGoal,
                     ImageName = viewModel.ImageName,
                     ImagePath = viewModel.ImagePath
-
                 });
-              
-                
-
             }
             else
             {
@@ -87,9 +78,9 @@ namespace BeFit.Repositories
                 user.WeeksForGoal = viewModel.WeeksForGoal;
                 user.ImageName = viewModel.ImageName;
                 user.ImagePath = viewModel.ImagePath;
-             } await _context.SaveChangesAsync();
-            return await GetUserByKeyAsync(key); 
-
+            }
+            await _context.SaveChangesAsync();
+            return await GetUserByKeyAsync(key);
         }
 
         public async Task<AppUser> GetUserByKeyAsync(string key)
@@ -97,5 +88,4 @@ namespace BeFit.Repositories
             return await _context.AppUser.Where(k => k.Key.Contains(key)).SingleOrDefaultAsync();
         }
     }
-
 }

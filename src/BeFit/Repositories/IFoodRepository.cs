@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BeFit.Data;
@@ -20,7 +19,7 @@ namespace BeFit.Repositories
 
     public class FoodRepository : IFoodRepository
     {
-        private BeFitDbContext _context;
+        private readonly BeFitDbContext _context;
 
         public FoodRepository(BeFitDbContext context)
         {
@@ -33,14 +32,23 @@ namespace BeFit.Repositories
         {
             if (id == 0)
             {
-                await _context.Foodstuff.AddAsync(new Food { Name = viewModel.Name });
+                await _context.Foodstuff.AddAsync(new Food {Name = viewModel.Name});
                 await _context.SaveChangesAsync();
                 return await _context.Foodstuff.SingleOrDefaultAsync(t => t.Name == viewModel.Name);
             }
-            _context.Foodstuff.Update(new Food { FoodID = id, Name = viewModel.Name, Calories = viewModel.Calories, Fat = viewModel.Fat, Carbohydrate = viewModel.Carbohydrate, Protein = viewModel.Protein});
+            _context.Foodstuff.Update(new Food
+            {
+                FoodID = id,
+                Name = viewModel.Name,
+                Calories = viewModel.Calories,
+                Fat = viewModel.Fat,
+                Carbohydrate = viewModel.Carbohydrate,
+                Protein = viewModel.Protein
+            });
             await _context.SaveChangesAsync();
             return await _context.Foodstuff.FindAsync(id);
         }
+
         public IEnumerable<Food> FoodByFilter(string filter)
         {
             if (filter != null)
@@ -52,10 +60,7 @@ namespace BeFit.Repositories
         {
             if (id != 0)
                 return await _context.Foodstuff.Include(s => s.WeightsOfFood).SingleOrDefaultAsync(i => i.FoodID == id);
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         public void DeleteFood(int id)
@@ -69,4 +74,3 @@ namespace BeFit.Repositories
         }
     }
 }
-

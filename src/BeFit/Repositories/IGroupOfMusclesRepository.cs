@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BeFit.Data;
@@ -7,25 +6,22 @@ using BeFit.Models;
 
 namespace BeFit.Repositories
 {
-   public interface IGroupOfMusclesRepository
+    public interface IGroupOfMusclesRepository
     {
-        Task<GroupsOfMuscles> NewGroupOfMusclesAsync(int exerciseId, Muscle muscle);
         IEnumerable<GroupsOfMuscles> GroupsOfMuscles { get; }
+        Task<GroupsOfMuscles> NewGroupOfMusclesAsync(int exerciseId, Muscle muscle);
         IEnumerable<GroupsOfMuscles> GroupsOfMusclesByExercise(int exerciseId);
         void DeleteGroupOfMuscle(ICollection<GroupsOfMuscles> groups);
-        
-
     }
 
     public class GroupOfMusclesRepository : IGroupOfMusclesRepository
     {
-        private BeFitDbContext _context;
-      
+        private readonly BeFitDbContext _context;
 
-        public GroupOfMusclesRepository(BeFitDbContext context )
+
+        public GroupOfMusclesRepository(BeFitDbContext context)
         {
             _context = context;
-         
         }
 
         public void DeleteGroupOfMuscle(ICollection<GroupsOfMuscles> groups)
@@ -34,22 +30,18 @@ namespace BeFit.Repositories
             {
                 _context.GroupsOfMuscles.RemoveRange(groups);
                 _context.SaveChanges();
-              
             }
-          
         }
 
-       
 
         public async Task<GroupsOfMuscles> NewGroupOfMusclesAsync(int exerciseId, Muscle muscle)
         {
-            
-           int muscleId=muscle.MuscleID;
+            var muscleId = muscle.MuscleID;
 
-            if(muscleId>0)
-            { GroupsOfMuscles newGroupsOfMuscles = new GroupsOfMuscles
+            if (muscleId > 0)
+            {
+                var newGroupsOfMuscles = new GroupsOfMuscles
                 {
-
                     ExerciseID = exerciseId,
                     MuscleID = muscleId
                 };
@@ -61,11 +53,11 @@ namespace BeFit.Repositories
                     return newGroupsOfMuscles;
                 }
             }
-            
-        
-        return null;
-    }
-    
+
+
+            return null;
+        }
+
         public IEnumerable<GroupsOfMuscles> GroupsOfMuscles => _context.GroupsOfMuscles;
 
         public IEnumerable<GroupsOfMuscles> GroupsOfMusclesByExercise(int exerciseId)
@@ -73,5 +65,4 @@ namespace BeFit.Repositories
             return _context.GroupsOfMuscles.Where(b => b.ExerciseID == exerciseId);
         }
     }
-    
 }

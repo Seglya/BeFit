@@ -1,7 +1,7 @@
 ﻿@using System.IO
 @using System.Text
 @using BundlerMinifier
-@model BeFit.Models.UserProfileViewModels.UserProfileViewModel
+@model BeFit.Models.AppUser
   @{  ViewData["Title"] = "Profile";
   }
 
@@ -37,9 +37,9 @@
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="DateOfRegisrtration" class="col-md-2 control-label"></label>
+            <label asp-for="DateOfRegoistration" class="col-md-2 control-label"></label>
             <div class="col-md-8">
-                <label >@Model.DateOfRegisrtration.Date</label>
+                <label >@Model.DateOfRegoistration.Date</label>
             </div>
         </div>
         <div class="form-group">
@@ -63,9 +63,9 @@
        
       
     </form>
-    <a asp-action="Edit" >Edit</a> 
+    <a asp-action="Edit" asp-route-id="@Model.AppUserID" >Edit</a> 
     <br/>
-    <a asp-action="AddMeasurement">Add Measurement</a> 
+    <a asp-action="Detail" asp-controller="Measurement" asp-route-id="@Model.AppUserID">Measurements</a> 
    
 </div>
 @section Scripts {

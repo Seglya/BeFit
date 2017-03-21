@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BeFit.Models;
 using BeFit.Models.UserProfileViewModels;
 using BeFit.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BeFit.Controllers
 {
+    [Authorize]
     public class UserProfileController : Controller
 
     {
@@ -30,13 +32,13 @@ namespace BeFit.Controllers
         public IActionResult NewUser()
         {
             ViewData["Title"] = "New Profile";
-            return View();
+            return View(new UserProfileViewModel());
         }
 
-        public async Task<IActionResult> Edit()
+        public async Task<IActionResult> Edit(int id)
         {
             ViewData["Title"] = "Edit prifile";
-            var user = await _appUserRepository.GetUserByKeyAsync("1");//GetCurrentUserAsync().Result.Id);
+            var user = await _appUserRepository.GetUserProfileById(id);
             UserProfileViewModel viewModel = new UserProfileViewModel
             {
                 FirstName = user.FirstName,
@@ -55,8 +57,10 @@ namespace BeFit.Controllers
         //Post: NewUser/
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task< IActionResult> NewUser(UserProfileViewModel viewModel)
+        public async Task< IActionResult> NewUser(UserProfileViewModel viewModel, int ? id)
         {
+            if (id == null)
+                id = 0;
             if (viewModel.DateOfBirth.Year<1920)
             {
                 ModelState.AddModelError("DateOfBirth","Input a valid date of birth!!!");
@@ -80,7 +84,8 @@ namespace BeFit.Controllers
                         viewModel.ImageName = viewModel.IFile.FileName;
                        
                     }
-                    var newUserPrifile =  await _appUserRepository.SaveUserProfileAsync("1",viewModel);
+                    var key =  GetCurrentUserAsync().Result.Id;
+                    var newUserPrifile =  await _appUserRepository.SaveUserProfileAsync(key,viewModel, (int)id);
                     return RedirectToAction("Profile", new {id = newUserPrifile.AppUserID});
                 }
                 catch (DbUpdateException /* ex */)
@@ -94,12 +99,23 @@ namespace BeFit.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Profile(int id)
-
+        public async Task<IActionResult> Profile(int id=0)
+            
         {
+            
+            if (id == 0)
+            {
+                var key = GetCurrentUserAsync().Result.Id;
+                var user=await _appUserRepository.GetUserByKeyAsync(key);
+                return View(user);
+            }
+            else
+            {
+                
+            
             var user = await _appUserRepository.GetUserProfileById(id);
 
-            return View(new UserProfileViewModel {FirstName = user.FirstName, Sex = user.Sex,ImagePath = user.ImagePath, CurrentWeight = user.CurrentWeight, DateOfBirth = user.DateOfBirth, DateOfRegisrtration = user.DateOfRegoistration, Goal = user.Goal, SecondName = user.SecondName, WeeksForGoal = user.WeeksForGoal});
+            return View(user);}
         }
         private Task<ApplicationUser> GetCurrentUserAsync()
         {

@@ -36,6 +36,6 @@ namespace BeFit.Models
         public int CurrentWeight { get; set; }
         public ICollection<OneDayFood> Food { get; set; }
         public ICollection<OneDayWorkout> Workouts { get; set; }
-        public ICollection<MeasurementOnDate> Measurements { get; set; }
+        public ICollection<FillMeasurement> Measurements { get; set; }
     }
 }

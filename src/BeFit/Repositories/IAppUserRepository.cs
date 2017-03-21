@@ -14,7 +14,7 @@ namespace BeFit.Repositories
     public interface IAppUserRepository
     {
        IEnumerable<AppUser> UsersProfile { get; }
-        Task<AppUser> SaveUserProfileAsync(string key, UserProfileViewModel viewModel);
+        Task<AppUser> SaveUserProfileAsync(string key, UserProfileViewModel viewModel, int id);
         Task<AppUser> GetUserProfileById(int id);
         Task<AppUser> GetUserByKeyAsync(string key);
     }
@@ -37,13 +37,13 @@ namespace BeFit.Repositories
         public async Task<AppUser> GetUserProfileById(int id)
         {
             if(id>0)
-            return await _context.AppUser.FindAsync(id);
+            return await _context.AppUser.Include(f=>f.Measurements).SingleOrDefaultAsync(d=>d.AppUserID==id);
             return null;
         }
 
-        public async Task<AppUser> SaveUserProfileAsync(string key, UserProfileViewModel viewModel)
+        public async Task<AppUser> SaveUserProfileAsync(string key, UserProfileViewModel viewModel, int id)
         {
-            if (key == null)
+            if (key == null & id==0)
             {
                 return null;
             }
@@ -51,8 +51,10 @@ namespace BeFit.Repositories
             {
                 return null;
             }
-            AppUser user = await GetUserByKeyAsync(key);
-            if (user == default(AppUser))
+            AppUser user=null;
+            if(id!=0)
+             user=await GetUserProfileById(id);
+            if (user == null)
             {
 
                 await _context.AppUser.AddAsync(new AppUser

@@ -1,0 +1,56 @@
+@using System.Collections
+@using BeFit.Models.UserProfileViewModels
+@model List<BeFit.Models.UserProfileViewModels.DetailMeasureVeiwModel>
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Exercise</h4>
+    <hr />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <a asp-action="Detail" asp-route-sortOrder="@ViewBag.DateSortParam"
+                       asp-route-currentFilter="@ViewData["currentFilter"]">Date</a>
+                </th>
+                @foreach (var item in (IEnumerable<Measurement>)ViewData["MesuarementAll"])
+            {
+                    <th>
+                        <label>@item.Name</label>
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model)
+            {
+   
+                <tr><td >
+    @item.Date.Date
+</td>
+                    @foreach (var x in item.Measure.OrderBy(n => n.idMeasure))
+                    {
+                        <td >
+                            @Html.DisplayFor(modelItem => x.digit)
+                        </td>
+
+
+                    }
+                    <td >
+                        <a asp-action="Edit" asp-route-date="@item.Date" asp-route-id="@ViewData["userId"]">Edit</a> |
+                        <a asp-action="Delete" asp-route-date="@item.Date" asp-route-id="@ViewData["userId"]">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+
+   
+</div>
+

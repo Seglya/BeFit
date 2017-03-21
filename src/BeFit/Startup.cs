@@ -43,18 +43,27 @@ namespace BeFit
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
             services.AddDbContext<BeFitDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("AccountConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = false;
+            });
             services.AddMvc();
 
             // Add application services.
@@ -69,11 +78,13 @@ namespace BeFit
             services.AddTransient<IFoodRepository, FoodRepository>();
             services.AddTransient<IAppUserRepository,AppUserRepository>();
             services.AddTransient<IMeasurementRepository, MeasurementRepository>();
+            services.AddTransient<IFillMeasurementRepository, FillMeasurementRepository>();
         }
-
+  
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, BeFitDbContext context)
         {
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 

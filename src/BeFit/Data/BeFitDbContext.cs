@@ -34,7 +34,7 @@ namespace BeFit.Data
         public DbSet<FillMeasurement> FillMeasurement { get; set; }
         public DbSet<Ingestion> Ingestion { get; set; }
         public DbSet<Measurement> Measurement { get; set; }
-        public DbSet<MeasurementOnDate> MeasurementOnDate { get; set; }
+       
         public DbSet<OneDayFood> OneDayFood { get; set; }
         public DbSet<OneDayWorkout> OneDayWorkout { get; set; }
         public DbSet<Tag> Tag { get; set; }
@@ -53,7 +53,7 @@ namespace BeFit.Data
             builder.Entity<Ingestion>().ToTable("Ingestion");
             builder.Entity<Muscle>().ToTable("Muscle");
             builder.Entity<Measurement>().ToTable("Measurement");
-            builder.Entity<MeasurementOnDate>().ToTable("MeasurementOnDate");
+           
             builder.Entity<News>().ToTable("News");
             builder.Entity<OneDayFood>().ToTable("OneDayFood");
             builder.Entity<OneDayWorkout>().ToTable("OneDayWorkout");

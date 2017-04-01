@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace BeFit.Migrations
 {
-    public partial class initial : Migration
+    public partial class DeleteFitnessCentre1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,13 +15,16 @@ namespace BeFit.Migrations
                 {
                     AppUserID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CurrentWeight = table.Column<int>(nullable: false),
                     DateOfBirth = table.Column<DateTime>(nullable: false),
                     DateOfRegoistration = table.Column<DateTime>(nullable: false),
                     FirstName = table.Column<string>(maxLength: 50, nullable: false),
                     Goal = table.Column<double>(nullable: false),
-                    ImageData = table.Column<byte[]>(nullable: true),
-                    ImageMimeType = table.Column<string>(nullable: true),
+                    ImageName = table.Column<string>(nullable: true),
+                    ImagePath = table.Column<string>(nullable: true),
+                    Key = table.Column<string>(nullable: true),
                     SecondName = table.Column<string>(maxLength: 50, nullable: false),
+                    Sex = table.Column<string>(nullable: true),
                     WeeksForGoal = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -119,39 +122,6 @@ namespace BeFit.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Service",
-                columns: table => new
-                {
-                    ServiceID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Description = table.Column<string>(maxLength: 500, nullable: true),
-                    ImageData = table.Column<byte[]>(nullable: true),
-                    ImageMimeType = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Service", x => x.ServiceID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Subscription",
-                columns: table => new
-                {
-                    SubscriptionID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CountOfVisits = table.Column<string>(maxLength: 20, nullable: false),
-                    DurationMonth = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(maxLength: 50, nullable: false),
-                    Price = table.Column<decimal>(type: "money", nullable: false),
-                    TypeService = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Subscription", x => x.SubscriptionID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Tag",
                 columns: table => new
                 {
@@ -162,44 +132,6 @@ namespace BeFit.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tag", x => x.TagID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Trainer",
-                columns: table => new
-                {
-                    TrainerID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Discription = table.Column<string>(nullable: true),
-                    FirstName = table.Column<string>(maxLength: 50, nullable: false),
-                    ImageData = table.Column<byte[]>(nullable: true),
-                    ImageMimeType = table.Column<string>(nullable: true),
-                    PersonalTrainer = table.Column<bool>(nullable: true),
-                    SecondName = table.Column<string>(maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Trainer", x => x.TrainerID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MeasurementOnDate",
-                columns: table => new
-                {
-                    MeasurementOnDateID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    AppUserID = table.Column<int>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MeasurementOnDate", x => x.MeasurementOnDateID);
-                    table.ForeignKey(
-                        name: "FK_MeasurementOnDate_AppUser_AppUserID",
-                        column: x => x.AppUserID,
-                        principalTable: "AppUser",
-                        principalColumn: "AppUserID",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -224,22 +156,30 @@ namespace BeFit.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "WeightOfFood",
+                name: "FillMeasurement",
                 columns: table => new
                 {
-                    WeightOfFoodID = table.Column<int>(nullable: false)
+                    FillMeasurementID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    FoodID = table.Column<int>(nullable: false),
-                    Weight = table.Column<double>(nullable: false)
+                    AppUserID = table.Column<int>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false),
+                    MeasurementID = table.Column<int>(nullable: false),
+                    PutMesurement = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WeightOfFood", x => x.WeightOfFoodID);
+                    table.PrimaryKey("PK_FillMeasurement", x => x.FillMeasurementID);
                     table.ForeignKey(
-                        name: "FK_WeightOfFood_Foodstuff_FoodID",
-                        column: x => x.FoodID,
-                        principalTable: "Foodstuff",
-                        principalColumn: "FoodID",
+                        name: "FK_FillMeasurement_AppUser_AppUserID",
+                        column: x => x.AppUserID,
+                        principalTable: "AppUser",
+                        principalColumn: "AppUserID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FillMeasurement_Measurement_MeasurementID",
+                        column: x => x.MeasurementID,
+                        principalTable: "Measurement",
+                        principalColumn: "MeasurementID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -290,66 +230,13 @@ namespace BeFit.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TrainersServices",
-                columns: table => new
-                {
-                    ServiceID = table.Column<int>(nullable: false),
-                    TrainerID = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TrainersServices", x => new { x.ServiceID, x.TrainerID });
-                    table.ForeignKey(
-                        name: "FK_TrainersServices_Service_ServiceID",
-                        column: x => x.ServiceID,
-                        principalTable: "Service",
-                        principalColumn: "ServiceID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TrainersServices_Trainer_TrainerID",
-                        column: x => x.TrainerID,
-                        principalTable: "Trainer",
-                        principalColumn: "TrainerID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FillMeasurement",
-                columns: table => new
-                {
-                    FillMeasurementID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    MeasurementID = table.Column<int>(nullable: false),
-                    MeasurementOnDateID = table.Column<int>(nullable: false),
-                    PutMesurement = table.Column<double>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FillMeasurement", x => x.FillMeasurementID);
-                    table.ForeignKey(
-                        name: "FK_FillMeasurement_Measurement_MeasurementID",
-                        column: x => x.MeasurementID,
-                        principalTable: "Measurement",
-                        principalColumn: "MeasurementID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_FillMeasurement_MeasurementOnDate_MeasurementOnDateID",
-                        column: x => x.MeasurementOnDateID,
-                        principalTable: "MeasurementOnDate",
-                        principalColumn: "MeasurementOnDateID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Ingestion",
                 columns: table => new
                 {
                     IngestionID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
-                    OneDayFoodID = table.Column<int>(nullable: false),
-                    Time = table.Column<DateTime>(nullable: false),
-                    WeightOfFoodID = table.Column<int>(nullable: false)
+                    OneDayFoodID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -359,12 +246,6 @@ namespace BeFit.Migrations
                         column: x => x.OneDayFoodID,
                         principalTable: "OneDayFood",
                         principalColumn: "OneDayFoodID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Ingestion_WeightOfFood_WeightOfFoodID",
-                        column: x => x.WeightOfFoodID,
-                        principalTable: "WeightOfFood",
-                        principalColumn: "WeightOfFoodID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -432,6 +313,33 @@ namespace BeFit.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "WeightOfFood",
+                columns: table => new
+                {
+                    WeightOfFoodID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    FoodID = table.Column<int>(nullable: false),
+                    IngestionID = table.Column<int>(nullable: false),
+                    Weight = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WeightOfFood", x => x.WeightOfFoodID);
+                    table.ForeignKey(
+                        name: "FK_WeightOfFood_Foodstuff_FoodID",
+                        column: x => x.FoodID,
+                        principalTable: "Foodstuff",
+                        principalColumn: "FoodID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_WeightOfFood_Ingestion_IngestionID",
+                        column: x => x.IngestionID,
+                        principalTable: "Ingestion",
+                        principalColumn: "IngestionID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_FillingWorkout_ExerciseID",
                 table: "FillingWorkout",
@@ -443,14 +351,14 @@ namespace BeFit.Migrations
                 column: "WorkoutID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FillMeasurement_AppUserID",
+                table: "FillMeasurement",
+                column: "AppUserID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FillMeasurement_MeasurementID",
                 table: "FillMeasurement",
                 column: "MeasurementID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FillMeasurement_MeasurementOnDateID",
-                table: "FillMeasurement",
-                column: "MeasurementOnDateID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GroupsOfMuscles_MuscleID",
@@ -461,16 +369,6 @@ namespace BeFit.Migrations
                 name: "IX_Ingestion_OneDayFoodID",
                 table: "Ingestion",
                 column: "OneDayFoodID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ingestion_WeightOfFoodID",
-                table: "Ingestion",
-                column: "WeightOfFoodID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MeasurementOnDate_AppUserID",
-                table: "MeasurementOnDate",
-                column: "AppUserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OneDayFood_AppUserID",
@@ -493,14 +391,14 @@ namespace BeFit.Migrations
                 column: "WorkoutID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrainersServices_TrainerID",
-                table: "TrainersServices",
-                column: "TrainerID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_WeightOfFood_FoodID",
                 table: "WeightOfFood",
                 column: "FoodID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WeightOfFood_IngestionID",
+                table: "WeightOfFood",
+                column: "IngestionID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Workout_TagID",
@@ -520,25 +418,16 @@ namespace BeFit.Migrations
                 name: "GroupsOfMuscles");
 
             migrationBuilder.DropTable(
-                name: "Ingestion");
-
-            migrationBuilder.DropTable(
                 name: "News");
 
             migrationBuilder.DropTable(
                 name: "OneDayWorkout");
 
             migrationBuilder.DropTable(
-                name: "Subscription");
-
-            migrationBuilder.DropTable(
-                name: "TrainersServices");
+                name: "WeightOfFood");
 
             migrationBuilder.DropTable(
                 name: "Measurement");
-
-            migrationBuilder.DropTable(
-                name: "MeasurementOnDate");
 
             migrationBuilder.DropTable(
                 name: "Exercise");
@@ -547,31 +436,25 @@ namespace BeFit.Migrations
                 name: "Muscle");
 
             migrationBuilder.DropTable(
-                name: "OneDayFood");
-
-            migrationBuilder.DropTable(
-                name: "WeightOfFood");
-
-            migrationBuilder.DropTable(
                 name: "Cardio");
 
             migrationBuilder.DropTable(
                 name: "Workout");
 
             migrationBuilder.DropTable(
-                name: "Service");
-
-            migrationBuilder.DropTable(
-                name: "Trainer");
-
-            migrationBuilder.DropTable(
-                name: "AppUser");
-
-            migrationBuilder.DropTable(
                 name: "Foodstuff");
 
             migrationBuilder.DropTable(
+                name: "Ingestion");
+
+            migrationBuilder.DropTable(
                 name: "Tag");
+
+            migrationBuilder.DropTable(
+                name: "OneDayFood");
+
+            migrationBuilder.DropTable(
+                name: "AppUser");
         }
     }
 }

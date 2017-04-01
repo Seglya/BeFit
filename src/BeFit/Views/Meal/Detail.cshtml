@@ -1,0 +1,161 @@
+@model BeFit.Models.UserProfileViewModels.MealDetailViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Total meal on @Model.OneDayFoodViewModel.Date.Date</h4>
+    <hr/>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                <label>Meal</label>
+            </th>
+            <th>
+                <label>Food</label>
+            </th>
+            <th>
+                <label>Weight</label>
+            </th>
+            <th>
+                <label>Carbohydrate</label>
+            </th>
+            <th>
+                <label>Fat</label>
+            </th>
+            <th>
+                <label>Protein</label>
+            </th>
+            <th>
+                <label>Cal</label>
+            </th>
+          
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.OneDayFoodViewModel.Ingestions)
+        {
+            int i = 0;
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+
+                @foreach (var x in item.WeightOfFood)
+                {
+                    if (i == 0)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => x.Food.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => x.Weight)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => x.Carbohydrate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => x.Fat)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => x.Protein)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => x.Calories)
+                        </td>                <td>
+                    <a asp-action="Edit"  asp-route-id="@x.IngestionId">Edit</a> |
+                    <a asp-action="DeleteIngestion"  asp-route-id="@x.IngestionId">Delete</a>
+                </td>
+
+                    }
+                    else
+                    {
+                        <tr><td></td>
+                            <td >
+                                @Html.DisplayFor(modelItem => x.Food.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => x.Weight)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => x.Carbohydrate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => x.Fat)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => x.Protein)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => x.Calories)
+                            </td>
+            <td>
+   
+</td>
+                        </tr>
+
+                    }
+                    i++;
+                }
+            </tr>
+         
+        
+            <tr><td></td>
+                <td><label>Total</label></td>
+                <td></td>
+                <td><label>
+                        @Html.DisplayFor(modelItem => item.GetCountMealPerIngestion.TotalCarb)
+                    </label>
+                </td>
+                <td><label>
+                        @Html.DisplayFor(modelItem => item.GetCountMealPerIngestion.TotalFat)
+                    </label>
+                </td>
+                <td><label>
+                        @Html.DisplayFor(modelItem => item.GetCountMealPerIngestion.TotalProtein)
+                    </label>
+                </td>
+                <td><label>
+                        @Html.DisplayFor(modelItem => item.GetCountMealPerIngestion.TotalCal)
+                    </label>
+                </td>
+            <td></td>
+            </tr>
+        }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><label>Total per Day</label></td>
+                <td></td>
+                <td>
+                    <label>
+                        @Html.DisplayFor(modelItem => Model.TotalCountMealPerIngestion.TotalCarb)
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        @Html.DisplayFor(modelItem => Model.TotalCountMealPerIngestion.TotalFat)
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        @Html.DisplayFor(modelItem => Model.TotalCountMealPerIngestion.TotalProtein)
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        @Html.DisplayFor(modelItem => Model.TotalCountMealPerIngestion.TotalCal)
+                    </label>
+                </td>
+            </tr>
+        </tfoot>
+
+    </table>
+
+    <a asp-action="Delete" asp-route-id="@Model.OneDayFoodId">Delete All</a> |
+    <a asp-action="Index" asp-route-id="@Model.OneDayFoodViewModel.AppUserID">Back to All</a>
+</div>

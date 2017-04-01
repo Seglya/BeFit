@@ -6,10 +6,9 @@
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
 
-                reader.onload = function (e) {
+                reader.onload = function(e) {
                     $("#img").attr("src", e.target.result);
-                }
-
+                };
                 reader.readAsDataURL(input.files[0]);
             }
         }
@@ -17,20 +16,20 @@
 </header>
 <div class="container">
     <h2>@ViewData["Title"].</h2>
-    <form  asp-action="NewUser" method="post" class="form-horizontal" enctype="multipart/form-data">
-        <hr />
+    <form asp-action="NewUser" method="post" class="form-horizontal" enctype="multipart/form-data">
+        <hr/>
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="FirstName" class="col-md-2 control-label"></label>
             <div class="col-md-8">
-                <input asp-for="FirstName" class="form-control" />
+                <input asp-for="FirstName" class="form-control"/>
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="SecondName" class="col-md-2 control-label"></label>
             <div class="col-md-8">
-                <input asp-for="SecondName" class="form-control" />
+                <input asp-for="SecondName" class="form-control"/>
                 <span asp-validation-for="SecondName" class="text-danger"></span>
             </div>
         </div>
@@ -48,27 +47,27 @@
             <label asp-for="DateOfBirth" class="col-md-2 control-label"></label>
             <div class="col-md-8">
                 <input type="date" asp-for="DateOfBirth" class="form-control"/>
-                <span asp-validation-for="DateOfBirth"  class="text-danger"></span>
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="CurrentWeight" class="col-md-2 control-label"></label>
             <div class="col-md-8">
-                <input asp-for="CurrentWeight" class="form-control" />
+                <input asp-for="CurrentWeight" class="form-control"/>
                 <span asp-validation-for="CurrentWeight" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="Goal" class="col-md-2 control-label"></label>
             <div class="col-md-8">
-                <input asp-for="Goal" class="form-control" />
+                <input asp-for="Goal" class="form-control"/>
                 <span asp-validation-for="Goal" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="WeeksForGoal" class="col-md-2 control-label"></label>
             <div class="col-md-8">
-                <input asp-for="WeeksForGoal" class="form-control" />
+                <input asp-for="WeeksForGoal" class="form-control"/>
                 <span asp-validation-for="WeeksForGoal" class="text-danger"></span>
             </div>
         </div>
@@ -84,8 +83,8 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-               
-                <input  type="submit" value="Save" class="btn btn-default"/>
+
+                <input type="submit" value="Save" class="btn btn-default"/>
             </div>
         </div>
     </form>

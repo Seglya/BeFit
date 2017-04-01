@@ -1,18 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace BeFit.Models
+namespace BeFit.Models.CardioViewModels
 {
-    public class Cardio
+    public class CardioViewModel
     {
-        public int CardioID { get; set; }
-
         [Required]
         [RegularExpression(@"^[A-Z]+[a-zA-Z\d\/\-\s]*$")]
         [StringLength(50, ErrorMessage = "Name can't be longer than 50 characters!")]
         public string Name { get; set; } // Название кардио
 
         public double CalPerHour { get; set; }
-        public ICollection<OneDayWorkout> CardioWorkouts { get; set; }
+        //public ICollection<OneDayWorkout> CardioWorkouts { get; set; }
     }
 }

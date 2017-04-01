@@ -17,8 +17,7 @@ namespace BeFit.Repositories
         Exercise GetExercise(string name);
         bool DeleteExercise(int id);
         Task<int> SaveExerciseAsync(CreateExerciseViewModel viewModel, int id);
-
-        //IEnumerable<GroupsOfMuscles> GetMusclesAsync(int id);
+        
     }
 
     public class ExerciseRepository : IExerciseRepository

@@ -1,0 +1,27 @@
+@model BeFit.Models.CardioViewModels.CardioViewModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Cardio</h4>
+    <hr/>
+    <div class="form-group">
+        <label asp-for="Name" class="col-md-2 control-label"></label>
+        <label>@Model.Name</label>
+    </div>
+    <div class="form-group">
+        <label asp-for="CalPerHour" class="col-md-2 control-label"></label>
+        <label>@Model.CalPerHour</label>
+    </div>
+   <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default"/> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>

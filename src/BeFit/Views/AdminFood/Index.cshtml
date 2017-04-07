@@ -16,69 +16,81 @@
                 <form asp-action="Index" Method="get">
                     <div class="form-actions no-color">
                         <label>Search: </label>
-                        <input type="text" name="filter" value="@ViewData["currentFilter"]" />
-                        <input type="submit" value="search" class="btn-default" />
+                        <input type="text" name="filter" value="@ViewData["currentFilter"]"/>
+                        <input type="submit" value="search" class="btn-default"/>
                         <a asp-action="Index">Back to full list</a>
                     </div>
                     <div class="pull-right">
                         <a asp-action="Index" asp-route-pageSize="12"> 12 </a>
                         <label> | </label>
-                        <a asp-action="Index" asp-route-pageSize="24"> 24  </a>
+                        <a asp-action="Index" asp-route-pageSize="24"> 24 </a>
                     </div>
                 </form>
-                
-                <table class="table" >
-                      <thead  >
-                        <tr>
 
-                            <th class="col-md-2">
-                                <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewBag.NameSortParam"
-                                   asp-route-currentFilter="@ViewData["currentFilter"]">Name</a>
+                <table class="table">
+                    <thead >
+                    <tr>
 
-                            </th>
-                            <th class="col-md-2"> <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewBag.CalSortParam"
-                                                     asp-route-currentFilter="@ViewData["currentFilter"]">Cal</a></th>
-                            <th class="col-md-2">
-                                <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewBag.ProtSortParam"
-                                   asp-route-currentFilter="@ViewData["currentFilter"]">Protein</a>
-                            </th>
-                            <th class="col-md-2">
-                                <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewBag.FatSortParam"
-                                   asp-route-currentFilter="@ViewData["currentFilter"]">Fat</a>
-                            </th>
-                            <th class="col-md-2">
-                                <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewBag.CarbSortParam"
-                                   asp-route-currentFilter="@ViewData["currentFilter"]">Carbohydrate</a>
-                            </th>
-                            <th class="col-md-2"></th>
-</tr>
+                        <th class="col-md-2">
+                            <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewBag.NameSortParam"
+                               asp-route-currentFilter="@ViewData["currentFilter"]">
+                                Name
+                            </a>
+
+                        </th>
+                        <th class="col-md-2">
+                            <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewBag.CalSortParam"
+                               asp-route-currentFilter="@ViewData["currentFilter"]">
+                                Cal
+                            </a>
+                        </th>
+                        <th class="col-md-2">
+                            <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewBag.ProtSortParam"
+                               asp-route-currentFilter="@ViewData["currentFilter"]">
+                                Protein
+                            </a>
+                        </th>
+                        <th class="col-md-2">
+                            <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewBag.FatSortParam"
+                               asp-route-currentFilter="@ViewData["currentFilter"]">
+                                Fat
+                            </a>
+                        </th>
+                        <th class="col-md-2">
+                            <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewBag.CarbSortParam"
+                               asp-route-currentFilter="@ViewData["currentFilter"]">
+                                Carbohydrate
+                            </a>
+                        </th>
+                        <th class="col-md-2"></th>
+                    </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
 
-                                <td class="col-md-2">
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                </td>
-                                <td class="col-md-2">
-                                    @Html.DisplayFor(modelItem => item.Calories)
-                                </td>
-                                <td class="col-md-2">
-                                    @Html.DisplayFor(modelItem => item.Protein)
-                                </td>
-                                <td class="col-md-2">
-                                    @Html.DisplayFor(modelItem => item.Fat)
-                                </td>
-                                <td class="col-md-2">
-                                    @Html.DisplayFor(modelItem => item.Carbohydrate)
-                                </td>
-                                <td class="col-md-2">
-                                    <a asp-action="Edit" asp-route-id="@item.FoodID">Edit</a> |
-                                    <a asp-action="Delete" asp-route-id="@item.FoodID">Delete</a>
-                                </td>
-                            </tr>
-                        }
+                            <td class="col-md-2">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td class="col-md-2">
+                                @Html.DisplayFor(modelItem => item.Calories)
+                            </td>
+                            <td class="col-md-2">
+                                @Html.DisplayFor(modelItem => item.Protein)
+                            </td>
+                            <td class="col-md-2">
+                                @Html.DisplayFor(modelItem => item.Fat)
+                            </td>
+                            <td class="col-md-2">
+                                @Html.DisplayFor(modelItem => item.Carbohydrate)
+                            </td>
+                            <td class="col-md-2">
+                                <a asp-action="Edit" asp-route-id="@item.FoodID">Edit</a> |
+                                <a asp-action="Delete" asp-route-id="@item.FoodID">Delete</a>
+                            </td>
+                        </tr>
+                    }
                     </tbody>
                 </table>
             </div>
@@ -88,7 +100,7 @@
         var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
         var nextDisabled = !Model.HasNextPage ? "disabled" : "";
     }
-    <a asp-action="Index" as asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex-1)" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @prevDisabled btn">Previous</a>
-    <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex+1)" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @nextDisabled btn">Next</a>
+    <a asp-action="Index" as asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex - 1)" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @prevDisabled btn">Previous</a>
+    <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex + 1)" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @nextDisabled btn">Next</a>
 
 </div>

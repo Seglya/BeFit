@@ -1,0 +1,70 @@
+﻿@model IEnumerable<OneDayWorkout>
+@{
+    ViewData["Title"] = "All meals";
+}
+
+<h2>All meals</h2>
+
+<div>
+    @{ int user = 0;}
+    <hr />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <label>Date</label>
+                </th>
+                <th>
+                    <label>Cardio</label>
+                </th>
+                <th>
+                    <label>Duration</label>
+                </th>
+                <th>
+                    <label>Streinght workout</label>
+                </th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                user = item.AppUserID;
+
+                <tr>
+                    <td>
+                        @item.Date
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cardio.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Duration)
+                    </td>
+                    <td>
+                        @if (item.Workout != null)
+                        {
+                            <dir >+</dir>
+                        }
+                        else
+                        {
+                            <dir>-</dir>
+                        }
+                    </td>
+                  
+                    <td>
+                        <a asp-action="Detail" asp-route-oneDayWorkoutId="@item.OneDayWorkoutID">Detail</a>
+                        <a asp-action="Create" asp-route-id="@item.AppUserID" asp-route-oneDayWorkoutId="@item.OneDayWorkoutID">Edit</a>
+
+                    </td>
+
+                </tr>
+
+            }
+
+
+    </table>
+    <a asp-action="Create" asp-route-id="@user">Add new</a>
+
+</div>

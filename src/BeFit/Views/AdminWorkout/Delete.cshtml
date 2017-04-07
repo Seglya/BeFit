@@ -1,4 +1,4 @@
-@model BeFit.Models.Workout
+@model Workout
 
 @{
     ViewData["Title"] = "Delete";
@@ -9,12 +9,12 @@
 <h3>Are you sure you want to delete this?</h3>
 <div>
     <h4>Exercise</h4>
-    <hr />
-   @await Html.PartialAsync("_DetailsPartial", @Model)
-    
+    <hr/>
+    @await Html.PartialAsync("_DetailsPartial", Model)
+
     <form asp-action="Delete">
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <input type="submit" value="Delete" class="btn btn-default"/> |
             <a asp-action="Index">Back to List</a>
         </div>
     </form>

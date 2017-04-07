@@ -18,10 +18,9 @@ namespace BeFit.Data
            
                 //<BefitDbContext>(new DbInitializer());
         }
-        public DbSet<Trainer> Trainer { get; set; }
-        public DbSet<Service> Service { get; set; }
+       
         public DbSet<Workout> Workout { get; set; }
-        public DbSet<Subscription> Subscription { get; set; }
+      
         public DbSet<News> News { get; set; }
         public DbSet<Food> Foodstuff { get; set; }
         public DbSet<Exercise> Exercise { get; set; }
@@ -29,7 +28,7 @@ namespace BeFit.Data
         public DbSet<FillingWorkout> FillingWorkout { get; set; }
         public DbSet<GroupsOfMuscles> GroupsOfMuscles { get; set; }
         public DbSet<Muscle> Muscle { get; set; }
-        public DbSet<TrainersServices> TrainersService { get; set; }
+     
         public DbSet<AppUser> AppUser{ get; set; }
         public DbSet<FillMeasurement> FillMeasurement { get; set; }
         public DbSet<Ingestion> Ingestion { get; set; }
@@ -57,14 +56,12 @@ namespace BeFit.Data
             builder.Entity<News>().ToTable("News");
             builder.Entity<OneDayFood>().ToTable("OneDayFood");
             builder.Entity<OneDayWorkout>().ToTable("OneDayWorkout");
-            builder.Entity<Service>().ToTable("Service");
-            builder.Entity<Subscription>().ToTable("Subscription");
+          
             builder.Entity<Tag>().ToTable("Tag");
-            builder.Entity<Trainer>().ToTable("Trainer");
-            builder.Entity<TrainersServices>().ToTable("TrainersServices");
+           
             builder.Entity<WeightOfFood>().ToTable("WeightOfFood");
             builder.Entity<Workout>().ToTable("Workout");
-            builder.Entity<TrainersServices>().HasKey(c => new { c.ServiceID, c.TrainerID });
+          
             builder.Entity<GroupsOfMuscles>().HasKey(c => new { c.ExerciseID, c.MuscleID });
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.

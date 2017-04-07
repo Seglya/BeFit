@@ -1,47 +1,46 @@
-@using Microsoft.EntityFrameworkCore.Internal
 @model BeFit.Models.WorkoutViewModels.WorkoutViewModel
 
-    <script src="~/js/NewField.js"></script>
-<script src="~/js/Combobox.js"></script>
 
 
-<header>
-<style>
-    .labelSelect {
-    background:url('https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/down4-16.png') right center no-repeat;
-    padding:0 20px 0 10px;
-    border:solid 1px #eee;
-}
-.hover {
-    background:blue;
-    color:white;
-}
+<header><script src="~/js/NewField.js"></script>
+    <style>
+        .labelSelect {
+            background: url('https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/down4-16.png') right center no-repeat;
+            border: solid 1px #eee;
+            padding: 0 20px 0 10px;
+        }
 
-</style></header>
+        .hover {
+            background: blue;
+            color: white;
+        }
+
+    </style>
+</header>
 <div class="container">
     <div >
         <h2>@ViewData["Title"]</h2>
-        
-        <form method="post" asp-controller="AdminWorkout" id="workoutForm"  asp-action="Edit" class="form-horizontal"  enctype="multipart/form-data">
-            
+
+        <form method="post" asp-controller="AdminWorkout" id="workoutForm" asp-action="Edit" class="form-horizontal" enctype="multipart/form-data">
+
             <div class="form-group">
                 <h4>Workout</h4>
-                <hr />
+                <hr/>
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-    <label asp-for="Name" class="col-md-2 control-label"></label>
-    <div class="col-md-5">
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger" ></span>
-      </div>
-</div>
+                    <label asp-for="Name" class="col-md-2 control-label"></label>
+                    <div class="col-md-5">
+                        <input asp-for="Name" class="form-control"/>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
                 <p>
                     <div class="form-group">
                         <label asp-for="Description" class="col-sm-2 control-label"></label>
 
                         <div class="col-sm-5">
-                            <input asp-for="Description" type="text"  aria-multiline="true" class="form-control"  />
-                            <span asp-validation-for="Description" class="text-danger" ></span>
+                            <input asp-for="Description" type="text" aria-multiline="true" class="form-control"/>
+                            <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
                     </div>
                 </p>
@@ -52,43 +51,36 @@
                         <div class="col-sm-5">
                             @if (Model.AllTags.Count() != 0)
                             {
-                                var curTag = (string)@ViewData["CurrentTag"];
+                                var curTag = (string) ViewData["CurrentTag"];
                                 foreach (var tag in Model.AllTags)
                                 {
-
-                                    if (curTag != null & curTag == tag.TagID.ToString())
+                                    if ((curTag != null) & (curTag == tag.TagID.ToString()))
                                     {
-
-                                    <input type="radio" id="rad" name="tagIndex" checked="checked" value="@tag.TagID"/>
-                                    <label for="rad">@tag.Name</label>
+                                        <input type="radio" id="rad" name="tagIndex" checked="checked" value="@tag.TagID"/>
+                                        <label for="rad">@tag.Name</label>
                                     }
                                     else
                                     {
                                         <input type="radio" id="rad" name="tagIndex" value="@tag.TagID"/>
                                         <label for="rad">@tag.Name</label>
                                     }
-                                   
-
-                                    
                                 }
-
                             }
                             <span asp-validation-for="TagId" class="text-danger"></span>
-                          
+
                         </div>
                     </div>
                 </p>
-               
+
                 <div class="form-group">
-                    @await Html.PartialAsync("_FillingWorkoutPartial", @Model.AllExercises)
-                   
+                    @await Html.PartialAsync("_FillingWorkoutPartial", Model.AllExercises)
+
                 </div>
-                    
-               
+
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-6">
-                        <input type="submit" value="Save" onclick="return validate(this)" class="btn btn-default" />
+                        <input type="submit" value="Save" onclick="return validate(this)" class="btn btn-default"/>
                     </div>
                 </div>
             </div>
@@ -101,6 +93,6 @@
 </div>
 
 @section Scripts {
-   
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

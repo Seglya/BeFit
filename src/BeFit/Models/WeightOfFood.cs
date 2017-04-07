@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BeFit.Models
+﻿namespace BeFit.Models
 {
     public class WeightOfFood
     {
@@ -11,5 +6,7 @@ namespace BeFit.Models
         public double Weight { get; set; } //вес продукта
         public Food Food { get; set; } //продукт
         public int FoodID { get; set; } //ID продукта
+        public int IngestionID { get; set; }
+        public Ingestion Ingestion { get; set; }
     }
 }

@@ -178,102 +178,7 @@ namespace BeFit.Models
                 }
                 foreach (var food in foodstuff)
                     context.Foodstuff.Add(food);
-                var service = new List<Service>
-                {
-                    new Service
-                    {
-                        Name = "Gym",
-                        Description =
-                            "BeFit is a gym that believes in making serious exercise fun by fusing fitness and entertainment and pioneering a philosophy of No Judgments."
-                    },
-                    new Service
-                    {
-                        Name = "Pilates",
-                        Description =
-                            "Pilates - a system of fitness exercises for the whole body, which tightens muscles, develops mobility, joint flexibility, has the ability to govern themselves and help restore muscle balance, strengthens the whole body, muscle endurance and muscle tone, strengthen bones and ligaments, burning calories and losing weight."
-                    },
-                    new Service
-                    {
-                        Name = "Yoga",
-                        Description =
-                            "Relax, strengthen, and soothe your body and mind. It will increase your flexibility and strength through various poses and breathing techniques."
-                    },
-                    new Service
-                    {
-                        Name = "Zumba",
-                        Description =
-                            "Strong by Zumba is a high intensity interval training workout driving intensity in a challenging progression that provides a total body workout for all fitness levels!"
-                    },
-                    new Service
-                    {
-                        Name = "HIIT",
-                        Description =
-                            "High-intensity interval training, also called HIIT workouts, boost your metabolism and burn more fat than conventional cardio."
-                    }
-                };
-                foreach (var serv in service)
-                    context.Service.Add(serv); //add to database
-                var subscription = new List<Subscription>
-                {
-                    new Subscription
-                    {
-                        Name = "Premium 12",
-                        DurationMonth = 12,
-                        CountOfVisits = "unlim",
-                        Price = 100,
-                        TypeService = 1
-                    },
-                    new Subscription
-                    {
-                        Name = "Premium 6",
-                        DurationMonth = 6,
-                        CountOfVisits = "unlim",
-                        Price = 60,
-                        TypeService = 1
-                    },
-                    new Subscription
-                    {
-                        Name = "Premium",
-                        DurationMonth = 1,
-                        CountOfVisits = "unlim",
-                        Price = 15,
-                        TypeService = 1
-                    },
-                    new Subscription
-                    {
-                        Name = "Gym+",
-                        DurationMonth = 1,
-                        CountOfVisits = "unlim",
-                        Price = 10,
-                        TypeService = 2
-                    },
-                    new Subscription
-                    {
-                        Name = "Gym standart",
-                        DurationMonth = 1,
-                        CountOfVisits = "12",
-                        Price = 8,
-                        TypeService = 2
-                    },
-                    new Subscription
-                    {
-                        Name = "Group training+",
-                        DurationMonth = 1,
-                        CountOfVisits = "unlim",
-                        Price = 12,
-                        TypeService = 3
-                    },
-                    new Subscription
-                    {
-                        Name = "Group training standart",
-                        DurationMonth = 1,
-                        CountOfVisits = "12",
-                        Price = 9,
-                        TypeService = 3
-                    }
-                };
-                foreach (var sub in subscription)
-                    context.Subscription.Add(sub); //add to database
+               
                 var tags = new List<Tag>
                 {
                     new Tag {Name = "Fat Burning"},
@@ -282,51 +187,7 @@ namespace BeFit.Models
                 };
                 foreach (var tag in tags)
                     context.Tag.Add(tag); //add to database
-                var trainer = new List<Trainer>
-                {
-                    new Trainer
-                    {
-                        FirstName = "Ivan",
-                        SecondName = "Ivanov",
-                        PersonalTrainer = true,
-                        Discription =
-                            "I am a 24-year-old trainer from Moscow. I have a NASM personal training cert. and a group exercise certification. I have been an athlete my whole life and now I want to help others get in shape and teach them how to push themselves. I love the outdoors. I hike, camp, surf, bike and play basketball. Fitness is my passion because it's something that helps relieve stress and I love pushing my limits."
-                    },
-                    new Trainer
-                    {
-                        FirstName = "Petr",
-                        SecondName = "Petrov",
-                        PersonalTrainer = true,
-                        Discription =
-                            "I've been teaching group fitness for almost three years; mostly in and around Seattle Washington. Teaching class is something that is intrinsically rewarding for me; I love exercise. I've been involved with sports my whole life, and competed in two sports at the NCAA level. Through my athletic career I learned that you only get out of your body what you put into it, and how hard work will dictate success. This also translated to the real world. In this way, I think exercise is of fundamental importance. "
-                    },
-                    new Trainer
-                    {
-                        FirstName = "Elena",
-                        SecondName = "Lenina",
-                        PersonalTrainer = true,
-                        Discription =
-                            "Catalyst : someone that accelerates progress or change. Certified health and wellness coach from The Institute for Integrative Nutrition. Bevin believes that what you eat is how you perform, what you do is who you are, and what you think becomes your reality."
-                    },
-                    new Trainer
-                    {
-                        FirstName = "Karina",
-                        SecondName = "Kart",
-                        PersonalTrainer = true,
-                        Discription =
-                            "I grew up playing any and every sport, which eventually lead to my passion for health and fitness. Personal training gave me the ability to empower others regardless of their fitness level. A healthy balanced lifestyle will benefit you both mentally and physically. Your body won't go where your mind doesn't push it."
-                    },
-                    new Trainer
-                    {
-                        FirstName = "Semen",
-                        SecondName = "Semenov",
-                        PersonalTrainer = false,
-                        Discription =
-                            "I've been teaching group fitness for almost three years; mostly in and around Seattle Washington. Teaching class is something that is intrinsically rewarding for me; I love exercise. I've been involved with sports my whole life, and competed in two sports at the NCAA level. Through my athletic career I learned that you only get out of your body what you put into it, and how hard work will dictate success. This also translated to the real world. In this way, I think exercise is of fundamental importance. "
-                    }
-                };
-                foreach (var train in trainer)
-                    context.Trainer.Add(train); //add to database
+               
                 var workout = new List<Workout>
                 {
                     new Workout
@@ -645,51 +506,7 @@ namespace BeFit.Models
                 };
                 foreach (var group in groupofmuscles)
                     context.GroupsOfMuscles.Add(group);
-                var trainersservice = new List<TrainersServices>
-                {
-                    new TrainersServices
-                    {
-                        TrainerID = trainer.Single(tr => tr.SecondName == "Ivanov").TrainerID,
-                        ServiceID = service.Single(ser => ser.Name == "Gym").ServiceID
-                    },
-                    new TrainersServices
-                    {
-                        TrainerID = trainer.Single(tr => tr.SecondName == "Ivanov").TrainerID,
-                        ServiceID = service.Single(ser => ser.Name == "Yoga").ServiceID
-                    },
-                    new TrainersServices
-                    {
-                        TrainerID = trainer.Single(tr => tr.SecondName == "Petrov").TrainerID,
-                        ServiceID = service.Single(ser => ser.Name == "Gym").ServiceID
-                    },
-                    new TrainersServices
-                    {
-                        TrainerID = trainer.Single(tr => tr.SecondName == "Lenina").TrainerID,
-                        ServiceID = service.Single(ser => ser.Name == "Pilates").ServiceID
-                    },
-                    new TrainersServices
-                    {
-                        TrainerID = trainer.Single(tr => tr.SecondName == "Lenina").TrainerID,
-                        ServiceID = service.Single(ser => ser.Name == "HIIT").ServiceID
-                    },
-                    new TrainersServices
-                    {
-                        TrainerID = trainer.Single(tr => tr.SecondName == "Kart").TrainerID,
-                        ServiceID = service.Single(ser => ser.Name == "Zumba").ServiceID
-                    },
-                    new TrainersServices
-                    {
-                        TrainerID = trainer.Single(tr => tr.SecondName == "Semenov").TrainerID,
-                        ServiceID = service.Single(ser => ser.Name == "Gym").ServiceID
-                    },
-                    new TrainersServices
-                    {
-                        TrainerID = trainer.Single(tr => tr.SecondName == "Semenov").TrainerID,
-                        ServiceID = service.Single(ser => ser.Name == "HIIT").ServiceID
-                    }
-                };
-                foreach (var tr in trainersservice)
-                    context.TrainersService.Add(tr);
+               
                 context.SaveChanges(); //save database
             }
         }

@@ -178,15 +178,9 @@ namespace BeFit.Migrations
 
                     b.Property<int>("OneDayFoodID");
 
-                    b.Property<DateTime>("Time");
-
-                    b.Property<int>("WeightOfFoodID");
-
                     b.HasKey("IngestionID");
 
                     b.HasIndex("OneDayFoodID");
-
-                    b.HasIndex("WeightOfFoodID");
 
                     b.ToTable("Ingestion");
                 });
@@ -287,52 +281,6 @@ namespace BeFit.Migrations
                     b.ToTable("OneDayWorkout");
                 });
 
-            modelBuilder.Entity("BeFit.Models.Service", b =>
-                {
-                    b.Property<int>("ServiceID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Description")
-                        .HasAnnotation("MaxLength", 500);
-
-                    b.Property<byte[]>("ImageData");
-
-                    b.Property<string>("ImageMimeType");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 50);
-
-                    b.HasKey("ServiceID");
-
-                    b.ToTable("Service");
-                });
-
-            modelBuilder.Entity("BeFit.Models.Subscription", b =>
-                {
-                    b.Property<int>("SubscriptionID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("CountOfVisits")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 20);
-
-                    b.Property<int>("DurationMonth");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 50);
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("money");
-
-                    b.Property<int>("TypeService");
-
-                    b.HasKey("SubscriptionID");
-
-                    b.ToTable("Subscription");
-                });
-
             modelBuilder.Entity("BeFit.Models.Tag", b =>
                 {
                     b.Property<int>("TagID")
@@ -347,45 +295,6 @@ namespace BeFit.Migrations
                     b.ToTable("Tag");
                 });
 
-            modelBuilder.Entity("BeFit.Models.Trainer", b =>
-                {
-                    b.Property<int>("TrainerID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Discription");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 50);
-
-                    b.Property<byte[]>("ImageData");
-
-                    b.Property<string>("ImageMimeType");
-
-                    b.Property<bool?>("PersonalTrainer");
-
-                    b.Property<string>("SecondName")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 50);
-
-                    b.HasKey("TrainerID");
-
-                    b.ToTable("Trainer");
-                });
-
-            modelBuilder.Entity("BeFit.Models.TrainersServices", b =>
-                {
-                    b.Property<int>("ServiceID");
-
-                    b.Property<int>("TrainerID");
-
-                    b.HasKey("ServiceID", "TrainerID");
-
-                    b.HasIndex("TrainerID");
-
-                    b.ToTable("TrainersServices");
-                });
-
             modelBuilder.Entity("BeFit.Models.WeightOfFood", b =>
                 {
                     b.Property<int>("WeightOfFoodID")
@@ -393,11 +302,15 @@ namespace BeFit.Migrations
 
                     b.Property<int>("FoodID");
 
+                    b.Property<int>("IngestionID");
+
                     b.Property<double>("Weight");
 
                     b.HasKey("WeightOfFoodID");
 
                     b.HasIndex("FoodID");
+
+                    b.HasIndex("IngestionID");
 
                     b.ToTable("WeightOfFood");
                 });
@@ -469,11 +382,6 @@ namespace BeFit.Migrations
                         .WithMany("Ingestions")
                         .HasForeignKey("OneDayFoodID")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("BeFit.Models.WeightOfFood", "WeightOfFood")
-                        .WithMany()
-                        .HasForeignKey("WeightOfFoodID")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("BeFit.Models.OneDayFood", b =>
@@ -500,24 +408,16 @@ namespace BeFit.Migrations
                         .HasForeignKey("WorkoutID");
                 });
 
-            modelBuilder.Entity("BeFit.Models.TrainersServices", b =>
-                {
-                    b.HasOne("BeFit.Models.Service", "Service")
-                        .WithMany("Trainers")
-                        .HasForeignKey("ServiceID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("BeFit.Models.Trainer", "Trainer")
-                        .WithMany("Services")
-                        .HasForeignKey("TrainerID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("BeFit.Models.WeightOfFood", b =>
                 {
                     b.HasOne("BeFit.Models.Food", "Food")
                         .WithMany("WeightsOfFood")
                         .HasForeignKey("FoodID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("BeFit.Models.Ingestion", "Ingestion")
+                        .WithMany("WeightOfFood")
+                        .HasForeignKey("IngestionID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

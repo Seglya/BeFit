@@ -1,0 +1,107 @@
+﻿@model BeFit.Models.UserProfileViewModels.OneDayFoodViewModel
+
+
+@{
+    ViewData["Title"] = "Meal";
+}
+
+    <script src="~/js/NewFieldFood.js" type="text/javascript"></script>
+
+<div class="container">
+    <div>
+        <h2>@ViewData["Title"]</h2>
+
+        <form method="post" asp-controller="Meal" asp-action="Create" class="form-horizontal" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <h4>Exercise</h4>
+                <hr/>
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Date</label>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <div class="col-md-4 ">
+                                    <div class="form-group">
+                                        <input asp-for="AppUserID" value="@Model.AppUserID" class="hidden" />
+                                        <input asp-for="Date" value="@Model.Date" class="form-control"/>
+                                        <span asp-validation-for="Date" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Water</label>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <input asp-for="Water" value="@Model.Water" class="form-control" />
+                                        <span asp-validation-for="Water" class="text-danger"></span>
+                                    </div>
+                                    </div>
+                            </div>
+                           </div>
+                        </div>
+                </div>
+               @{ int count = -1;}
+                @foreach(var item in Model.Ingestions)
+{count++;
+    <div class="form-group">
+        <label class="col-md-2 control-label">@item.Name</label>
+        <div class="form-group">
+            <div class="col-sm-5">
+              <div class="form-group">
+                     <div class="col-sm-4 nopadding">
+                         <div class="form-group">
+                             <select id="select" name="food[@count][]" class="form-control" asp-items="ViewBag.FoodID">
+                                 <option value="">-- Select Food --</option>
+                             </select>
+                         </div>
+                     </div>
+                                     
+                     <label class="col-md-2 control-label">Weight</label>
+                                        
+                     <div class="col-md-4">
+                         <div class="form-group">
+                                             
+                             <div class="input-group">
+                                 <input name="Weight[@count][]" class="form-control"/>
+                                 <span class="input-group-btn">
+                                     <button class="btn btn-success" type="button" onclick="ingestions_fields(@count);"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>
+                                 </span></div>
+                         </div>
+                     </div>
+                 </div>
+                
+                <p>
+                    <div id="Ingections_Fields+@count">
+                    </div>
+                </p>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+  
+                }
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-6">
+                        <input type="submit" value="Save" class="btn btn-default"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div>
+            <a asp-controller="UserProfile" asp-action="Profile" class="btn-danger">Back to Profile</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

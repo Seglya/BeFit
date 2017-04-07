@@ -1,27 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 namespace BeFit.Models
 {
-    public class PagerList<T>: List<T>
+    public class PagerList<T> : List<T>
 
     {
-        public int PageIndex { get; private set; }
-        public  int TotalPages { get; private set; }
-
-        public PagerList (List<T> items, int count, int pageIndex, int pageSize)
+        public PagerList(List<T> items, int count, int pageIndex, int pageSize)
         {
             PageIndex = pageIndex;
             TotalPages = (int) Math.Ceiling(count / (double) pageSize);
-            this.AddRange(items);
-
+            AddRange(items);
         }
-        public bool HasPreviousPage => (PageIndex > 1);
 
-        public bool HasNextPage => (PageIndex < TotalPages);
+        public int PageIndex { get; }
+        public int TotalPages { get; }
+        public bool HasPreviousPage => PageIndex > 1;
+
+        public bool HasNextPage => PageIndex < TotalPages;
 
         public static PagerList<T> Create(IEnumerable<T> source, int pageIndex, int pageSize)
         {
@@ -33,6 +30,5 @@ namespace BeFit.Models
             }
             return null;
         }
-
     }
 }

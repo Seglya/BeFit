@@ -1,4 +1,4 @@
-@model PagerList<BeFit.Models.Exercise>
+@model PagerList<Exercise>
 
 @{
     ViewData["Title"] = "Index";
@@ -14,26 +14,29 @@
                 <p>
                     <a asp-action="Create">Create New</a>
                 </p>
-                <form  asp-action="Index" Method="get">
-                    <div class="form-actions no-color" >
+                <form asp-action="Index" Method="get">
+                    <div class="form-actions no-color">
                         <label>Search: </label>
-                        <input type="text" name="filter" value="@ViewData["currentFilter"]" />
+                        <input type="text" name="filter" value="@ViewData["currentFilter"]"/>
                         <input type="submit" value="search" class="btn-default"/>
-                        <a asp-action="Index" >Back to full list</a>
+                        <a asp-action="Index">Back to full list</a>
                     </div>
                     <div class="pull-right">
                         <a asp-action="Index" asp-route-pageSize="12"> 12 </a>
                         <label> | </label>
-                        <a asp-action="Index" asp-route-pageSize="24"> 24  </a>
+                        <a asp-action="Index" asp-route-pageSize="24"> 24 </a>
                     </div>
                 </form>
-                <table class="table" >
+                <table class="table">
                     <thead>
                     <tr>
 
-                        <th><a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewBag.NameSortParam" 
-                               asp-route-currentFilter="@ViewData["currentFilter"]">Name</a>
-                                
+                        <th>
+                            <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewBag.NameSortParam"
+                               asp-route-currentFilter="@ViewData["currentFilter"]">
+                                Name
+                            </a>
+
                         </th>
                         <th></th>
                     </tr>
@@ -62,7 +65,7 @@
         var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
         var nextDisabled = !Model.HasNextPage ? "disabled" : "";
     }
-    <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex-1)" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @prevDisabled btn">Previous</a>
-    <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex+1)" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @nextDisabled btn">Next</a>
+    <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex - 1)" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @prevDisabled btn">Previous</a>
+    <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex + 1)" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @nextDisabled btn">Next</a>
 
 </div>

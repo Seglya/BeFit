@@ -13,13 +13,13 @@
 
             <div class="form-group">
                 <h4>Exercise</h4>
-                <hr />
+                <hr/>
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Name" class="col-md-2 control-label"></label>
                     <div class="col-md-6">
-                        <input asp-for="Name" class="form-control" />
-                        <span asp-validation-for="Name" class="text-danger" />
+                        <input asp-for="Name" class="form-control"/>
+                        <span asp-validation-for="Name" class="text-danger"/>
                     </div>
                 </div>
                 <p>
@@ -27,44 +27,41 @@
                         <label asp-for="Description" class="col-md-2 control-label"></label>
 
                         <div class="col-md-6">
-                            <input asp-for="Description" class="form-control" multiline />
-                            <span asp-validation-for="Description" class="text-danger" />
+                            <input asp-for="Description" class="form-control" multiline/>
+                            <span asp-validation-for="Description" class="text-danger"/>
                         </div>
                     </div>
                 </p>
                 <p>
-             <div class="form-group">
-                       
+                    <div class="form-group">
+
                         <label asp-for="Muscles" class="col-md-2 control-label"></label>
                         <div class="col-md-6">
 
                             @if (Model.AllMuscles.Count() != 0)
                             {
-                                int i = 0;
+                                var i = 0;
                                 foreach (var muscl in Model.AllMuscles)
                                 {
-                                    bool flag=false;
+                                    var flag = false;
                                     foreach (var muscle in ViewBag.muscles)
                                     {
                                         if (i.ToString() == muscle)
                                         {
-
                                             <input id="@i" type="checkbox" name="muscleIndex" value="@i" checked="checked"/>
                                             <label asp-for="@i">@muscl.Name</label>
                                             flag = true;
                                             break;
                                         }
-
-
                                     }
-                                    if (flag == false) { 
-                                    <input id="@i" type="checkbox" name="musclesIndex" value="@i" />
-                                    <label asp-for="@i">@muscl.Name</label>
+                                    if (flag == false)
+                                    {
+                                        <input id="@i" type="checkbox" name="musclesIndex" value="@i"/>
+                                        <label asp-for="@i">@muscl.Name</label>
                                     }
                                     i++;
-
                                 }
-                                <span asp-validation-for="Muscles" class="text-danger" ></span>
+                                <span asp-validation-for="Muscles" class="text-danger"></span>
                             }
 
                         </div>
@@ -73,18 +70,19 @@
 
                 <div class="form-group ">
                     @if (Model.ImageData != null)
-            {<div>
-                        <label class="col-md-2 control-label">Image</label>
-                        <div class="col-md-8" style="margin-right: 10px">
-                            <img style="width:100px; height:100px;" alt="Exercise image" src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.ImageData))" />
+                    {
+                        <div>
+                            <label class="col-md-2 control-label">Image</label>
+                            <div class="col-md-8" style="margin-right: 10px">
+                                <img style="height: 100px; width: 100px;" alt="Exercise image" src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.ImageData))"/>
+                            </div>
                         </div>
-                    </div>
                     }
                     <div>
-                    <label class="col-md-2 control-label">Change image</label>
+                        <label class="col-md-2 control-label">Change image</label>
                         <div class="col-md-6">
-                            <input type="file" name="image" />
-                            
+                            <input type="file" name="image"/>
+
                         </div>
                     </div>
 
@@ -92,7 +90,7 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-6">
-                        <input type="submit" value="Edit" class="btn btn-default" />
+                        <input type="submit" value="Edit" class="btn btn-default"/>
                     </div>
                 </div>
             </div>
@@ -105,5 +103,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

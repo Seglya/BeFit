@@ -14,8 +14,9 @@ namespace BeFit.Models.UserProfileViewModels
         public DateTime Date { get; set; } // дата тренировки
         public int AppUserID { get; set; } // ID пользователя
         public int? CardioID { get; set; } //ID кардио
+        public string CardioName { get; set; }
        public int Duration { get; set; } // продолжительность в минутах
         public int? WorkoutID { get; set; } //ID силовой тренировки
-        public WorkoutViewModel WorkoutViewModel { get; set; } // силовая тренировка
+        public UserWorkoutViewModel UserWorkoutViewModel { get; set; } // силовая тренировка
     }
 }

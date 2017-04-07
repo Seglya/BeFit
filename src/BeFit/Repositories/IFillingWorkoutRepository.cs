@@ -48,7 +48,8 @@ namespace BeFit.Repositories
                     WorkoutID = workoutId,
                     Sets = sets,
                     RepeatMin = min,
-                    RepeatMax = max
+                    RepeatMax = max,
+                    Exercise = exercise
                 };
                 if (_context.FillingWorkout.Contains(newFillingWorkout) == false)
                 {

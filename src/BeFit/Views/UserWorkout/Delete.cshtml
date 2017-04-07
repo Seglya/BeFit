@@ -1,0 +1,21 @@
+@model BeFit.Models.UserProfileViewModels.OneDayWorkoutViewModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete workout at @Model.Date?</h3>
+<div>
+    
+    <hr/>
+    <form asp-action="Delete" asp-route-user="@Model.AppUserID" >
+      
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default"/> |
+            <a asp-action="Detail" asp-route-oneDayWorkoutId="@ViewData["oneDayId"]">Back to Detail</a>   
+        </div>
+    </form>
+    
+</div>

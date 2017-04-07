@@ -75,7 +75,7 @@ namespace BeFit.Repositories
                 if (viewModel.Exercises != null)
                     workout.Exercises = viewModel.Exercises;
             }
-
+            workout.PersonWorkout = viewModel.PersonWorkout;
             workout.Name = viewModel.Name;
             workout.Description = viewModel.Description;
             workout.TagID = viewModel.TagId;

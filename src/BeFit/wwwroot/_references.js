@@ -1,5 +1,6 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="js/newfield.js" />
+/// <reference path="js/newfieldfood - copy.js" />
 /// <reference path="js/newfieldfood.js" />
 /// <reference path="js/preview.js" />
 /// <reference path="js/site.js" />

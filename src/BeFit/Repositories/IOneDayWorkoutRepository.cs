@@ -48,8 +48,8 @@ namespace BeFit.Repositories
 
         public async Task<OneDayWorkout> AddOrEditOneDayWorkoutAsync(int id, OneDayWorkoutViewModel viewModel)
         {
-            var oneDayWorkout = await GetOneDayWorkoutByIdAsync(id);
-            if (oneDayWorkout == default(OneDayWorkout))
+            var oneDayWorkout =_context.OneDayWorkout.Find(id);
+            if (oneDayWorkout ==null)
             {
                 oneDayWorkout=new OneDayWorkout {AppUserID = viewModel.AppUserID,CardioID = viewModel.CardioID,Date = viewModel.Date,Duration = viewModel.Duration,WorkoutID = viewModel.WorkoutID};
                 _context.OneDayWorkout.Add(oneDayWorkout);

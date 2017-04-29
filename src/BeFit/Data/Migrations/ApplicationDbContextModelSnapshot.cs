@@ -37,6 +37,8 @@ namespace BeFit.Data.Migrations
 
                     b.Property<string>("NormalizedEmail")
                         .HasAnnotation("MaxLength", 256);
+                    b.Property<string>("Login")
+                        .HasAnnotation("MaxLength", 50);
 
                     b.Property<string>("NormalizedUserName")
                         .HasAnnotation("MaxLength", 256);

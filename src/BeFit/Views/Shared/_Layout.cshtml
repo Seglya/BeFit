@@ -12,10 +12,14 @@
     <title>BeFit</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="~/lib/bootstrap/startbootstrap-business-frontpage-gh-pages/css/bootstrap.css"  rel="stylesheet">
-
+  @*  <link href="~/lib/bootstrap/startbootstrap-business-frontpage-gh-pages/css/bootstrap.css"  rel="stylesheet">*@
+    <link href="~/lib/bootstrap/BASICA Free Website Template - Free-CSS.com/BASICA/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/BASICA Free Website Template - Free-CSS.com/BASICA/css/custom.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/BASICA Free Website Template - Free-CSS.com/BASICA/css/main.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/BASICA Free Website Template - Free-CSS.com/BASICA/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/BASICA Free Website Template - Free-CSS.com/BASICA/css/icomoon-social.css" rel="stylesheet" />
     <!-- Custom CSS -->
-    <link href="~/lib/bootstrap/startbootstrap-business-frontpage-gh-pages/css/business-frontpage.css" rel="stylesheet">
+  @*  <link href="~/lib/bootstrap/startbootstrap-business-frontpage-gh-pages/css/business-frontpage.css" rel="stylesheet">*@
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -23,7 +27,13 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/js/globalize.js"></script>
+    <script src="~/js/js/dx.all.js"></script>
+    <script src="~/js/js/aspnet/dx.aspnet.data.js"></script>
 
+    <link rel="stylesheet" href="~/css/css/dx.common.css" />
+    <link rel="stylesheet" href="~/css/css/dx.light.compact.css" />
 </head>
 
 <body>
@@ -46,8 +56,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="UserProfile" asp-action="Profile" >My Dayries</a></li>
-                    <li><a asp-area="" asp-controller="FitnessCenter" asp-action="Index">Fitness center</a></li>
-                    <li><a asp-area="" asp-controller="Article" asp-action="List">Articles</a></li>
+                  <li><a asp-area="" asp-controller="News" asp-action="List">News</a></li>
                     <li><a asp-area="" asp-controller="Exercise" asp-action="List">Exercises</a></li>
                     <li><a asp-area="" asp-controller="Workout" asp-action="List">Workouts</a></li>
                     <li><a asp-area="" asp-controller="Admin" asp-action="Index">Admin</a></li>

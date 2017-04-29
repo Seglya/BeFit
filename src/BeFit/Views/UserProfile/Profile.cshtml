@@ -67,6 +67,13 @@
     <a asp-action="Index" asp-controller="Meal" asp-route-id="@Model.AppUserID">Meals</a>
     <br />
     <a asp-action="Index" asp-controller="UserWorkout" asp-route-id="@Model.AppUserID">Workouts</a>
+    <br />
+    <a asp-action="WorkoutChart" asp-controller="Charts" asp-route-id="@Model.AppUserID">Workout Charts</a>
+    <br />
+    <a asp-action="MealChart" asp-controller="Charts" asp-route-id="@Model.AppUserID">Meal Charts</a>
+    <br />
+    <a asp-action="MeasureChart" asp-controller="Charts" asp-route-id="@Model.AppUserID">Measurement Charts</a>
+
 
 </div>
 @section Scripts {

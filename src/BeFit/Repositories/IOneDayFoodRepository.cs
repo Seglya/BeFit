@@ -16,6 +16,7 @@ namespace BeFit.Repositories
         Task<OneDayFood> AddOrEditOneDayFoodAsync(OneDayFoodViewModel viewModel, int id);
         void DeleteOneDayFood(int id);
         Task<OneDayFood> GetOneDayFoodBiIdAsync(int id);
+        List<chartItem> ChartItems(int id);
     }
 
     public class OneDayFoodRepository : IOneDayFoodRepository
@@ -70,6 +71,45 @@ namespace BeFit.Repositories
         public async Task<OneDayFood> GetOneDayFoodBiIdAsync(int id)
         { 
             return await _context.OneDayFood.Include(t=>t.Ingestions).ThenInclude(t=>t.WeightOfFood).ThenInclude(t=>t.Food).SingleOrDefaultAsync(t=>t.OneDayFoodID==id);}
-        
+
+        public List<chartItem> ChartItems(int id)
+        {
+            var coll = _context.OneDayFood.OrderBy(t => t.Date).Include(t => t.Ingestions).ThenInclude(t=>t.WeightOfFood).ThenInclude(t=>t.Food).Where(t => t.AppUserID == id);
+            var start = _context.AppUser.Find(id).DateOfRegoistration;
+            var max = (DateTime.Today - start).Days;
+            var cartItems = new List<chartItem>();
+            for (var i = 0; i <= max; i++)
+            {
+               foreach (var meal in coll)
+                {
+                    if (meal.Date.Date == start.AddDays(i).Date )
+                    {
+                        double cal = 0;
+                        foreach (var food in meal.Ingestions)
+                        {
+                            foreach (var item in food.WeightOfFood)
+                            {
+                                cal += item.Weight * item.Food.Calories / 100;
+                            }
+                            
+                        }
+                       cartItems.Add(
+                         new chartItem
+                         {
+                             date = start.AddDays(i),
+                             visits = cal,
+                         });
+                    }
+                    else
+                    {
+                        cartItems.Add(new chartItem { date = start.AddDays(i), visits = 0 });
+                    }
+
+                }
+
+            }
+            return  cartItems ;
+        }
     }
+
 }

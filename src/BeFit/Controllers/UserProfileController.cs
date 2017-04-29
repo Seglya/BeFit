@@ -98,13 +98,16 @@ namespace BeFit.Controllers
             if (id == 0)
             {
                 var key = GetCurrentUserAsync().Result.Id;
+                if (key == null)
+                    return NotFound();
                 var user = await _appUserRepository.GetUserByKeyAsync(key);
                 return View(user);
             }
             else
             {
                 var user = await _appUserRepository.GetUserProfileById(id);
-
+                if (user == null)
+                    return NotFound();
                 return View(user);
             }
         }

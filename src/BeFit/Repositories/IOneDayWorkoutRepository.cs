@@ -6,6 +6,7 @@ using BeFit.Data;
 using BeFit.Models;
 using BeFit.Models.UserProfileViewModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Expressions;
 
 namespace BeFit.Repositories
 {
@@ -15,6 +16,7 @@ namespace BeFit.Repositories
         Task<OneDayWorkout> GetOneDayWorkoutByIdAsync(int id);
         Task<OneDayWorkout> AddOrEditOneDayWorkoutAsync(int id, OneDayWorkoutViewModel viewModel);
         void DeleteOneDayWorkout(int id);
+        List<chartItem> ChartData(int id);
 
     }
 
@@ -82,5 +84,33 @@ namespace BeFit.Repositories
             }
         }
 
+        public List<chartItem> ChartData(int id)
+        {
+            var weight = _context.AppUser.Find(id).CurrentWeight;
+            var coll = _context.OneDayWorkout.OrderBy(t => t.Date).Include(t=>t.Cardio).Where(t => t.AppUserID == id);
+            var start = _context.AppUser.Find(id).DateOfRegoistration;
+            var max = (DateTime.Today-start).Days;
+            var cartItems = new List<chartItem>();
+            for (var i = 0; i <= max; i++)
+            {
+                foreach (var workout in coll)
+                {
+                    cartItems.Add(workout.Date.Date == start.AddDays(i).Date
+                        ? new chartItem
+                        {
+                            date = start.AddDays(i),
+                            visits = workout.Duration *weight* workout.Cardio.CalPerHour/60
+                        }
+                        : new chartItem {date = start.AddDays(i), visits = 0});
+                }
+             
+            }
+            return cartItems;
+
+
+        }
+
     }
+
+  
 }

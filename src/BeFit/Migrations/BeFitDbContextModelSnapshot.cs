@@ -221,6 +221,8 @@ namespace BeFit.Migrations
                     b.Property<int>("NewsID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ImagePath");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 50);

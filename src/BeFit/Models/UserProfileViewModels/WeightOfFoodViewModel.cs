@@ -34,7 +34,7 @@ namespace BeFit.Models.UserProfileViewModels
             get
             {
                 if (Food == null) return 0;
-                return Food.Carbohydrate * Weight / 100;
+                return Food.Carbohydrate * Weight/100;
             }
         } //Количество углеводов
     }

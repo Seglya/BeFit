@@ -16,7 +16,7 @@
 </header>
 <div class="container">
     <h2>@ViewData["Title"].</h2>
-    <form asp-action="NewUser" method="post" class="form-horizontal" enctype="multipart/form-data">
+    <form asp-action="NewUser" asp-route-id="@ViewData["user"]" method="post" class="form-horizontal" enctype="multipart/form-data">
         <hr/>
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
@@ -48,6 +48,13 @@
             <div class="col-md-8">
                 <input type="date" asp-for="DateOfBirth" class="form-control"/>
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Height" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+                <input asp-for="Height" class="form-control" />
+                <span asp-validation-for="Height" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
@@ -84,7 +91,8 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
 
-                <input type="submit" value="Save" class="btn btn-default"/>
+                <input type="submit" value="Save" class="btn btn-default"/>|
+                <a asp-action="Profile" >To Profile</a>
             </div>
         </div>
     </form>

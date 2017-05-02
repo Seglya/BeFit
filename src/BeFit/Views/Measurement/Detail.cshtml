@@ -6,14 +6,14 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Exercise</h4>
+    <h4>Measurement</h4>
     <hr/>
+    <a asp-action="AddMeasurement" asp-route-id="@ViewData["userId"]">Add new</a>
     <table class="table">
         <thead>
         <tr>
             <th>
-                <a asp-action="Detail" asp-route-sortOrder="@ViewBag.DateSortParam"
-                   asp-route-currentFilter="@ViewData["currentFilter"]">
+                <a asp-action="Detail" asp-route-sortOrder="@ViewBag.DateSortParam">
                     Date
                 </a>
             </th>
@@ -39,8 +39,8 @@
                     </td>
                 }
                 <td >
-                    <a asp-action="Edit" asp-route-date="@item.Date" asp-route-id="@ViewData["userId"]">Edit</a> |
-                    <a asp-action="Delete" asp-route-date="@item.Date" asp-route-id="@ViewData["userId"]">Delete</a>
+                    <a asp-action="Edit" asp-route-date="@item.Date.Date" asp-route-id="@ViewData["userId"]">Edit</a> |
+                    <a asp-action="Delete" asp-controller="Measurement" asp-route-date="@item.Date.Date" asp-route-id="@ViewData["userId"]">Delete</a>
                 </td>
             </tr>
         }

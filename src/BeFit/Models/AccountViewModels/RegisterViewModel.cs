@@ -5,6 +5,10 @@ namespace BeFit.Models.AccountViewModels
     public class RegisterViewModel
     {
         [Required]
+        [StringLength(50, ErrorMessage = "The Login has to be at least 2 and at max 50 characters long.")]
+        [Display(Name = "Login")]
+        public string Login { get; set; }
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }

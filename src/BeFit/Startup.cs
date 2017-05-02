@@ -13,6 +13,7 @@ using BeFit.Data;
 using BeFit.Models;
 using BeFit.Services;
 using BeFit.Repositories;
+using Microsoft.AspNetCore.Identity;
 
 namespace BeFit
 {
@@ -36,6 +37,7 @@ namespace BeFit
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+            
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -63,6 +65,13 @@ namespace BeFit
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = false;
+                // Cookie settings
+                options.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(150);
+                options.Cookies.ApplicationCookie.LoginPath = "/Account/LogIn";
+                options.Cookies.ApplicationCookie.LogoutPath = "/Account/LogOff";
+
+                // User settings
+                options.User.RequireUniqueEmail = true;
             });
             services.AddMvc();
 
@@ -88,7 +97,7 @@ namespace BeFit
         }
   
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, BeFitDbContext context)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, BeFitDbContext context, IServiceProvider serviceProvider)
         {
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -112,6 +121,7 @@ namespace BeFit
             app.UseStaticFiles();
 
             app.UseIdentity();
+           
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
@@ -122,6 +132,50 @@ namespace BeFit
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
             DbInitializer.Initialize(context);
+            CreateRoles(serviceProvider).GetAwaiter();
+
+
+
+        }
+        private async Task CreateRoles(IServiceProvider serviceProvider)
+        {
+            //initializing custom roles 
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            string[] roleNames = { "Admin", "User" };
+            IdentityResult roleResult;
+
+            foreach (var roleName in roleNames)
+            {
+                var roleExist = await RoleManager.RoleExistsAsync(roleName);
+                if (!roleExist)
+                {
+                    //create the roles and seed them to the database
+                    roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
+
+            //d create an admin who will maintain the web app
+            var adminUser = new ApplicationUser
+            {
+                Login = "Admin",
+                UserName = "Admin",
+                Email = "Admin@mail.ru",
+            };
+            //Ensure you have these values in your appsettings.json file
+            string userPWD = "Admin741";
+            var _user = await UserManager.FindByEmailAsync("Admin@mail.ru");
+
+            if (_user == null)
+            {
+                var createAdminUser = await UserManager.CreateAsync(adminUser, userPWD);
+                if (createAdminUser.Succeeded)
+                {
+                    //here we tie the new user to the role
+                    await UserManager.AddToRoleAsync(adminUser, "Admin");
+
+                }
+            }
         }
     }
 }

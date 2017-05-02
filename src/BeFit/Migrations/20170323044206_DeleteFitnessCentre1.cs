@@ -15,7 +15,8 @@ namespace BeFit.Migrations
                 {
                     AppUserID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CurrentWeight = table.Column<int>(nullable: false),
+                    CurrentWeight = table.Column<double>(nullable: false),
+                    Height = table.Column<int>(nullable: false),
                     DateOfBirth = table.Column<DateTime>(nullable: false),
                     DateOfRegoistration = table.Column<DateTime>(nullable: false),
                     FirstName = table.Column<string>(maxLength: 50, nullable: false),
@@ -25,7 +26,8 @@ namespace BeFit.Migrations
                     Key = table.Column<string>(nullable: true),
                     SecondName = table.Column<string>(maxLength: 50, nullable: false),
                     Sex = table.Column<string>(nullable: true),
-                    WeeksForGoal = table.Column<int>(nullable: false)
+                    WeeksForGoal = table.Column<int>(nullable: false),
+                    Activity = table.Column<double>(nullable: false),
                 },
                 constraints: table =>
                 {

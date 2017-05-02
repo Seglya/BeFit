@@ -55,11 +55,14 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="UserProfile" asp-action="Profile" >My Dayries</a></li>
+                    <li><a asp-area="" asp-controller="UserProfile" asp-action="Profile" >My Profile</a></li>
                   <li><a asp-area="" asp-controller="News" asp-action="List">News</a></li>
                     <li><a asp-area="" asp-controller="Exercise" asp-action="List">Exercises</a></li>
                     <li><a asp-area="" asp-controller="Workout" asp-action="List">Workouts</a></li>
-                    <li><a asp-area="" asp-controller="Admin" asp-action="Index">Admin</a></li>
+@if (User.IsInRole("Admin"))
+{
+    <li><a asp-area="" asp-controller="Admin" asp-action="Index">Admin</a></li>
+}
               
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")

@@ -38,7 +38,9 @@ namespace BeFit.Models
         [Display(Name = "Full Name")]
         public double Goal { get; set; } //цель в кг
         public int WeeksForGoal { get; set; } // срок достижения цели
-        public int CurrentWeight { get; set; }
+        public double CurrentWeight { get; set; }
+        public int Height { get; set; }
+        public double Activity { get; set; }
         public ICollection<OneDayFood> Food { get; set; }
         public ICollection<OneDayWorkout> Workouts { get; set; }
         public ICollection<FillMeasurement> Measurements { get; set; }

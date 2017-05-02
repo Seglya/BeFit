@@ -46,8 +46,11 @@ namespace BeFit.Controllers
                 DateOfRegisrtration = user.DateOfRegoistration,
                 Goal = user.Goal,
                 SecondName = user.SecondName,
-                WeeksForGoal = user.WeeksForGoal
+                WeeksForGoal = user.WeeksForGoal,
+                Height = user.Height,
+                Activity = user.Activity
             };
+            ViewData["user"] = id;
             return View("NewUser", viewModel);
         }
 
@@ -95,20 +98,54 @@ namespace BeFit.Controllers
         public async Task<IActionResult> Profile(int id = 0)
 
         {
+            ViewData["user"] = id;
             if (id == 0)
             {
                 var key = GetCurrentUserAsync().Result.Id;
                 if (key == null)
                     return NotFound();
                 var user = await _appUserRepository.GetUserByKeyAsync(key);
-                return View(user);
+                if (user == null)
+                {
+                  return  RedirectToAction("NewUser");
+                }
+                ViewData["user"] = user.AppUserID;
+                var viewModel = new UserProfileViewModel
+                {
+                    FirstName = user.FirstName,
+                    Sex = user.Sex,
+                    ImagePath = user.ImagePath,
+                    CurrentWeight = user.CurrentWeight,
+                    DateOfBirth = user.DateOfBirth,
+                    DateOfRegisrtration = user.DateOfRegoistration,
+                    Goal = user.Goal,
+                    SecondName = user.SecondName,
+                    WeeksForGoal = user.WeeksForGoal,
+                    Height = user.Height,
+                    Activity = user.Activity
+                };
+                return View(viewModel);
             }
             else
             {
                 var user = await _appUserRepository.GetUserProfileById(id);
                 if (user == null)
                     return NotFound();
-                return View(user);
+                var viewModel = new UserProfileViewModel
+                {
+                    FirstName = user.FirstName,
+                    Sex = user.Sex,
+                    ImagePath = user.ImagePath,
+                    CurrentWeight = user.CurrentWeight,
+                    DateOfBirth = user.DateOfBirth,
+                    DateOfRegisrtration = user.DateOfRegoistration,
+                    Goal = user.Goal,
+                    SecondName = user.SecondName,
+                    WeeksForGoal = user.WeeksForGoal,
+                    Height = user.Height,
+                    Activity = user.Activity
+                };
+                return View(viewModel);
             }
         }
 

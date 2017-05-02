@@ -42,8 +42,14 @@ namespace BeFit.Models.UserProfileViewModels
         [Range(30, 300)]
         public double Goal { get; set; } //цель в кг
         public int WeeksForGoal { get; set; } // срок достижения цели
-
+        public int Height { get; set; }
         [Range(30, 300)]
-        public int CurrentWeight { get; set; } //Текуший вес
+        public double CurrentWeight { get; set; } //Текуший вес
+        public double Activity { get; set; }
+        public int Years => DateTime.Today.Year - DateOfBirth.Year;
+        [Display(Name = "Base calories per day")]
+        public double BaseCal => (447.6+(9.2*CurrentWeight)+(3.1*Height)-(4.3* Years))*Activity;
+        [Display(Name = "Calorie deficit per day to reach your goal")]
+        public double ReachGoal => (CurrentWeight-Goal)*7700/(WeeksForGoal*7);
     }
 }

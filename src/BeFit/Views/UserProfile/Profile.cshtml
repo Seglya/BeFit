@@ -1,4 +1,4 @@
-﻿@model AppUser
+﻿@model BeFit.Models.UserProfileViewModels.UserProfileViewModel
 @{ ViewData["Title"] = "Profile"; }
 
 <div class="container">
@@ -34,9 +34,15 @@
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="DateOfRegoistration" class="col-md-2 control-label"></label>
+            <label asp-for="DateOfRegisrtration" class="col-md-2 control-label"></label>
             <div class="col-md-8">
-                <label >@Model.DateOfRegoistration.Date</label>
+                <label >@Model.DateOfRegisrtration.Date</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Height" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+                <label>@Model.Height</label>
             </div>
         </div>
         <div class="form-group">
@@ -57,22 +63,34 @@
                 <label class="text-nowrap">@Model.WeeksForGoal</label>
             </div>
         </div>
+        <div class="form-group">
+            <label asp-for="BaseCal" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+                <label class="text-nowrap">@Model.BaseCal</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ReachGoal" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+                <label class="text-nowrap">@Model.ReachGoal</label>
+            </div>
+        </div>
 
 
     </form>
-    <a asp-action="Edit" asp-route-id="@Model.AppUserID">Edit</a>
+    <a asp-action="Edit" asp-route-id="@ViewData["user"]">Edit</a>
     <br/>
-    <a asp-action="Detail" asp-controller="Measurement" asp-route-id="@Model.AppUserID">Measurements</a>
+    <a asp-action="Detail" asp-controller="Measurement" asp-route-id="@ViewData["user"]">Measurements</a>
     <br />
-    <a asp-action="Index" asp-controller="Meal" asp-route-id="@Model.AppUserID">Meals</a>
+    <a asp-action="Index" asp-controller="Meal" asp-route-id="@ViewData["user"]">Meals</a>
     <br />
-    <a asp-action="Index" asp-controller="UserWorkout" asp-route-id="@Model.AppUserID">Workouts</a>
+    <a asp-action="Index" asp-controller="UserWorkout" asp-route-id="@ViewData["user"]">Workouts</a>
     <br />
-    <a asp-action="WorkoutChart" asp-controller="Charts" asp-route-id="@Model.AppUserID">Workout Charts</a>
+    <a asp-action="WorkoutChart" asp-controller="Charts" asp-route-id="@ViewData["user"]">Workout Charts</a>
     <br />
-    <a asp-action="MealChart" asp-controller="Charts" asp-route-id="@Model.AppUserID">Meal Charts</a>
+    <a asp-action="MealChart" asp-controller="Charts" asp-route-id="@ViewData["user"]">Meal Charts</a>
     <br />
-    <a asp-action="MeasureChart" asp-controller="Charts" asp-route-id="@Model.AppUserID">Measurement Charts</a>
+    <a asp-action="MeasureChart" asp-controller="Charts" asp-route-id="@ViewData["user"]">Measurement Charts</a>
 
 
 </div>

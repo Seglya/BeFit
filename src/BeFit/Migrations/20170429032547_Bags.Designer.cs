@@ -8,9 +8,10 @@ using BeFit.Data;
 namespace BeFit.Migrations
 {
     [DbContext(typeof(BeFitDbContext))]
-    partial class BeFitDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170429032547_Bags")]
+    partial class Bags
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")

@@ -6,7 +6,6 @@
 <h2>All meals</h2>
 
 <div>
- @{ int user = 0;}
     <hr />
     <table class="table">
         <thead>
@@ -35,9 +34,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                user = item.OneDayFoodViewModel.AppUserID;
-
-                <tr>
+               <tr>
                     <td>
                         @item.OneDayFoodViewModel.Date
                     </td>
@@ -69,6 +66,6 @@
        
 
     </table>
-    <a asp-action="Create" asp-route-id="@user">Add new</a>
+    <a asp-action="Create" asp-route-id="@ViewData["user"]">Add new</a>
 
 </div>

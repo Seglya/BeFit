@@ -90,7 +90,6 @@
 /// <reference path="jqwidgets/jqxtreemap.js" />
 /// <reference path="jqwidgets/jqxvalidator.js" />
 /// <reference path="jqwidgets/jqxwindow.js" />
-/// <reference path="js/chart.js" />
 /// <reference path="js/newfield.js" />
 /// <reference path="js/newfieldexercise.js" />
 /// <reference path="js/newfieldfood.js" />

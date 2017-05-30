@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using BeFit.Models;
-using BeFit.Models.FoodViewModels;
 using BeFit.Models.NewsViewModels;
 using BeFit.Repositories;
 using Microsoft.AspNetCore.Mvc;

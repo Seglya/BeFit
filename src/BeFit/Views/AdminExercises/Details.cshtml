@@ -1,21 +1,17 @@
 @model Exercise
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Exercise details";
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Exercise</h4>
+<div class="container">
+    <h2>
+        @Html.DisplayFor(model => model.Name)
+    </h2>
     <hr/>
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+       
+      
         <dt>
             @Html.DisplayNameFor(model => model.Description)
         </dt>
@@ -40,16 +36,23 @@
             @if (Model.ImageData != null)
 
             {
-                <img alt="Exercise image" src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.ImageData))"/>
+                <img alt="Exercise image" style="max-height: 500px; margin-left: 100px" src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.ImageData))"/>
             }
         </dd>
 
     </dl>
-</div>
-<div>
+    <div >
     @if (User.IsInRole("Admin"))
     {
-        <a asp-action="Edit" asp-route-id="@Model.ExerciseID">Edit</a>
+        <a asp-action="Edit" asp-route-id="@Model.ExerciseID" class="btn btn-danger">Edit</a>
+        <a asp-action="Index" class="btn btn-grey">Back to List</a>
     }
-    <a asp-action="Index">Back to List</a>
+    else
+    {
+            <a asp-action="List" asp-controller="Exercise" class="btn btn-grey ">Back to List</a>
+        
+    }
+
+        <hr/>
+</div>
 </div>

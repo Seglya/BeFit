@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using BeFit.Data;
+using BeFit.Models;
 
-namespace BeFit.Models
+namespace BeFit.Data
 {
     public class DbInitializer
     {

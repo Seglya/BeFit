@@ -90,11 +90,9 @@ namespace BeFit.Controllers
                 viewModel.AppUserID = oneDayWorkout.AppUserID;
                 PopulateCardioDropDownList(oneDayWorkout.Cardio);
             }
-            else
-            {
+            
                 PopulateCardioDropDownList();
-            }
-            PopulateExerciseDropDownList();
+           PopulateExerciseDropDownList();
 
             return View(viewModel);
         }

@@ -31,7 +31,7 @@ namespace BeFit.Controllers
 
             int sizeOfPage;
             if (int.TryParse(pageSize, out sizeOfPage) == false)
-                sizeOfPage = 6;
+                sizeOfPage = 12;
             if (filter != null)
                 page = 1;
             else

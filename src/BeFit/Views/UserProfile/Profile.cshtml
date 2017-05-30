@@ -1,99 +1,157 @@
 ﻿@model BeFit.Models.UserProfileViewModels.UserProfileViewModel
-@{ ViewData["Title"] = "Profile"; }
+@if (User.IsInRole("Admin") & Model.FirstName!="Admin")
+{
 
-<div class="container">
-    <h2>@ViewData["Title"]</h2>
-    <form id="form" asp-action="Edit" enctype="multipart/form-data" method="get" class="form-horizontal">
-        <div id="img">
+    {
+        ViewData["Title"] = "Profile " + Model.FullName;
+    }
+}
+else
+{
+    {
+        ViewData["Title"] = "My Profile";
+    }
+}
 
-            <img alt="photo" src="@Url.Content(Model.ImagePath)"/>
-        </div>
-        <div class="form-group">
-            <label asp-for="FirstName" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-                <label >@Model.FirstName</label>
+    <div class="section">
+        <div class="container">
+            <form id="form" asp-action="Edit" enctype="multipart/form-data" method="get" class="form-horizontal">
+                <div id="img" class="col-md-3">
+                    @if (Model.ImagePath == null)
+                    {
+                        <img alt="photo" style="max-width: 300px; max-height: 320px" src="/images/avatar_l.png" />
+                    }
+                    else { 
+                    <img alt="photo" style="max-width: 300px; max-height: 320px" src="@Url.Content(Model.ImagePath)" />}
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group ">
+                        <label asp-for="FirstName" class="col-md-6 control-label"></label>
+                        <div class="col-md-6">
+                            <label style="padding: 7px">@Model.FirstName</label>
 
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="SecondName" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-                <label>@Model.SecondName</label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Sex" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-                <label >@Model.Sex</label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="DateOfBirth" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-                <label >@Model.DateOfBirth.Date.Date</label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="DateOfRegisrtration" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-                <label >@Model.DateOfRegisrtration.Date</label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Height" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-                <label>@Model.Height</label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="CurrentWeight" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-                <label >@Model.CurrentWeight</label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Goal" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-                <label >@Model.Goal</label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="WeeksForGoal" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-                <label class="text-nowrap">@Model.WeeksForGoal</label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="BaseCal" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-                <label class="text-nowrap">@Model.BaseCal</label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ReachGoal" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-                <label class="text-nowrap">@Model.ReachGoal</label>
-            </div>
-        </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SecondName" class="col-md-6 control-label"></label>
+                        <div class="col-md-6">
+                            <label style="padding: 7px">@Model.SecondName</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Sex" class="col-md-6 control-label"></label>
+                        <div class="col-md-6">
+                            <label style="padding: 7px">@Model.Sex</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="DateOfBirth" class="col-md-6 control-label"></label>
+                        <div class="col-md-6">
+                            <label style="padding: 7px">@Model.DateOfBirth.Date.Date</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="DateOfRegisrtration" class="col-md-6 control-label"></label>
+                        <div class="col-md-6">
+                            <label style="padding: 7px">@Model.DateOfRegisrtration.Date</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Height" class="col-md-6 control-label"></label>
+                        <div class="col-md-6">
+                            <label style="padding: 7px">@Model.Height</label>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-md-4">
 
-
-    </form>
-    <a asp-action="Edit" asp-route-id="@ViewData["user"]">Edit</a>
-    <br/>
-    <a asp-action="Detail" asp-controller="Measurement" asp-route-id="@ViewData["user"]">Measurements</a>
-    <br />
-    <a asp-action="Index" asp-controller="Meal" asp-route-id="@ViewData["user"]">Meals</a>
-    <br />
-    <a asp-action="Index" asp-controller="UserWorkout" asp-route-id="@ViewData["user"]">Workouts</a>
-    <br />
-    <a asp-action="WorkoutChart" asp-controller="Charts" asp-route-id="@ViewData["user"]">Workout Charts</a>
-    <br />
-    <a asp-action="MealChart" asp-controller="Charts" asp-route-id="@ViewData["user"]">Meal Charts</a>
-    <br />
-    <a asp-action="MeasureChart" asp-controller="Charts" asp-route-id="@ViewData["user"]">Measurement Charts</a>
-
-
+                    <div class="form-group">
+                        <label asp-for="CurrentWeight" class="col-md-6 control-label"></label>
+                        <div class="col-md-6">
+                            <label style="padding: 7px">@Model.CurrentWeight</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+    <label asp-for="Activity" class="col-md-6 control-label"></label>
+    <div class="col-md-6">
+        <label style="padding: 7px">@Model.Activity</label>
+    </div>
 </div>
+                    <div class="form-group">
+                        <label asp-for="Goal" class="col-md-6 control-label"></label>
+                        <div class="col-md-6">
+                            <label style="padding: 7px">@Model.Goal</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="WeeksForGoal" class="col-md-6 control-label"></label>
+                        <div class="col-md-6">
+                            <label style="padding: 7px">@Model.WeeksForGoal</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="BaseCal" class="col-md-6 control-label "></label>
+                        <div class="col-md-6">
+                            <label style="padding: 7px">@Model.BaseCal</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ReachGoal" class="col-md-6 control-label"></label>
+                        <div class="col-md-6">
+                            <label style="padding: 7px">@Model.ReachGoal</label>
+                        </div>
+                    </div>
+                    <br/>
+                    @if (!User.IsInRole("Admin") || (User.IsInRole("Admin") & Model.FirstName == "Admin") ) {
+                    <div class="col-md-8 pull-right">
+                        <a asp-action="Edit" asp-route-id="@ViewData["user"]" class="btn btn-default">Edit</a>
+                    </div>}
+                </div>
+
+                <hr />
+            </form>
+        </div>
+    </div>
+    <hr/>
+<br/>
+@if (!User.IsInRole("Admin") || (User.IsInRole("Admin") & Model.FirstName == "Admin"))
+{
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="service-wrapper">
+                        <a asp-action="Index" asp-controller="Meal" asp-route-id="@ViewData["user"]"><img src="~/images/food.png" height="80" alt="meal"/></a>
+                        <h3>Meals</h3>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="service-wrapper">
+                        <a asp-action="Detail" asp-controller="Measurement" asp-route-id="@ViewData["user"]"><img src="~/images/measurement.png" height="80" alt="measurement"/></a>
+                        <h3>Measurements</h3>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="service-wrapper">
+                        <a asp-action="Index" asp-controller="UserWorkout" asp-route-id="@ViewData["user"]"><img src="~/images/person-running-on-a-treadmill-silhouette-from-side-view.png" height="80"/></a>
+                        <h3>Workouts</h3>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="service-wrapper">
+                        <a asp-controller="UserProfile" asp-action="Charts" asp-route-id="@ViewData["user"]"><img src="~/images/line-chart.png" height="80"/></a>
+                        <h3>Charts</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+    <hr>
+
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

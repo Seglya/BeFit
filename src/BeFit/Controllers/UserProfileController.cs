@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using BeFit.Models;
 using BeFit.Models.UserProfileViewModels;
@@ -24,6 +25,37 @@ namespace BeFit.Controllers
             _appUserRepository = appUserRepository;
             _userManager = userManager;
         }
+        // GET: User
+        public IActionResult Index(string sortOrder, string filter, string currentFilter, int? page)
+        {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["SecondNameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "Second_name_desc" : "Second_name";
+            if (filter != null)
+                page = 1;
+            else
+                filter = currentFilter;
+            ViewData["CurrentFilter"] = filter;
+            var collTag = _appUserRepository.UserProfileByFilter(filter);
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    collTag = collTag.OrderByDescending(s => s.FirstName);
+                    break;
+                case "Second_name_desc":
+                    collTag = collTag.OrderByDescending(s => s.FirstName);
+                    break;
+                case "Second_name":
+                    collTag = collTag.OrderBy(s => s.FirstName);
+                    break;
+                default:
+                    collTag = collTag.OrderBy(s => s.FirstName);
+                    break;
+            }
+            var pageSize = 10;
+            return View(PagerList<AppUser>.Create(collTag, page ?? 1, pageSize));
+        }
 
         // GET: /NewUser/
         public IActionResult NewUser()
@@ -32,6 +64,11 @@ namespace BeFit.Controllers
             return View(new UserProfileViewModel());
         }
 
+        public IActionResult Charts(int id)
+        {
+            ViewData["user"] = id;
+            return View();
+        }
         public async Task<IActionResult> Edit(int id)
         {
             ViewData["Title"] = "Edit prifile";

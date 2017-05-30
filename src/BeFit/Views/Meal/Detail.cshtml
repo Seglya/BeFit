@@ -3,9 +3,9 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
 
-<div>
+<div class="container">
+    <br/>
     <h4>Total meal on @Model.OneDayFoodViewModel.Date.Date</h4>
     <hr/>
     <table class="table">
@@ -32,7 +32,7 @@
             <th>
                 <label>Cal</label>
             </th>
-          
+
         </tr>
         </thead>
         <tbody>
@@ -65,10 +65,11 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => x.Calories)
-                        </td>                <td>
-                    <a asp-action="Edit"  asp-route-id="@x.IngestionId">Edit</a> |
-                    <a asp-action="DeleteIngestion"  asp-route-id="@x.IngestionId">Delete</a>
-                </td>
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@x.IngestionId">Edit</a> |
+                            <a asp-action="DeleteIngestion" asp-route-id="@x.IngestionId">Delete</a>
+                        </td>
 
                     }
                     else
@@ -92,17 +93,17 @@
                             <td>
                                 @Html.DisplayFor(modelItem => x.Calories)
                             </td>
-            <td>
-   
-</td>
+                            <td>
+
+                            </td>
                         </tr>
 
                     }
                     i++;
                 }
             </tr>
-         
-        
+
+
             <tr><td></td>
                 <td><label>Total</label></td>
                 <td></td>
@@ -122,40 +123,44 @@
                         @Html.DisplayFor(modelItem => item.GetCountMealPerIngestion.TotalCal)
                     </label>
                 </td>
-            <td></td>
+                <td></td>
             </tr>
         }
         </tbody>
         <tfoot>
-            <tr>
-                <td></td>
-                <td><label>Total per Day</label></td>
-                <td></td>
-                <td>
-                    <label>
-                        @Html.DisplayFor(modelItem => Model.TotalCountMealPerIngestion.TotalCarb)
-                    </label>
-                </td>
-                <td>
-                    <label>
-                        @Html.DisplayFor(modelItem => Model.TotalCountMealPerIngestion.TotalFat)
-                    </label>
-                </td>
-                <td>
-                    <label>
-                        @Html.DisplayFor(modelItem => Model.TotalCountMealPerIngestion.TotalProtein)
-                    </label>
-                </td>
-                <td>
-                    <label>
-                        @Html.DisplayFor(modelItem => Model.TotalCountMealPerIngestion.TotalCal)
-                    </label>
-                </td>
-            </tr>
+        <tr>
+            <td></td>
+            <td><label>Total per Day</label></td>
+            <td></td>
+            <td>
+                <label>
+                    @Html.DisplayFor(modelItem => Model.TotalCountMealPerIngestion.TotalCarb)
+                </label>
+            </td>
+            <td>
+                <label>
+                    @Html.DisplayFor(modelItem => Model.TotalCountMealPerIngestion.TotalFat)
+                </label>
+            </td>
+            <td>
+                <label>
+                    @Html.DisplayFor(modelItem => Model.TotalCountMealPerIngestion.TotalProtein)
+                </label>
+            </td>
+            <td>
+                <label>
+                    @Html.DisplayFor(modelItem => Model.TotalCountMealPerIngestion.TotalCal)
+                </label>
+            </td>
+        </tr>
         </tfoot>
 
     </table>
 
-    <a asp-action="Delete" asp-route-id="@Model.OneDayFoodId">Delete All</a> |
-    <a asp-action="Index" asp-route-id="@Model.OneDayFoodViewModel.AppUserID">Back to All</a>
+    <a asp-action="Delete" asp-route-id="@Model.OneDayFoodId" class="btn btn-default">Delete All</a> |
+    <a asp-action="Index" asp-route-id="@Model.OneDayFoodViewModel.AppUserID" class="btn btn-grey">Back to All</a>
+    <br/>
+
 </div>
+<br/>
+<br/>

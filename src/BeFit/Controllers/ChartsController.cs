@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BeFit.Models;
-using BeFit.Repositories;
+﻿using BeFit.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.AspNetCore.Razor.Parser.SyntaxConstants;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,17 +20,23 @@ namespace BeFit.Controllers
         // GET: /<controller>/
         public IActionResult WorkoutChart(int id)
         {
+            ViewData["Title"] = "Workout statistics";
+            ViewData["user"] =id;
             var coll= _oneDayWorkoutRepository.ChartData(id);
            
        return View("Index",coll);
         }
         public IActionResult MeasureChart(int id)
         {
+            ViewData["Title"] = "Weight statistics";
+            ViewData["user"] = id;
             var coll = _fillMeasurementRepository.ChartItems(id);
    return View("Index", coll.listChart);
         }
         public IActionResult MealChart(int id)
         {
+            ViewData["Title"] = "Meals statistics";
+            ViewData["user"] = id;
             var coll = _oneDayFoodRepository.ChartItems(id);
             return View("Index", coll);
         }

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using BeFit.Models;
+using BeFit.Models.NewsViewModels;
 using BeFit.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,7 +37,17 @@ namespace BeFit.Controllers
                 filter = currentFilter;
             ViewData["CurrentFilter"] = filter;
             var collnews = _newsRepository.NewsByFilter(filter);
+            var coll=new List<NewsViewModel>();
+            foreach (var collnew in collnews)
+            {
+                var view = new NewsViewModel();
 
+                view.Name = collnew.Name;
+                view.ImagePath = collnew.ImagePath;
+                view.Annatation = System.IO.File.ReadAllLines(@"../BeFit/wwwroot" + collnew.Path).First();
+                view.Tag = collnew.Tag;
+                coll.Add(view);
+            }
             switch (sortOrder)
             {
                 case "name_desc":
@@ -49,7 +58,7 @@ namespace BeFit.Controllers
                     break;
             }
 
-            return View(PagerList<News>.Create(collnews, page ?? 1, sizeOfPage));
+            return View(PagerList<NewsViewModel>.Create(coll, page ?? 1, sizeOfPage));
         }
     }
 }

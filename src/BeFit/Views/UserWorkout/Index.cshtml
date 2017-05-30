@@ -1,67 +1,70 @@
 ﻿@model IEnumerable<OneDayWorkout>
 @{
-    ViewData["Title"] = "All meals";
+    ViewData["Title"] = "Workouts";
 }
 
-<h2>All meals</h2>
-
-<div>
+<div class="container">
   <hr />
     <table class="table">
         <thead>
-            <tr>
-                <th>
-                    <label>Date</label>
-                </th>
-                <th>
-                    <label>Cardio</label>
-                </th>
-                <th>
-                    <label>Duration</label>
-                </th>
-                <th>
-                    <label>Streinght workout</label>
-                </th>
+        <tr>
+            <th>
+                <label>Date</label>
+            </th>
+            <th>
+                <label>Cardio</label>
+            </th>
+            <th>
+                <label>Duration</label>
+            </th>
+            <th>
+                <label>Streinght workout</label>
+            </th>
                 
-            </tr>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
-            {
-              <tr>
-                    <td>
-                        @item.Date
-                    </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Date
+                </td>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Cardio.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Duration)
-                    </td>
-                    <td>
-                        @if (item.Workout != null)
-                        {
-                            <dir >+</dir>
-                        }
-                        else
-                        {
-                            <dir>-</dir>
-                        }
-                    </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cardio.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duration)
+                </td>
+                <td>
+                    @if (item.Workout != null)
+                    {
+                        <dir >+</dir>
+                    }
+                    else
+                    {
+                        <dir>-</dir>
+                    }
+                </td>
                   
-                    <td>
-                        <a asp-action="Detail" asp-route-oneDayWorkoutId="@item.OneDayWorkoutID">Detail</a>
-                        <a asp-action="Create" asp-route-id="@item.AppUserID" asp-route-oneDayWorkoutId="@item.OneDayWorkoutID">Edit</a>
+                <td>
+                    <a asp-action="Detail" asp-route-oneDayWorkoutId="@item.OneDayWorkoutID">Detail</a>
+                    <a asp-action="Create" asp-route-id="@item.AppUserID" asp-route-oneDayWorkoutId="@item.OneDayWorkoutID">Edit</a>
 
-                    </td>
+                </td>
 
-                </tr>
+            </tr>
 
-            }
+        }
 
 
     </table>
-    <a asp-action="Create" asp-route-id="@ViewData["user"]">Add new</a>
-
+    <br/>
+    <a class="btn btn-default" asp-action="Create" asp-route-id="@ViewData["user"]">Add new</a>|
+    <a asp-controller="UserProfile" asp-action="Profile" class="btn btn-grey">Back to Profile</a>
+    <br/>
+    <br/>
+    <br />
+    <br />
 </div>

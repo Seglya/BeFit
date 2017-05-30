@@ -134,13 +134,13 @@ a:hover {
 }
 /* Row */
 .service-wrapper-row {
-  padding: 10px 0;
+  padding: 20px 0;
 }
 .service-wrapper-row h3 {
-  padding-top: 15px;
+  padding-top: 30px;
 }
 .service-wrapper-row .service-image {
-  padding-top: 15px;
+  padding-top: 30px;
   text-align: center;
 }
 .service-wrapper-row .service-image img {
@@ -1019,7 +1019,6 @@ border:none;
 --------------------------------------------------------------------------*/
 .section-breadcrumbs {
   background: #aec62c;
-  margin-bottom: 10px;
   margin-top:90px;
 }
 .section-breadcrumbs h1 {
@@ -1041,7 +1040,6 @@ border:none;
   color: #A0A0A0;
   padding: 0 20px 10px 20px;
   border-top: 4px solid #aec62c;
-  margin-top: 20px;
   -webkit-box-shadow: 0 -1px 12px rgba(0,0,0,0.4);
   -moz-box-shadow: 0 -1px 12px rgba(0,0,0,0.4);
   box-shadow: 0 -1px 12px rgba(0,0,0,0.4);

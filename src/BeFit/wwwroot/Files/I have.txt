@@ -1,4 +1,0 @@
-        	I have a much larger form with mother form fields in it that are going into my FormViewModel (ALL fields are populating as they should), and I actually tried putting the IFormFileCollection, ICollection, IList, List as the parameters in the method above and instead also putting it directly in my view model. Whether I do it as a single file or multiple, in the model or the controller, I always get null. The 'IFormFileCollecion files = Request.Form.Files' actually works, but I don't want to do it that way because it should work the way I have or had it. When I put the property for the files in my model, I put "[Required]" above it and it doesn't trigger.
-	AND, even better, I ran this multiple times with fiddler and it is actually POSTING the files-- so why aren't they being cast into the model?
-	Do I have my dependencies wrong? Can anyone think of what could cause this?
-

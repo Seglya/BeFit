@@ -13,6 +13,7 @@ namespace BeFit.Repositories
     public interface IAppUserRepository
     {
         IEnumerable<AppUser> UsersProfile { get; }
+        IEnumerable<AppUser> UserProfileByFilter(string filter);
         Task<AppUser> SaveUserProfileAsync(string key, UserProfileViewModel viewModel, int id);
         Task<AppUser> GetUserProfileById(int id);
         Task<AppUser> GetUserByKeyAsync(string key);
@@ -33,6 +34,12 @@ namespace BeFit.Repositories
         }
 
         public IEnumerable<AppUser> UsersProfile => _context.AppUser.AsNoTracking();
+        public IEnumerable<AppUser> UserProfileByFilter(string filter)
+        {
+            if (filter != null)
+                return _context.AppUser.Where(s => s.FirstName.Contains(filter)||s.SecondName.Contains(filter)).AsNoTracking();
+            return _context.AppUser.AsNoTracking();
+        }
 
         public async Task<AppUser> GetUserProfileById(int id)
         {

@@ -1,37 +1,79 @@
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Administrative panel";
 }
 
-<div class="container">
-    <div class="row">
+<div class="section">
+    <div class="container">
+        <br/>
+        <br/>
         <div class="row">
-            <div class="col-md-12">
-                <h2>Administration</h2>
-                <p>
-                    <a asp-controller="AdminExercises" asp-action="Index">Exercise administration</a>
-                </p>
-                <p>
-                    <a asp-controller="AdminWorkout" asp-action="Index">Workout administration</a>
-                </p>
-                <p>
-                    <a asp-controller="AdminTag" asp-action="Index">Tag administration</a>
-                </p>
-                <p>
-                    <a asp-controller="AdminFood" asp-action="Index">Food administration</a>
-                </p>
-                <p>
-                    <a asp-controller="AdminMuscle" asp-action="Index">Muscle administration</a>
-                </p>
-                <p>
-                    <a asp-controller="AdminMeasurement" asp-action="Index">Measurement administration</a>
-                </p>
-                <p>
-                    <a asp-controller="AdminCardio" asp-action="Index">Cardio administration</a>
-                </p>
-                <p>
-                    <a asp-controller="AdminNews" asp-action="Index" >News administration</a>
-                </p>
+            <div class="col-md-4 col-sm-6">
+                <div class="service-wrapper">
+                    <a asp-controller="AdminExercises" asp-action="Index">
+                        <img src="images/exercise-gym_318-28601.jpg" height="100">
+                    </a>
+                    <h3>Exercises</h3>
+                </div>
+            </div>
+           <div class="col-md-4 col-sm-6">
+                <div class="service-wrapper">
+                    <a asp-controller="AdminWorkout" asp-action="Index"><img src="images/workout.png" height="100"/></a>
+                    <h3>Workouts</h3>
+                </div>
+            </div>
+            
+            <div class="col-md-4 col-sm-6">
+                <div class="service-wrapper">
+                    <a asp-controller="AdminTag" asp-action="Index"><img src="images/tags-512.png" height="100"/></a>
+                    <h3>Tags</h3>
+
+                </div>
+            </div>
+            
+            <div class="col-md-4 col-sm-6">
+                <div class="service-wrapper">
+                    <a asp-controller="AdminFood" asp-action="Index"><img src="images/food.png" height="100"/></a>
+                    <h3>Food</h3>
+                </div>
+            </div>
+            
+            <div class="col-md-4 col-sm-6">
+                <div class="service-wrapper">
+                    <a asp-controller="AdminMuscle" asp-action="Index"><img src="images/musculous-arm-silhouette.png" height="100"/></a>
+                    <h3>Muscles</h3>
+                </div>
+            </div>
+           
+            <div class="col-md-4 col-sm-6">
+                <div class="service-wrapper">
+                    <a asp-controller="AdminMeasurement" asp-action="Index"><img src="images/measurement.png" height="100"/></a>
+                    <h3>Measurements</h3>
+                </div>
+            </div>
+          <div class="col-md-4 col-sm-6">
+                <div class="service-wrapper">
+                    <a asp-controller="AdminCardio" asp-action="Index"><img src="images/person-running-on-a-treadmill-silhouette-from-side-view.png" height="100"/></a>
+                    <h3>Cardio</h3>
+                </div>
+            </div>
+            
+            <div class="col-md-4 col-sm-6">
+                <div class="service-wrapper">
+                    <a asp-controller="AdminNews" asp-action="Index"><img src="images/folded-newspaper.png" height="100"/></a>
+                    <h3>Articles</h3>
+                </div>
+            </div>
+           
+            <div class="col-md-4 col-sm-6">
+                <div class="service-wrapper">
+                    <a asp-controller="UserProfile" asp-action="Index"><img src="images/users.png" height="100" /></a>
+                    <h3>Users</h3>
+                </div>
             </div>
         </div>
     </div>
+    <br/>
+    <br/>
 </div>
+
+<hr>

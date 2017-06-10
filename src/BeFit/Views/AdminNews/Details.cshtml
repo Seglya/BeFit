@@ -1,0 +1,39 @@
+@model BeFit.Models.NewsViewModels.NewsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="container">
+    <div >
+        <h2>News</h2>
+        <hr/>
+     Tags: @Model.Tag
+           
+        <div class="form-group">
+            <label  class="col-md-2 control-label">@Model.Name</label>
+              
+        </div>
+        <p>
+            
+            <div id="img" class="col-md-2">
+
+                <img alt="photo" src="@Url.Content(Model.ImagePath)"/>
+            </div>
+            <div class="form-group">
+              @foreach (var i in Model.Article)
+              {
+                
+                  <label>@i</label>
+              }
+                </div>
+                
+        </p>
+</div>
+    <div>
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="EditNews" asp-route-FileName="@Model.ImagePath", asp-route-name="@Model.Name" >Edit</a>
+        }
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>

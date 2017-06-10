@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using BeFit.Data;
+using BeFit.Models;
 
-namespace BeFit.Models
+namespace BeFit.Data
 {
     public class DbInitializer
     {
@@ -163,7 +163,7 @@ namespace BeFit.Models
                         try
                         {
                             cal = int.Parse(comp[count - 1]);
-                            carb = double.Parse(comp[count - 1]);
+                            carb = double.Parse(comp[count - 2]);
                             fat = double.Parse(comp[count - 3]);
                             prot = double.Parse(comp[count - 4]);
                         }
@@ -228,7 +228,33 @@ namespace BeFit.Models
                 };
                 foreach (var work in workout)
                     context.Workout.Add(work); //add to database
-
+                var measurements = new List<Measurement>
+                {
+                    new Measurement
+                    {
+                        Name = "Weight",
+                        UnitsOfMeasurement = "kg"
+                    },
+                    new Measurement
+                    {
+                        Name = "Chest",
+                        UnitsOfMeasurement = "sm"
+                    },
+                    new Measurement
+                    {
+                        Name = "Waist",
+                        UnitsOfMeasurement = "sm"
+                    },
+                    new Measurement
+                    {
+                        Name = "Hips",
+                        UnitsOfMeasurement = "sm"
+                    },
+                };
+                foreach (var measurement in measurements)
+                {
+                    context.Measurement.Add(measurement);
+                }
 
                 var fillingworkout = new List<FillingWorkout>
                 {

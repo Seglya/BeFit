@@ -2,63 +2,62 @@
 
 
 @{
-    ViewData["Title"] = "Measurement";
+    ViewData["Title"] = "Add measurement";
 }
 
 <div class="container">
     <div>
-        <h2>@ViewData["Title"]</h2>
-
         <form method="post" asp-controller="Measurement" asp-action="AddMeasurement" class="form-horizontal" enctype="multipart/form-data">
 
             <div class="form-group">
-                <h4>Exercise</h4>
                 <hr/>
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
                     <label class="col-md-2 control-label">Date</label>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         @if (Model[0].ID != 0)
                         {
                             <label>"@Model[0].Date"</label>
                         }
                         else
                         {
-                            <input asp-for="@Model[0].Date" value="@DateTime.Today.Date"/>
+                            <input asp-for="@Model[0].Date" class="form-control" value="@DateTime.Today.Date"/>
                             <span asp-validation-for="@Model[0].Date"></span>
                         }
                     </div>
                 </div>
-
-
                 @for (var i = 0; i < Model.Count; i++)
-                {
+                {<br/>
                     <div class="form-group">
                         <label class="col-md-2 control-label">@Model[i].Measurement.Name</label>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <input asp-for="@Model[i].MeasurementID" value="@Model[i].Measurement.MeasurementID" class="hidden"/>
                             <input asp-for="@Model[i].AppUserID" value="@Model[i].AppUserID" class="hidden"/>
                             <input asp-for="@Model[i].ID" value="@Model[i].ID" class="hidden"/>
-
-                            @Html.TextBoxFor(x => x[i].PutMesurement)
+                           <input asp-for="@Model[i].PutMesurement" class="form-control"/>
+                           @* @Html.TextBoxFor(x => x[i].PutMesurement)*@
                             <span asp-validation-for="@Model[i].PutMesurement"></span>
                         </div>
-                        <label class="control-label">@Model[i].Measurement.UnitsOfMeasurement</label>
+                        <label class="text-nowrap">@Model[i].Measurement.UnitsOfMeasurement</label>
                     </div>
                 }
+                <br/>
                 <div class="form-group">
-                    <div class="col-md-offset-2 col-md-6">
-                        <input type="submit" value="Save" class="btn btn-default"/>
+                    <div class="col-md-offset-2 col-md-4">
+                        <input type="submit" value="Save" class="btn btn-default"/>|
+                        <a asp-controller="UserProfile" asp-action="Profile" class="btn btn-grey">Back to Profile</a>
                     </div>
+                    <div>
+   
+</div>
                 </div>
             </div>
         </form>
 
-        <div>
-            <a asp-controller="UserProfile" asp-action="Profile" class="btn-danger">Back to Profile</a>
-        </div>
+        
     </div>
+    <br/>
 </div>
 
 @section Scripts {

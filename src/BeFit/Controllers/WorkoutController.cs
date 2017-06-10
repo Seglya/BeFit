@@ -51,7 +51,7 @@ namespace BeFit.Controllers
             if (filterTag == null)
             {
                 filterTag = curentTag;
-                collworkout = _workoutRepository.WorkoutsByFilter(filter);
+                collworkout = _workoutRepository.WorkoutsByFilter(filter).Where(t=>t.PersonWorkout==false);
             }
             else
             {

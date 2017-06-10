@@ -45,23 +45,30 @@ namespace BeFit.Controllers
             if (id == 0)
                 return RedirectToAction("login", "Account");
             var date = list.First().Date;
-
-            foreach (var viewModel in list)
+            var dates = _fillMeasurementRepository.MeasurementsOnADate(id,date);
+            if (dates.Any())
+            {
+                ModelState.AddModelError("",errorMessage:"Measurement on this date already exist!");
+            }
+            if(ModelState.IsValid)
+            { foreach (var viewModel in list)
             {
                 viewModel.Date = date;
                 viewModel.AppUserID = id;
                 await _fillMeasurementRepository.CreateOrEditFillMeasurementAsync(viewModel.ID, viewModel);
             }
-            return RedirectToAction("Detail", id);
+            return RedirectToAction("Detail", new {id=id});}
+            list = new List<AddMeasurementViewModel>();
+            foreach (var measurement in _measurementRepository.Measurement)
+                list.Add(new AddMeasurementViewModel { Date = DateTime.Today.Date, Measurement = measurement });
+            return View(list);
         }
 
         //GET://Measurement/Edit/id
-        public IActionResult Edit(int id, DateTime date)
+        public IActionResult Edit(int id, string date)
         {
-            var day = date.Month;
-            var month = date.Day;
-            var year = date.Year;
-            var newDate = DateTime.Parse(day + "/" + month + "/" + year);
+           
+            var newDate = DateTime.Parse(date);
             var list = new List<AddMeasurementViewModel>();
             var collMeasure = _fillMeasurementRepository.MeasurementsOnADate(id, newDate);
             foreach (var measurement in collMeasure)
@@ -81,17 +88,19 @@ namespace BeFit.Controllers
         }
 
 
-        public async Task<IActionResult> Detail(int id)
+        public async Task<IActionResult> Detail(int id, string sortOrder)
         {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["DateSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             var list = new List<DetailMeasureVeiwModel>();
             var user = await _appUserRepository.GetUserProfileById(id);
             ViewData["MesuarementAll"] = _measurementRepository.Measurement;
             ViewData["userId"] = id;
 
+
             var prevDate = DateTime.MinValue.Date;
             foreach (var measurement in user.Measurements)
-            {
-                var detail = new DetailMeasureVeiwModel();
+            {var detail = new DetailMeasureVeiwModel();
                 var date = measurement.Date.Date;
                 if (date != prevDate)
                 {
@@ -113,18 +122,28 @@ namespace BeFit.Controllers
                     det.Measure.Add(addMeasure);
                 }
             }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    list = list.OrderByDescending(s => s.Date).ToList();
+                    break;
+                default:
+                    list = list.OrderBy(s => s.Date).ToList();
+                    break;
+            }
             return View(list);
         }
 
         // GET: Measurement/Delete/5
-        public IActionResult Delete(int id, DateTime date)
+        public IActionResult Delete( string date, int id)
         {
-            var day = date.Month;
-            var month = date.Day;
-            var year = date.Year;
-            var newDate = DateTime.Parse(day + "/" + month + "/" + year);
+            DateTime dat = DateTime.Parse(date);
+            var day = dat.Month;
+            var month = dat.Day;
+            var year = dat.Year;
+           // DateTime newDate = DateTime.Parse(day + "/" + month + "/" + year+" "+"00:00:00");
             var list = new List<AddMeasurementViewModel>();
-            var collMeasure = _fillMeasurementRepository.MeasurementsOnADate(id, newDate).ToList();
+            var collMeasure = _fillMeasurementRepository.MeasurementsOnADate(id, dat).ToList();
             if (collMeasure.Count > 0)
             {
                 foreach (var measurement in collMeasure)

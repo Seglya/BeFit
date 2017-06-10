@@ -21,7 +21,9 @@ namespace BeFit.Migrations
                     b.Property<int>("AppUserID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CurrentWeight");
+                    b.Property<double>("Activity");
+
+                    b.Property<double>("CurrentWeight");
 
                     b.Property<DateTime>("DateOfBirth");
 
@@ -32,6 +34,8 @@ namespace BeFit.Migrations
                         .HasAnnotation("MaxLength", 50);
 
                     b.Property<double>("Goal");
+
+                    b.Property<int>("Height");
 
                     b.Property<string>("ImageName");
 
@@ -221,13 +225,14 @@ namespace BeFit.Migrations
                     b.Property<int>("NewsID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ImagePath");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 50);
 
                     b.Property<string>("Path")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 50);
+                        .IsRequired();
 
                     b.Property<string>("Tag")
                         .IsRequired();

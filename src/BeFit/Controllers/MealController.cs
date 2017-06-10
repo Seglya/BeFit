@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using BeFit.Models;
 using BeFit.Models.UserProfileViewModels;
 using BeFit.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -31,6 +28,7 @@ namespace BeFit.Controllers
         // GET: /<controller>/
         public IActionResult Index(int id)
         {
+            ViewData["user"] = id;
             var AllOneDayFoodForUser=_oneDayFoodRepository.OneDayFoodsByUserId(id);
             var AllMealsViewModel=new List<MealDetailViewModel>();
             
@@ -64,7 +62,8 @@ namespace BeFit.Controllers
         [HttpGet]
         public IActionResult Create(int id)
         {
-            var ingections = IngestionViewModel.OneDayIngestions;
+            
+                var ingections = IngestionViewModel.OneDayIngestions;
             var viewModel=new OneDayFoodViewModel
             {
                 AppUserID = id,
@@ -78,9 +77,18 @@ namespace BeFit.Controllers
         //POST: /Meal/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( OneDayFoodViewModel viewModel, string[][] Weight, string[][]food)
-        {viewModel.Ingestions=new List<IngestionViewModel>();
-            var oneDayFood=await _oneDayFoodRepository.AddOrEditOneDayFoodAsync(viewModel, 0);
+        public async Task<IActionResult> Create(OneDayFoodViewModel viewModel, string[][] Weight, string[][] food)
+        {
+            var dates = await _oneDayFoodRepository.OneDayFoodByUserIdForDateAsync(viewModel.AppUserID, viewModel.Date);
+            if (dates != null)
+            {
+                ModelState.AddModelError("", errorMessage: "Measurement on this date already exist!");
+            }
+            if (ModelState.IsValid)
+            {
+                viewModel.Ingestions = new List<IngestionViewModel>();
+            
+            var oneDayFood = await _oneDayFoodRepository.AddOrEditOneDayFoodAsync(viewModel, 0);
             int i = 0;
             foreach (var ingestion in IngestionViewModel.OneDayIngestions)
             {
@@ -102,7 +110,9 @@ namespace BeFit.Controllers
 
                 i++;
             }
-            return RedirectToAction("Detail", new { id=oneDayFood.OneDayFoodID});
+            return RedirectToAction("Detail", new {id = oneDayFood.OneDayFoodID});
+        }
+            return View(viewModel);
         }
 
         public async Task<IActionResult> Detail(int id)

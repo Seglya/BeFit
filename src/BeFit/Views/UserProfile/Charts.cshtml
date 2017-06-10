@@ -1,0 +1,35 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{ ViewData["Title"] = "Charts"; }
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <br/>
+            <br/>
+            <div class="col-md-4 col-sm-6">
+                <div class="service-wrapper">
+                    <a asp-action="MealChart" asp-controller="Charts" asp-route-id="@ViewData["user"]"><img src="~/images/food.png" height="100" /></a>
+                    <h3>Meals chart</h3>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6">
+                <div class="service-wrapper">
+                    <a asp-action="MeasureChart" asp-controller="Charts" asp-route-id="@ViewData["user"]"><img src="~/images/measurement.png" height="100" /></a>
+                    <h3>Weight chart</h3>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="service-wrapper">
+                    <a asp-action="WorkoutChart" asp-controller="Charts" asp-route-id="@ViewData["user"]"><img src="~/images/person-running-on-a-treadmill-silhouette-from-side-view.png" height="100" /></a>
+                    <h3>Workouts chart</h3>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+        </div>
+    </div>
+</div>
+

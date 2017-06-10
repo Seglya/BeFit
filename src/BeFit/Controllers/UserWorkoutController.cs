@@ -39,6 +39,7 @@ namespace BeFit.Controllers
         // GET: /<controller>/
         public IActionResult Index(int id)
         {
+            ViewData["user"] = id;
             var oneDayWorkouts = _oneDayWorkoutRepository.AllOneDayWorkoutsByUserId(id);
             return View(oneDayWorkouts);
         }
@@ -89,11 +90,9 @@ namespace BeFit.Controllers
                 viewModel.AppUserID = oneDayWorkout.AppUserID;
                 PopulateCardioDropDownList(oneDayWorkout.Cardio);
             }
-            else
-            {
+            
                 PopulateCardioDropDownList();
-            }
-            PopulateExerciseDropDownList();
+           PopulateExerciseDropDownList();
 
             return View(viewModel);
         }
@@ -123,8 +122,13 @@ namespace BeFit.Controllers
                             "Exercise №" + (i + 1) +
                             "Value of the fields \"Sets\", \"Repeat\" should be more then \"0\"!!!");
                 }
-
-            if (ModelState.IsValid)
+            var dates = _oneDayWorkoutRepository.AllOneDayWorkoutsByUserId(viewModel.AppUserID).Where(d=>d.Date==viewModel.Date);
+            if (dates.Any())
+            {
+                ModelState.AddModelError("", errorMessage: "Measurement on this date already exist!");
+            }
+         
+                if (ModelState.IsValid)
                 try
                 {
                     if (viewModel.WorkoutID == null)

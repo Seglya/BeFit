@@ -13,6 +13,7 @@ namespace BeFit.Repositories
     public interface IAppUserRepository
     {
         IEnumerable<AppUser> UsersProfile { get; }
+        IEnumerable<AppUser> UserProfileByFilter(string filter);
         Task<AppUser> SaveUserProfileAsync(string key, UserProfileViewModel viewModel, int id);
         Task<AppUser> GetUserProfileById(int id);
         Task<AppUser> GetUserByKeyAsync(string key);
@@ -33,11 +34,17 @@ namespace BeFit.Repositories
         }
 
         public IEnumerable<AppUser> UsersProfile => _context.AppUser.AsNoTracking();
+        public IEnumerable<AppUser> UserProfileByFilter(string filter)
+        {
+            if (filter != null)
+                return _context.AppUser.Where(s => s.FirstName.Contains(filter)||s.SecondName.Contains(filter)).AsNoTracking();
+            return _context.AppUser.AsNoTracking();
+        }
 
         public async Task<AppUser> GetUserProfileById(int id)
         {
             if (id > 0)
-                return await _context.AppUser.Include(f => f.Measurements).SingleOrDefaultAsync(d => d.AppUserID == id);
+                return await _context.AppUser.Include(f => f.Measurements). ThenInclude(m=>m.Measurement).SingleOrDefaultAsync(d => d.AppUserID == id);
             return null;
         }
 
@@ -64,7 +71,9 @@ namespace BeFit.Repositories
                     Goal = viewModel.Goal,
                     WeeksForGoal = viewModel.WeeksForGoal,
                     ImageName = viewModel.ImageName,
-                    ImagePath = viewModel.ImagePath
+                    ImagePath = viewModel.ImagePath,
+                    Height = viewModel.Height,
+                    Activity = viewModel.Activity
                 });
             }
             else
@@ -78,14 +87,18 @@ namespace BeFit.Repositories
                 user.WeeksForGoal = viewModel.WeeksForGoal;
                 user.ImageName = viewModel.ImageName;
                 user.ImagePath = viewModel.ImagePath;
+                user.Height = viewModel.Height;
+                user.Activity = viewModel.Activity;
             }
             await _context.SaveChangesAsync();
             return await GetUserByKeyAsync(key);
         }
 
         public async Task<AppUser> GetUserByKeyAsync(string key)
-        {
-            return await _context.AppUser.Where(k => k.Key.Contains(key)).SingleOrDefaultAsync();
+        { var user=await _context.AppUser.Where(k => k.Key.Contains(key)).SingleOrDefaultAsync();
+            if (user == default(AppUser))
+                return null;
+            return user;
         }
     }
 }

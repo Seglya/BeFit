@@ -98,7 +98,7 @@ namespace BeFit.Controllers
                 if (ModelState.IsValid)
                 {
                     var saving1 = await _cardioRepository.AddOrEditCardioAsync(viewModel, (int)id);
-                    if (saving1 != null)
+                    if (saving1 != 0)
                         return RedirectToAction("Index");
                 }
             }

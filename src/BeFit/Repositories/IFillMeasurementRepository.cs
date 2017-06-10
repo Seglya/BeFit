@@ -16,6 +16,7 @@ namespace BeFit.Repositories
         Task<FillMeasurement> CreateOrEditFillMeasurementAsync(int id, AddMeasurementViewModel viewModel);
         void DeleteFillMeasurement(List<AddMeasurementViewModel> list);
         Task<FillMeasurement> MeasurementsByIdAsync(int Id);
+        Chart ChartItems(int id);
     }
 
     public class FillMeasurementRepository : IFillMeasurementRepository
@@ -85,6 +86,37 @@ namespace BeFit.Repositories
                 _context.FillMeasurement.RemoveRange(delList);
                 _context.SaveChanges();
             }
+        }
+        public Chart ChartItems(int id)
+        {
+var ifNull =(double) _context.AppUser.Find(id).CurrentWeight;
+            var coll = _context.FillMeasurement.OrderBy(t => t.Date).Include(t => t.Measurement).Where(t => t.AppUserID == id);
+            var start = _context.AppUser.Find(id).DateOfRegoistration;
+            var max = (DateTime.Today - start).Days;
+            var cartItems = new List<chartItem>();
+            for (var i = 0; i <= max; i++)
+            {
+                
+                foreach (var measure in coll)
+                {
+                    if(measure.Date.Date == start.AddDays(i).Date & measure.Measurement.Name=="Weight")
+                    {
+                        ifNull = measure.PutMesurement;
+                        cartItems.Add( 
+                         new chartItem
+                        {
+                            date = start.AddDays(i),
+                            visits = measure.PutMesurement
+                        });}
+                    else
+                    {
+                        cartItems.Add(new chartItem { date = start.AddDays(i), visits = ifNull });
+                    }
+                        
+                }
+
+            }
+            return new Chart {listChart = cartItems};
         }
     }
 }

@@ -3,72 +3,73 @@
     ViewData["Title"] = "All meals";
 }
 
-<h2>All meals</h2>
-
-<div>
- @{ int user = 0;}
+<div class="container">
     <hr />
     <table class="table">
         <thead>
-            <tr>
-                <th>
-                    <label>Date</label>
-                </th>
-                <th>
-                    <label>Water</label>
-                </th>
-               <th>
-                    <label>Carbohydrate</label>
-                </th>
-                <th>
-                    <label>Fat</label>
-                </th>
-                <th>
-                    <label>Protein</label>
-                </th>
-                <th>
-                    <label>Cal</label>
-                </th>
+        <tr>
+            <th>
+                <label>Date</label>
+            </th>
+            <th>
+                <label>Water</label>
+            </th>
+            <th>
+                <label>Carbohydrate</label>
+            </th>
+            <th>
+                <label>Fat</label>
+            </th>
+            <th>
+                <label>Protein</label>
+            </th>
+            <th>
+                <label>Cal</label>
+            </th>
 
-            </tr>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
-            {
-                user = item.OneDayFoodViewModel.AppUserID;
-
-                <tr>
-                    <td>
-                        @item.OneDayFoodViewModel.Date
-                    </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.OneDayFoodViewModel.Date
+                </td>
                     
-                            <td>
-                                @Html.DisplayFor(modelItem => item.OneDayFoodViewModel.Water)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TotalCountMealPerIngestion.TotalCarb)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TotalCountMealPerIngestion.TotalFat)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TotalCountMealPerIngestion.TotalProtein)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TotalCountMealPerIngestion.TotalCal)
-                            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OneDayFoodViewModel.Water)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalCountMealPerIngestion.TotalCarb)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalCountMealPerIngestion.TotalFat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalCountMealPerIngestion.TotalProtein)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalCountMealPerIngestion.TotalCal)
+                </td>
                            
-                            <td>
-                                <a asp-action="Detail" asp-route-id="@item.OneDayFoodId">Detail</a> 
+                <td>
+                    <a asp-action="Detail" asp-route-id="@item.OneDayFoodId">Detail</a> 
                           
-                            </td>
+                </td>
 
-                      </tr> 
+            </tr> 
                        
-                    }
+        }
        
 
     </table>
-    <a asp-action="Create" asp-route-id="@user">Add new</a>
+    <br/>
+    <a asp-action="Create" class="btn btn-default" asp-route-id="@ViewData["user"]">Add new</a>|
+    <a asp-controller="UserProfile" asp-action="Profile" class="btn btn-grey">Back to Profile</a>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
 
 </div>

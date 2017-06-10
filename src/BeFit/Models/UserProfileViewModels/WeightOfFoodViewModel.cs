@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BeFit.Models.UserProfileViewModels
+﻿namespace BeFit.Models.UserProfileViewModels
 {
     public class WeightOfFoodViewModel
     {
@@ -34,7 +29,7 @@ namespace BeFit.Models.UserProfileViewModels
             get
             {
                 if (Food == null) return 0;
-                return Food.Carbohydrate * Weight / 100;
+                return Food.Carbohydrate * Weight/100;
             }
         } //Количество углеводов
     }

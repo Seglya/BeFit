@@ -1,31 +1,36 @@
 ﻿@model PagerList<Food>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Food Administration";
 }
-@*<style>
-    thead,tbody{background-color: lightgray;}</style>*@
 
 <div class="container">
     <div class="row">
         <div class="row">
             <div class="col-md-12">
-                <h2>Administration Food</h2>
-                <p>
-                    <a asp-action="Edit">Create New</a>
-                </p>
+                <br/>
+                <br/>
                 <form asp-action="Index" Method="get">
                     <div class="form-actions no-color">
-                        <label>Search: </label>
-                        <input type="text" name="filter" value="@ViewData["currentFilter"]"/>
-                        <input type="submit" value="search" class="btn-default"/>
-                        <a asp-action="Index">Back to full list</a>
+                        <div class="col-md-1">
+                            <a asp-action="Edit" class="btn btn-default">Create New</a>
+                        </div>
+                        <div class="col-lg-offset-1 col-md-1">
+                            <label style="padding: 10px" class="control-label">Search: </label>
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control" type="text" name="filter" value="@ViewData["currentFilter"]" />
+                        </div>
+                        <input type="submit" value="search" class="btn btn-default" />
+                        <a asp-action="Index" class="btn btn-grey">Back to full list</a>
                     </div>
                     <div class="pull-right">
                         <a asp-action="Index" asp-route-pageSize="12"> 12 </a>
                         <label> | </label>
                         <a asp-action="Index" asp-route-pageSize="24"> 24 </a>
                     </div>
+                    <br />
                 </form>
+                <hr />
 
                 <table class="table">
                     <thead >
@@ -102,5 +107,8 @@
     }
     <a asp-action="Index" as asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex - 1)" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @prevDisabled btn">Previous</a>
     <a asp-action="Index" asp-route-pageSize="@ViewData["SizePage"]" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-page="@(Model.PageIndex + 1)" asp-route-currentFilter="@ViewData["currentFilter"]" class="btn-default @nextDisabled btn">Next</a>
-
+    <br/>
+    <br/>
+    <br/>
+    <br/>
 </div>
